@@ -58,7 +58,7 @@ services:
       # Kunci dev saja — generate ulang untuk produksi (lihat .env.example)
       ENCRYPTION_KEY: nbnabpQ3JJHhYHbflUaR2Bof65FneqFrThjlGqEmB8Y=
     ports:
-      - "8000:8000"
+      - "8005:8000"
     volumes:
       - ./backend/app:/app/app
     depends_on:
@@ -118,7 +118,7 @@ services:
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:8000
     ports:
-      - "3000:3000"
+      - "3005:3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
