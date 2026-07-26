@@ -1,0 +1,36 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.PROD_SERVER_IP }}
+          username: ${{ secrets.PROD_SERVER_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          script: |
+            # Pindah ke direktori proyek
+            cd /opt/dataklin || exit
+            
+            # Tarik kode terbaru dari branch main
+            git fetch origin main
+            git reset --hard origin/main
+            
+            # Jalankan docker compose (build ulang container dengan code terbaru)
+            # Kita menggunakan file override docker-compose.prod.yml untuk production
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build backend worker scheduler frontend
+            
+            # Opsional: bersihkan image lama agar disk server tidak penuh
+            docker image prune -f
