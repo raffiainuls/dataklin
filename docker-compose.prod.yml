@@ -1,0 +1,26 @@
+# Override untuk deployment produksi — jauh lebih ringan dari docker-compose.yml (dev):
+# - Frontend: production build (`next start`) alih-alih dev server (`next dev`) yang
+#   memakan 3-5x lebih banyak RAM & CPU karena hot-reload/webpack dev server.
+# - Backend/worker/scheduler: tanpa --reload (menghemat proses reloader + file watcher)
+#   dan tanpa bind-mount kode (image sudah berisi kode final, tidak perlu live-reload).
+#
+# Pakai:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build \
+#     backend worker scheduler frontend postgres redis minio
+# (Mailhog sengaja TIDAK disertakan — itu SMTP palsu untuk dev. Isi SMTP_HOST asli di
+# .env untuk produksi.)
+
+services:
+  backend:
+    volumes: []
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+  worker:
+    volumes: []
+
+  scheduler:
+    volumes: []
+
+  frontend:
+    volumes: []
+    command: sh -c "npm run build && npm run start"

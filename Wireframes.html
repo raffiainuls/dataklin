@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Veridata — Wireframe (Low-Fidelity)</title>
+<style>
+  :root{
+    --ink:#2d2d2d; --line:#9a9a9a; --line-soft:#c9c9c9; --bg:#f2f2f2;
+    --panel:#ffffff; --muted:#7a7a7a; --accent-fill:#e5e5e5;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:Arial, Helvetica, sans-serif; background:var(--bg); margin:0; padding:24px; color:var(--ink);}
+  h1.page-title{font-size:20px; margin:0 0 4px 0;}
+  p.page-sub{color:var(--muted); font-size:13px; margin:0 0 18px 0;}
+
+  .tabs{display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap;}
+  .tab-btn{padding:9px 16px; border:1px solid var(--line); background:var(--panel); cursor:pointer; font-size:13px; border-radius:4px 4px 0 0; color:var(--ink);}
+  .tab-btn.active{background:var(--ink); color:#fff; border-color:var(--ink);}
+
+  .screen{display:none; border:1px solid var(--line); background:var(--panel); max-width:1080px;}
+  .screen.active{display:block;}
+
+  .browser-bar{background:#e8e8e8; border-bottom:1px solid var(--line); padding:8px 12px; display:flex; align-items:center; gap:6px;}
+  .dot{width:9px; height:9px; border-radius:50%; border:1px solid var(--line); background:#fff;}
+  .browser-url{margin-left:10px; font-size:11px; color:var(--muted); border:1px solid var(--line-soft); background:#fff; padding:3px 10px; border-radius:10px;}
+
+  .app{display:flex; min-height:560px;}
+  .sidebar{width:170px; border-right:1px dashed var(--line); padding:14px 10px; flex-shrink:0;}
+  .sidebar .logo{font-weight:bold; font-size:15px; margin-bottom:16px; border:1px solid var(--line); padding:8px; text-align:center;}
+  .nav-item{padding:8px 10px; margin-bottom:6px; border:1px solid var(--line-soft); font-size:12px; color:var(--ink);}
+  .nav-item.current{background:var(--accent-fill); font-weight:bold; border-color:var(--ink);}
+
+  .main{flex:1; padding:18px;}
+  .topbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;}
+  .search-box{border:1px solid var(--line); padding:6px 12px; font-size:11px; color:var(--muted); width:220px;}
+  .avatar{width:30px;height:30px;border-radius:50%;border:1px solid var(--line); display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);}
+
+  .cards-row{display:flex; gap:12px; margin-bottom:18px; flex-wrap:wrap;}
+  .stat-card{flex:1; min-width:140px; border:1px solid var(--line); padding:14px; text-align:center;}
+  .stat-card .num{font-size:24px; font-weight:bold;}
+  .stat-card .lbl{font-size:11px; color:var(--muted); margin-top:4px;}
+
+  table.wire{width:100%; border-collapse:collapse; font-size:12px; margin-bottom:16px;}
+  table.wire th, table.wire td{border:1px solid var(--line-soft); padding:8px 10px; text-align:left;}
+  table.wire th{background:var(--accent-fill); font-size:11px; text-transform:uppercase; letter-spacing:.03em;}
+  .badge{display:inline-block; border:1px solid var(--ink); border-radius:10px; padding:2px 10px; font-size:11px;}
+
+  .section-label{font-size:12px; font-weight:bold; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:18px 0 8px;}
+
+  .placeholder-box{border:1px dashed var(--line); background:#fafafa; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:12px; font-style:italic;}
+
+  .activity-item{border-bottom:1px dashed var(--line-soft); padding:8px 2px; font-size:12px;}
+
+  .dropzone{border:2px dashed var(--line); padding:40px; text-align:center; color:var(--muted); font-size:13px; margin-bottom:18px;}
+
+  .gauge{width:110px; height:110px; border-radius:50%; border:6px solid var(--ink); display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold; margin:0 auto 8px;}
+
+  .two-col{display:flex; gap:20px;}
+  .two-col > div{flex:1;}
+
+  textarea.wire-input, input.wire-input{width:100%; border:1px solid var(--line); padding:10px; font-size:13px; font-family:inherit;}
+  button.wire-btn{border:1px solid var(--ink); background:#fff; padding:9px 18px; font-size:12px; cursor:pointer; margin-top:8px;}
+  button.wire-btn.primary{background:var(--ink); color:#fff;}
+
+  .rule-preview{border:1px solid var(--line-soft); background:#fafafa; padding:12px; font-size:12px; margin-top:10px;}
+
+  .queue-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; font-size:13px;}
+
+  .compare-wrap{display:flex; gap:12px; margin-bottom:16px;}
+  .record-card{flex:1 1 0; min-width:0; border:1px solid var(--line); padding:12px;}
+  .record-card h4{margin:0 0 10px; font-size:12px; border-bottom:1px solid var(--line-soft); padding-bottom:6px; display:flex; justify-content:space-between; align-items:baseline; gap:6px;}
+  .record-card h4 .rid{font-weight:normal; color:var(--muted); font-size:10px; white-space:nowrap;}
+  .field-row{display:flex; justify-content:space-between; gap:6px; font-size:11px; padding:5px 0;}
+  .field-row span:last-child{text-align:right; overflow-wrap:anywhere;}
+  .field-row.diff{background:#ececec;}
+
+  .confidence-bar-track{border:1px solid var(--line); height:18px; width:100%; margin:8px 0 4px;}
+  .confidence-bar-fill{background:var(--ink); height:100%; }
+
+  .action-row{display:flex; gap:10px; justify-content:center; margin-top:16px;}
+  .action-row button{padding:10px 22px; font-size:12px; border:1px solid var(--ink); background:#fff; cursor:pointer;}
+  .action-row button.primary{background:var(--ink); color:#fff;}
+
+  .toggle{display:inline-block; width:34px; height:18px; border:1px solid var(--ink); border-radius:10px; position:relative;}
+  .toggle .knob{width:14px; height:14px; background:var(--ink); border-radius:50%; position:absolute; top:1px; right:1px;}
+  .toggle.off .knob{left:1px; right:auto; background:#bbb;}
+
+  .chart-box{height:220px; margin-bottom:20px;}
+  .audit-item{font-size:11px; color:var(--muted); border-left:2px solid var(--line-soft); padding:4px 0 4px 10px; margin-bottom:4px;}
+</style>
+</head>
+<body>
+
+<h1 class="page-title">Veridata — Wireframe Low-Fidelity</h1>
+<p class="page-sub">Lampiran PRD · 6 layar utama · klik tab untuk berpindah antar layar</p>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showScreen('dashboard', this)">1. Dashboard</button>
+  <button class="tab-btn" onclick="showScreen('profiling', this)">2. Upload & Profiling</button>
+  <button class="tab-btn" onclick="showScreen('rules', this)">3. Rule Builder</button>
+  <button class="tab-btn" onclick="showScreen('dedup', this)">4. Cluster Review</button>
+  <button class="tab-btn" onclick="showScreen('golden', this)">5. Golden Record (per Cluster)</button>
+  <button class="tab-btn" onclick="showScreen('monitoring', this)">6. Monitoring & Alerts</button>
+</div>
+
+<!-- SCREEN 1: DASHBOARD -->
+<div class="screen active" id="dashboard">
+  <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="browser-url">app.veridata.id/dashboard</span></div>
+  <div class="app">
+    <div class="sidebar">
+      <div class="logo">VERIDATA</div>
+      <div class="nav-item current">Dashboard</div>
+      <div class="nav-item">Dataset</div>
+      <div class="nav-item">Rule Builder</div>
+      <div class="nav-item">Review Queue</div>
+      <div class="nav-item">Monitoring</div>
+      <div class="nav-item">Pengaturan</div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <input class="search-box" placeholder="Cari dataset...">
+        <div class="avatar">RA</div>
+      </div>
+      <div class="cards-row">
+        <div class="stat-card"><div class="num">18</div><div class="lbl">Total Dataset</div></div>
+        <div class="stat-card"><div class="num">82</div><div class="lbl">Rata-rata Skor Kualitas</div></div>
+        <div class="stat-card"><div class="num">137</div><div class="lbl">Duplikat Terdeteksi</div></div>
+        <div class="stat-card"><div class="num">3</div><div class="lbl">Alert Aktif</div></div>
+      </div>
+      <div class="section-label">Dataset Terbaru</div>
+      <table class="wire">
+        <tr><th>Nama Dataset</th><th>Terakhir Update</th><th>Skor Kualitas</th><th>Status</th><th>Aksi</th></tr>
+        <tr><td>customer_master.csv</td><td>2 jam lalu</td><td><span class="badge">86</span></td><td>Aktif</td><td>Lihat →</td></tr>
+        <tr><td>transaksi_q2_2026.xlsx</td><td>1 hari lalu</td><td><span class="badge">74</span></td><td>Butuh Review</td><td>Lihat →</td></tr>
+        <tr><td>leads_campaign_juli.csv</td><td>3 hari lalu</td><td><span class="badge">91</span></td><td>Aktif</td><td>Lihat →</td></tr>
+      </table>
+      <div class="section-label">Aktivitas Terbaru</div>
+      <div class="activity-item">Review queue "customer_master" — 12 pasangan duplikat diselesaikan</div>
+      <div class="activity-item">Alert dikirim: skor kualitas "transaksi_q2_2026" turun di bawah 75</div>
+      <div class="activity-item">Rule baru dibuat otomatis oleh AI untuk kolom "nomor_hp"</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 2: UPLOAD & PROFILING -->
+<div class="screen" id="profiling">
+  <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="browser-url">app.veridata.id/dataset/upload</span></div>
+  <div class="main" style="padding:20px;">
+    <div class="dropzone">⬆ Tarik &amp; lepas file CSV / XLSX di sini, atau klik untuk upload<br><span style="font-size:11px;">Maks. 200MB · didukung juga koneksi database (Fase 2)</span></div>
+
+    <div class="two-col" style="margin-bottom:20px;">
+      <div style="text-align:center;">
+        <div class="gauge">78/100</div>
+        <div style="font-size:12px; color:var(--muted);">Skor Kualitas Keseluruhan</div>
+      </div>
+      <div>
+        <div class="section-label" style="margin-top:0;">Ringkasan</div>
+        <div class="field-row"><span>Jumlah Baris</span><span>128,450</span></div>
+        <div class="field-row"><span>Jumlah Kolom</span><span>14</span></div>
+        <div class="field-row"><span>Kandidat Duplikat</span><span>231 pasangan</span></div>
+        <div class="field-row"><span>Kolom PII Terdeteksi</span><span>nomor_hp, email, NIK</span></div>
+      </div>
+    </div>
+
+    <div class="section-label">Statistik per Kolom</div>
+    <table class="wire">
+      <tr><th>Kolom</th><th>Tipe</th><th>% Lengkap</th><th>% Unik</th><th>% Valid</th><th>Catatan</th></tr>
+      <tr><td>nama</td><td>Text</td><td>99%</td><td>82%</td><td>—</td><td>Kemungkinan variasi ejaan</td></tr>
+      <tr><td>nomor_hp</td><td>Text</td><td>95%</td><td>97%</td><td>88%</td><td>12% format tidak standar</td></tr>
+      <tr><td>email</td><td>Text</td><td>80%</td><td>99%</td><td>93%</td><td>7% tidak valid</td></tr>
+      <tr><td>alamat</td><td>Text</td><td>91%</td><td>76%</td><td>—</td><td>Perlu standardisasi</td></tr>
+      <tr><td>tanggal_lahir</td><td>Date</td><td>88%</td><td>—</td><td>97%</td><td>3% di luar rentang wajar</td></tr>
+    </table>
+    <div class="placeholder-box chart-box">[ Grafik distribusi nilai per kolom ]</div>
+  </div>
+</div>
+
+<!-- SCREEN 3: RULE BUILDER -->
+<div class="screen" id="rules">
+  <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="browser-url">app.veridata.id/rules</span></div>
+  <div class="main" style="padding:20px;">
+    <div class="two-col">
+      <div>
+        <div class="section-label" style="margin-top:0;">Buat Rule Baru (Bahasa Natural)</div>
+        <textarea class="wire-input" rows="4" placeholder="Contoh: nomor HP harus 10-13 digit dan diawali 08"></textarea>
+        <button class="wire-btn primary">✨ Generate Rule dengan AI</button>
+        <div class="rule-preview">
+          <strong>Rule terdeteksi:</strong><br>
+          Kolom: <em>nomor_hp</em><br>
+          Logika: panjang 10–13 digit, diawali "08"<br>
+          Regex: <code>^08[0-9]{8,11}$</code>
+          <div style="margin-top:10px;"><button class="wire-btn">Edit</button> <button class="wire-btn primary">Aktifkan Rule</button></div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label" style="margin-top:0;">Rule Aktif</div>
+        <table class="wire">
+          <tr><th>Kolom</th><th>Rule</th><th>Sumber</th><th>Status</th></tr>
+          <tr><td>email</td><td>Format email valid</td><td>Bawaan</td><td><span class="toggle"><span class="knob"></span></span></td></tr>
+          <tr><td>nomor_hp</td><td>10–13 digit, awalan 08</td><td>AI</td><td><span class="toggle"><span class="knob"></span></span></td></tr>
+          <tr><td>tanggal_checkout</td><td>&gt; tanggal_checkin</td><td>Manual</td><td><span class="toggle off"><span class="knob"></span></span></td></tr>
+          <tr><td>NIK</td><td>16 digit numerik</td><td>Bawaan</td><td><span class="toggle"><span class="knob"></span></span></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 4: CLUSTER REVIEW -->
+<div class="screen" id="dedup">
+  <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="browser-url">app.veridata.id/review-queue/cluster-128</span></div>
+  <div class="main" style="padding:20px;">
+    <div class="queue-header">
+      <strong>Cluster Review — customer_master.csv</strong>
+      <span>18 cluster tersisa</span>
+    </div>
+    <div style="font-size:12px; color:var(--muted); margin-bottom:12px;">Cluster #128 &nbsp;·&nbsp; cluster_id: <code>ec_00128</code> &nbsp;·&nbsp; 3 record kandidat terdeteksi sebagai entitas yang sama</div>
+    <div class="compare-wrap">
+      <div class="record-card">
+        <h4>Record 1 <span class="rid">record_id: r-4471</span></h4>
+        <div class="field-row diff"><span>Nama</span><span>Siti Nur Aini</span></div>
+        <div class="field-row diff"><span>Alamat</span><span>Jl. Melati No. 12, Bandung</span></div>
+        <div class="field-row"><span>No. HP</span><span>0812xxxxxxx</span></div>
+        <div class="field-row"><span>Email</span><span>siti.na@mail.com</span></div>
+        <div class="field-row diff"><span>Update Terakhir</span><span>02 Jan 2026</span></div>
+        <div style="margin-top:10px; text-align:center;"><button class="wire-btn" style="padding:5px 10px; font-size:11px;">Keluarkan dari Cluster</button></div>
+      </div>
+      <div class="record-card">
+        <h4>Record 2 <span class="rid">record_id: r-5820</span></h4>
+        <div class="field-row diff"><span>Nama</span><span>Siti Nuraini</span></div>
+        <div class="field-row diff"><span>Alamat</span><span>Jl. Kenanga No. 5, Bandung</span></div>
+        <div class="field-row"><span>No. HP</span><span>0812xxxxxxx</span></div>
+        <div class="field-row"><span>Email</span><span>siti.na@mail.com</span></div>
+        <div class="field-row diff"><span>Update Terakhir</span><span>28 Jun 2026</span></div>
+        <div style="margin-top:10px; text-align:center;"><button class="wire-btn" style="padding:5px 10px; font-size:11px;">Keluarkan dari Cluster</button></div>
+      </div>
+      <div class="record-card">
+        <h4>Record 3 <span class="rid">record_id: r-6193</span></h4>
+        <div class="field-row diff"><span>Nama</span><span>Siti N. Aini</span></div>
+        <div class="field-row diff"><span>Alamat</span><span>Jl. Kenanga No. 5, Bandung</span></div>
+        <div class="field-row"><span>No. HP</span><span>0812xxxxxxx</span></div>
+        <div class="field-row diff"><span>Email</span><span>(kosong)</span></div>
+        <div class="field-row diff"><span>Update Terakhir</span><span>05 Jul 2026</span></div>
+        <div style="margin-top:10px; text-align:center;"><button class="wire-btn" style="padding:5px 10px; font-size:11px;">Keluarkan dari Cluster</button></div>
+      </div>
+    </div>
+    <div style="font-size:12px; margin-bottom:4px;">Cluster Cohesion Score: 85% (rata-rata kemiripan pasangan berdasarkan No. HP, nama &amp; alamat)</div>
+    <div class="confidence-bar-track"><div class="confidence-bar-fill" style="width:85%;"></div></div>
+    <div class="action-row">
+      <button>⏭ Lewati</button>
+      <button>✕ Split Semua (Bukan Entitas Sama)</button>
+      <button class="primary">✓ Konfirmasi Cluster → Buat Golden Record</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 5: GOLDEN RECORD -->
+<div class="screen" id="golden">
+  <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="browser-url">app.veridata.id/golden-record/128</span></div>
+  <div class="main" style="padding:20px;">
+    <div class="section-label" style="margin-top:0;">Konfigurasi Survivorship — Cluster #128 (cluster_id: ec_00128, 3 record digabung)</div>
+    <table class="wire">
+      <tr><th>Kolom</th><th>Record 1 (r-4471)</th><th>Record 2 (r-5820)</th><th>Record 3 (r-6193)</th><th>Nilai Terpilih</th><th>Aturan</th></tr>
+      <tr><td>Nama</td><td>Siti Nur Aini</td><td>Siti Nuraini</td><td>Siti N. Aini</td><td><strong>Siti Nuraini</strong></td><td>▾ Update Terbaru</td></tr>
+      <tr><td>Alamat</td><td>Jl. Melati No. 12</td><td>Jl. Kenanga No. 5</td><td>Jl. Kenanga No. 5</td><td><strong>Jl. Kenanga No. 5</strong></td><td>▾ Update Terbaru</td></tr>
+      <tr><td>No. HP</td><td>0812xxxxxxx</td><td>0812xxxxxxx</td><td>0812xxxxxxx</td><td><strong>0812xxxxxxx</strong></td><td>▾ Sama di semua record</td></tr>
+      <tr><td>Email</td><td>siti.na@mail.com</td><td>siti.na@mail.com</td><td>(kosong)</td><td><strong>siti.na@mail.com</strong></td><td>▾ Prioritas Sumber: CRM</td></tr>
+    </table>
+    <div style="font-size:11px; color:var(--muted); margin:6px 0 14px;">Golden record ini akan tersimpan sebagai satu baris baru pada tabel <code>golden_records</code>, direferensikan lewat <code>cluster_id = ec_00128</code>. Ketiga record sumber tetap tersimpan utuh di tabel asal, hanya ditandai kolom <code>cluster_id</code>-nya.</div>
+    <button class="wire-btn primary">Simpan Golden Record</button>
+
+    <div class="section-label">Audit Trail</div>
+    <div class="audit-item">02 Jan 2026 — Record r-4471 masuk sistem (sumber: Signup Form)</div>
+    <div class="audit-item">28 Jun 2026 10:14 — Record r-5820 diupdate dari sistem CRM (alamat baru karena pindah rumah)</div>
+    <div class="audit-item">05 Jul 2026 09:02 — Record r-6193 ditambahkan, ketiga record dikelompokkan ke cluster ec_00128 (cohesion score 85%)</div>
+    <div class="audit-item">11 Jul 2026 14:30 — Cluster dikonfirmasi oleh raffi.ainul@badr-interactive.com, golden record dibuat, aturan: update terbaru menang</div>
+  </div>
+</div>
+
+<!-- SCREEN 6: MONITORING & ALERTS -->
+<div class="screen" id="monitoring">
+  <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="browser-url">app.veridata.id/monitoring</span></div>
+  <div class="main" style="padding:20px;">
+    <div class="section-label" style="margin-top:0;">Skor Kualitas — 30 Hari Terakhir</div>
+    <div class="placeholder-box chart-box">[ Line chart: skor kualitas per dataset dari waktu ke waktu ]</div>
+
+    <div class="two-col">
+      <div>
+        <div class="section-label" style="margin-top:0;">Konfigurasi Threshold</div>
+        <div class="field-row"><span>Alert jika skor kualitas turun di bawah</span><span><input class="wire-input" style="width:60px; display:inline-block;" value="75"></span></div>
+        <div class="field-row"><span>Channel notifikasi</span><span>☑ Email &nbsp; ☑ Slack &nbsp; ☐ Webhook</span></div>
+        <button class="wire-btn primary">Simpan Konfigurasi</button>
+      </div>
+      <div>
+        <div class="section-label" style="margin-top:0;">Alert Terbaru</div>
+        <table class="wire">
+          <tr><th>Tanggal</th><th>Dataset</th><th>Jenis Masalah</th><th>Tingkat</th></tr>
+          <tr><td>10 Jul 2026</td><td>transaksi_q2_2026</td><td>Skor turun (74)</td><td>Sedang</td></tr>
+          <tr><td>08 Jul 2026</td><td>leads_campaign</td><td>Lonjakan duplikat</td><td>Tinggi</td></tr>
+          <tr><td>03 Jul 2026</td><td>customer_master</td><td>Kolom kosong naik</td><td>Rendah</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showScreen(id, btn){
+    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

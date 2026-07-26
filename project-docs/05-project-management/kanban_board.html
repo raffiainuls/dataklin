@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanban Board — AI Agent Ticketing</title>
+<style>
+  :root{
+    --bg: #10131a;
+    --panel: #171b24;
+    --panel-2: #1d2230;
+    --line: #2a3040;
+    --text: #e7eaf1;
+    --text-dim: #8b93a6;
+    --mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+    --sans: -apple-system, 'Inter', 'Segoe UI', Roboto, sans-serif;
+
+    --accent: #5ad1c4;      /* teal - signature */
+    --accent-dim: #2e4a47;
+    --critical: #ff6b5e;
+    --high: #ffb547;
+    --medium: #5ad1c4;
+    --low: #6f88ff;
+    --blocked: #ff6b5e;
+    --blocked-bg: #2a1616;
+    --done: #4bd07a;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    min-height:100vh;
+    padding: 28px 32px 60px;
+  }
+  header{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    border-bottom:1px solid var(--line);
+    padding-bottom:18px; margin-bottom:22px; flex-wrap:wrap; gap:16px;
+  }
+  .title-block .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:.14em;
+    color:var(--accent); text-transform:uppercase; margin-bottom:6px;
+  }
+  h1{font-size:26px; font-weight:700; letter-spacing:-0.01em;}
+  .subtitle{color:var(--text-dim); font-size:13px; margin-top:4px;}
+
+  .toolbar{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+  .toolbar input, .toolbar select{
+    background:var(--panel); border:1px solid var(--line); color:var(--text);
+    padding:9px 12px; border-radius:8px; font-size:13px; font-family:var(--sans);
+    outline:none;
+  }
+  .toolbar input:focus, .toolbar select:focus{border-color:var(--accent);}
+  .toolbar input{width:220px;}
+
+  .board{
+    display:grid;
+    grid-template-columns: repeat(6, minmax(240px, 1fr));
+    gap:14px;
+    overflow-x:auto;
+    padding-bottom: 10px;
+  }
+  .column{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    display:flex; flex-direction:column;
+    min-height:200px;
+  }
+  .column-head{
+    padding:14px 14px 10px;
+    display:flex; justify-content:space-between; align-items:center;
+    border-bottom:1px solid var(--line);
+  }
+  .column-head .name{font-size:13px; font-weight:600; letter-spacing:.03em;}
+  .column-head .count{
+    font-family:var(--mono); font-size:11px; color:var(--text-dim);
+    background:var(--panel-2); padding:2px 8px; border-radius:20px;
+  }
+  .column[data-col="blocked"] .column-head{border-bottom-color:#4a2424;}
+  .column[data-col="blocked"] .name{color:var(--blocked);}
+
+  .cards{padding:10px; display:flex; flex-direction:column; gap:10px; flex:1;}
+  .empty-hint{
+    color:var(--text-dim); font-size:12px; text-align:center; padding:20px 8px;
+    font-style:italic; opacity:.6;
+  }
+
+  .card{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-left:3px solid var(--medium);
+    border-radius:8px;
+    padding:12px 12px 10px;
+    cursor:pointer;
+    transition: transform .12s ease, border-color .12s ease;
+  }
+  .card:hover{transform:translateY(-2px); border-color:#3a4256;}
+  .card[data-priority="Critical"]{border-left-color:var(--critical);}
+  .card[data-priority="High"]{border-left-color:var(--high);}
+  .card[data-priority="Medium"]{border-left-color:var(--medium);}
+  .card[data-priority="Low"]{border-left-color:var(--low);}
+  .card.is-blocked{background:var(--blocked-bg); border-color:#4a2424;}
+
+  .card-id{font-family:var(--mono); font-size:11px; color:var(--text-dim);}
+  .card-title{font-size:13.5px; font-weight:600; margin:4px 0 8px; line-height:1.35;}
+  .card-meta{display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap;}
+  .badge{
+    font-size:10.5px; font-family:var(--mono); padding:2px 7px; border-radius:5px;
+    font-weight:600; letter-spacing:.02em;
+  }
+  .badge.Critical{background:rgba(255,107,94,.15); color:var(--critical);}
+  .badge.High{background:rgba(255,181,71,.15); color:var(--high);}
+  .badge.Medium{background:rgba(90,209,196,.15); color:var(--medium);}
+  .badge.Low{background:rgba(111,136,255,.15); color:var(--low);}
+  .assignee{font-size:11px; color:var(--text-dim); font-family:var(--mono);}
+  .blocker-tag{
+    margin-top:8px; font-size:11px; color:var(--blocked);
+    background:rgba(255,107,94,.1); border:1px solid rgba(255,107,94,.3);
+    padding:5px 8px; border-radius:6px; line-height:1.4;
+  }
+
+  /* Modal */
+  .overlay{
+    position:fixed; inset:0; background:rgba(6,8,12,.7);
+    display:none; align-items:center; justify-content:center; z-index:50;
+    padding:20px;
+  }
+  .overlay.open{display:flex;}
+  .modal{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    max-width:560px; width:100%; max-height:85vh; overflow-y:auto;
+    padding:26px;
+  }
+  .modal-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .modal-id{font-family:var(--mono); color:var(--accent); font-size:12px;}
+  .modal-title{font-size:19px; font-weight:700; margin:6px 0 14px;}
+  .close-btn{
+    background:none; border:1px solid var(--line); color:var(--text-dim);
+    width:28px; height:28px; border-radius:7px; cursor:pointer; font-size:14px;
+    flex-shrink:0;
+  }
+  .close-btn:hover{color:var(--text); border-color:var(--accent);}
+
+  .field-label{
+    font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.1em; color:var(--text-dim); margin:16px 0 6px;
+  }
+  .field-value{font-size:13.5px; line-height:1.55;}
+  .ac-list{list-style:none;}
+  .ac-list li{
+    font-size:13px; padding:6px 0 6px 20px; position:relative; color:var(--text);
+    border-bottom:1px dashed var(--line);
+  }
+  .ac-list li:last-child{border-bottom:none;}
+  .ac-list li::before{content:"—"; position:absolute; left:0; color:var(--accent);}
+
+  .status-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;}
+  .status-pill{
+    font-family:var(--mono); font-size:11px; padding:6px 10px; border-radius:7px;
+    border:1px solid var(--line); background:var(--panel-2); color:var(--text-dim);
+    cursor:pointer;
+  }
+  .status-pill:hover{border-color:var(--accent); color:var(--text);}
+  .status-pill.active{border-color:var(--accent); color:var(--accent); background:rgba(90,209,196,.1);}
+
+  .blocker-box{
+    margin-top:8px; background:var(--blocked-bg); border:1px solid #4a2424;
+    border-radius:8px; padding:10px 12px; font-size:12.5px; color:#ffb3ab;
+  }
+  .log{margin-top:6px;}
+  .log-entry{
+    font-size:12px; color:var(--text-dim); padding:6px 0; border-bottom:1px solid var(--line);
+    font-family:var(--mono);
+  }
+  .log-entry:last-child{border-bottom:none;}
+
+  footer{
+    margin-top:26px; color:var(--text-dim); font-size:11.5px; font-family:var(--mono);
+    text-align:center;
+  }
+
+  @media (max-width: 1100px){
+    .board{grid-template-columns: repeat(3, minmax(220px,1fr)); }
+  }
+  @media (max-width: 640px){
+    .board{grid-template-columns: 1fr; }
+    header{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title-block">
+    <div class="eyebrow">Ticketing / Agent Board</div>
+    <h1>Dataklin — Kanban Board (Fase 3 & Advanced Features)</h1>
+    <div class="subtitle">Backlog fitur lanjutan (AI Deduplication, Workflow, Write-back, Data Contract) untuk melampaui Xeratic LinkR.</div>
+  </div>
+  <div class="toolbar">
+    <input id="searchInput" type="text" placeholder="Cari ID, judul, atau assignee...">
+    <select id="priorityFilter">
+      <option value="">Semua Priority</option>
+      <option value="Critical">Critical</option>
+      <option value="High">High</option>
+      <option value="Medium">Medium</option>
+      <option value="Low">Low</option>
+    </select>
+  </div>
+</header>
+
+<div class="board" id="board"></div>
+
+<footer>kanban_board.html — data tersimpan sebagai JS object embedded, tidak butuh backend</footer>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+const COLUMNS = [
+  {key:"backlog", name:"Backlog"},
+  {key:"todo", name:"To Do"},
+  {key:"in_progress", name:"In Progress"},
+  {key:"blocked", name:"Blocked"},
+  {key:"in_review", name:"In Review"},
+  {key:"done", name:"Done"},
+
+  {
+    id:"VD-306", title:"[UI/UX] Redesign Halaman Dashboard & Navigasi",
+    description:"Tampilan saat ini sangat kaku dan kurang user-friendly. Perlu perbaikan sidebar navigasi, penggunaan warna/icon untuk membedakan metrik (Data Quality Score, Alert, dll), serta membuat grafik lebih interaktif.",
+    acceptance:["Navigasi sidebar lebih jelas & modern","Scorecard mudah dibaca secara visual (warna hijau/merah)","Responsive di resolusi laptop/tablet"],
+    priority:"High", estimate:"M", assignee:"Agent-Frontend", dependencies:"-",
+    status:"done", blocker:"",
+    log:[{ts:"2026-07-25 10:30", note:"Ticket dibuat berdasarkan feedback UX"}]
+  },
+  {
+    id:"VD-307", title:"[UI/UX] Perbaikan Flow Upload & Profiling Dataset",
+    description:"Proses upload dataset terlalu polos tanpa indikator loading yang jelas. Perlu tambahan progress bar, serta tabel hasil profiling (Completeness, Uniqueness) dibuat lebih interaktif (sortable, visual bar chart).",
+    acceptance:["Ada progress bar animasi saat upload","Hasil profiling berupa tabel interaktif dengan bar chart kecil (sparklines)","Warning/Anomali disorot merah/kuning secara jelas"],
+    priority:"Medium", estimate:"M", assignee:"Agent-Frontend", dependencies:"-",
+    status:"done", blocker:"",
+    log:[{ts:"2026-07-25 10:30", note:"Ticket dibuat berdasarkan feedback UX"}]
+  },
+  {
+    id:"VD-308", title:"[UI/UX] Revamp Tampilan Review Cluster (Entity Resolution)",
+    description:"Tampilan review duplikat saat ini membingungkan (susah membedakan record A vs record B dalam satu cluster). Perlu dibuat tampilan side-by-side (diff view) yang menyorot perbedaan antar data.",
+    acceptance:["Diff view side-by-side untuk duplikat","Tombol 'Merge', 'Split', dan 'Confirm' dibuat intuitif","Highlight otomatis pada field yang berbeda (misal beda spasi di alamat)"],
+    priority:"High", estimate:"L", assignee:"Agent-Frontend", dependencies:"VD-301",
+    status:"done", blocker:"",
+    log:[{ts:"2026-07-25 10:30", note:"Ticket dibuat berdasarkan feedback UX"}]
+  },
+  {
+    id:"VD-309", title:"[UI/UX] Peningkatan Rule Builder (NL to Rule)",
+    description:"Halaman Rule Builder (khususnya kotak teks AI) tidak memberikan feedback visual saat LLM sedang memproses input dari user. Perlu perbaikan state loading dan preview rule yang dihasilkan.",
+    acceptance:["Loading state (skeleton/spinner) saat AI memproses rule","Preview card hasil aturan dibuat lebih rapi","Opsi untuk menolak atau mengedit saran AI lebih gampang"],
+    priority:"Medium", estimate:"S", assignee:"Agent-Frontend", dependencies:"-",
+    status:"done", blocker:"",
+    log:[{ts:"2026-07-25 10:30", note:"Ticket dibuat berdasarkan feedback UX"}]
+  }
+];
+
+// ==== DATA CONTOH — ganti dengan backlog fitur project kamu sendiri ====
+
+
+let tickets = [
+  {
+    id:"VD-313", title:"UI/UX Status Eksekusi Validasi Rule (Loading/Running/Failed)",
+    description:"Saat ini user yang menjalankan ulang validasi rule via frontend tidak melihat status real-time/loading state yang jelas, hanya ada alert success queued. Tambahkan API untuk frontend polling status eksekusi job, dan buat frontend menampilkan indikator Loading/Processing saat validasi sedang berjalan, agar user tahu proses belum selesai dan tak perlu me-refresh buta.",
+    acceptance:["Ada cara di Backend untuk cek status proses dataset (queued/running/success/failed)","Frontend menampilkan indikator loading atau progress saat validasi rule sedang dieksekusi", "Frontend berhenti polling/loading saat API merespons selesai"],
+    priority:"Medium", estimate:"M", assignee:"Agent-Fullstack", dependencies:"-",
+    status:"todo", blocker:"",
+    log:[{ts:"2026-07-26 10:45", note:"Tiket ditambahkan berdasarkan keluhan UX user yang tidak tahu apakah validasinya sudah selesai."}]
+  },
+  {
+    id:"VD-312", title:"Konfigurasi Kredensial LLM (Base URL, API Key, Model)",
+    description:"Isi konfigurasi environment variables (LLM_BASE_URL, LLM_API_KEY, LLM_MODEL) atau buat UI halaman Settings agar user/admin bisa memasukkan kredensial LLM secara mandiri. Ini diperlukan agar fitur-fitur berbasis AI (seperti Natural Language Rule Generation) bisa aktif dan tidak ter-disable (fallback ke 503).",
+    acceptance:["Kredensial LLM berhasil di-setup dan tersimpan dengan aman", "Fitur Rule Generation berbasis AI (NL to Rule) di frontend kembali aktif dan dapat digunakan"],
+    priority:"High", estimate:"S", assignee:"Agent-Backend", dependencies:"-",
+    status:"done", blocker:"",
+    log:[{ts:"2026-07-26 10:15", note:"Tiket ditambahkan untuk mengaktifkan kembali fitur integrasi LLM yang graceful fallback"}]
+  },
+  {
+    id:"VD-311", title:"[URGENT] Pembuatan Comprehensive Test Dataset untuk Seluruh Use Case",
+    description:"Buat dataset dummy berukuran cukup besar yang secara sengaja mencakup seluruh use case platform: entitas duplikat (exact & fuzzy), anomali (outlier statistik), missing values, PII leakage, referential integrity lintas-dataset, drift data, dan pelanggaran berbagai tipe business rules (lintas-kolom, regex, range). Sangat mendesak untuk simulasi demo, E2E testing (Playwright), serta validasi unjuk kerja algoritma probabilitas Dataklin.",
+    acceptance:["Script generator atau file CSV master tersedia","Dataset mencakup duplikasi data dengan noise/typo (Fuzzy)","Dataset memiliki baris anomali statistik", "Dataset memicu rule PII dan Cross-Column", "Dataset siap di-load oleh script testing"],
+    priority:"High", estimate:"S", assignee:"QA / Data Engineer", dependencies:"-",
+    status:"done", blocker:"",
+    log:[{ts:"2026-07-26 10:00", note:"Tiket urgent ditambahkan sesuai permintaan prioritas untuk testing menyeluruh"}]
+  },
+  {
+    id:"VD-301", title:"Smart Deduplication dengan AI Embeddings (Vector Search)",
+    description:"Integrasikan pgvector di PostgreSQL untuk mengubah teks nama/alamat menjadi vector embeddings. AI akan menangkap 'makna' teks, sehingga duplikat terselubung bisa terdeteksi walau formatnya beda jauh (menggantikan/melengkapi rapidfuzz).",
+    acceptance:["Pgvector terkonfigurasi dan berfungsi","Endpoint embedding terintegrasi (LLM gateway)","Pencarian duplikat berbasis semantik berjalan akurat","Skala hingga 1 juta baris ditangani dengan baik (blocking)"],
+    priority:"Critical", estimate:"L", assignee:"Agent-Data", dependencies:"-",
+    status:"in_progress", blocker:"",
+    log:[{ts:"2026-07-25 10:00", note:"Ticket dibuat berdasarkan perbandingan dengan Xeratic LinkR"}]
+  },
+  {
+    id:"VD-302", title:"Remediation Workflow (Advanced Collaborative Stewarding)",
+    description:"Otomatis meng-assign tiket/tugas untuk data anomali atau duplikat ambigu ke user/role tertentu. Dilengkapi kolom komentar dan approval berlapis sebelum menjadi Golden Record.",
+    acceptance:["Sistem assignment tugas otomatis berfungsi","Fitur komentar antar tim berjalan","Approval berlapis (RBAC) diterapkan sebelum merge ke Golden Record"],
+    priority:"High", estimate:"L", assignee:"Agent-Backend", dependencies:"VD-304",
+    status:"in_progress", blocker:"",
+    log:[{ts:"2026-07-25 10:00", note:"Ticket dibuat berdasarkan perbandingan dengan Xeratic LinkR"}]
+  },
+  {
+    id:"VD-303", title:"Write-back Pipeline (Destination Connectors)",
+    description:"Fitur 'Data Destination' untuk meng-insert/update (UPSERT) data bersih (Golden Record) secara otomatis ke PostgreSQL, MySQL, BigQuery, atau Snowflake klien secara real-time atau terjadwal.",
+    acceptance:["Konektor ke PostgreSQL dan MySQL berfungsi untuk write","Konektor ke BigQuery/Snowflake disiapkan","Sinkronisasi terjadwal berjalan tanpa error"],
+    priority:"High", estimate:"L", assignee:"Agent-Backend", dependencies:"-",
+    status:"in_progress", blocker:"",
+    log:[{ts:"2026-07-25 10:00", note:"Ticket dibuat berdasarkan perbandingan dengan Xeratic LinkR"}]
+  },
+  {
+    id:"VD-304", title:"Kolaborasi Multi-User Penuh (RBAC Granular)",
+    description:"Melengkapi model users.role yang sudah ada. Menambahkan UI manajemen user, undangan, dan RBAC (Role-Based Access Control) yang granular untuk mendukung Remediation Workflow.",
+    acceptance:["UI manajemen user dan invite tersedia","RBAC diimplementasikan pada semua endpoint yang relevan"],
+    priority:"Medium", estimate:"M", assignee:"Agent-Frontend", dependencies:"-",
+    status:"done", blocker:"",
+    log:[{ts:"2026-07-25 10:00", note:"Ticket dibuat dari backlog Fase 3"}]
+  },
+  {
+    id:"VD-305", title:"Data Contract Monitoring",
+    description:"Mendeteksi breaking change skema antar upload/koneksi DB (misal: nama kolom berubah atau tipe data berubah secara drastis). Memberikan alert sebelum pipeline hilir hancur.",
+    acceptance:["Deteksi perubahan skema berjalan otomatis","Alert dikirimkan saat terdeteksi pelanggaran kontrak data"],
+    priority:"Medium", estimate:"M", assignee:"Agent-Backend", dependencies:"-",
+    status:"done", blocker:"",
+    log:[{ts:"2026-07-25 10:00", note:"Ticket dibuat dari backlog Fase 3"}]
+  },
+  {
+
+    id:"VD-306", title:"[UI/UX] Redesign Halaman Dashboard & Navigasi",
+    description:"Tampilan saat ini sangat kaku dan kurang user-friendly. Perlu perbaikan sidebar navigasi, penggunaan warna/icon untuk membedakan metrik (Data Quality Score, Alert, dll), serta membuat grafik lebih interaktif.",
+    acceptance:["Navigasi sidebar lebih jelas & modern","Scorecard mudah dibaca secara visual (warna hijau/merah)","Responsive di resolusi laptop/tablet"],
+    priority:"High", estimate:"M", assignee:"Agent-Frontend", dependencies:"-",
+    status:"done", blocker:"",
+    log:[{ts:"2026-07-25 10:30", note:"Ticket dibuat berdasarkan feedback UX"}]
+  },
+  {
+    id:"VD-310", title:"[Feature] Perluasan Statistik Profiling (Min/Max & Format Regex)",
+    description:"Informasi profil kolom saat ini hanya menampilkan Completeness dan Uniqueness. Diperlukan penambahan metrik statistik lanjutan seperti Nilai Minimum, Nilai Maksimum (untuk angka/tanggal), dan deteksi/distribusi variasi pola string (Regex format) untuk melihat ragam format data dalam satu kolom.",
+    acceptance:["UI Detail Dataset menampilkan metrik Min dan Max untuk kolom numerik/tanggal","UI menampilkan daftar ragam pattern regex (contoh: format tanggal yang tercampur) beserta distribusinya","Worker backend menghitung metrik ini saat proses profiling"],
+    priority:"Medium", estimate:"M", assignee:"Unassigned", dependencies:"-",
+    status:"backlog", blocker:"",
+    log:[{ts:"2026-07-25 17:35", note:"Ticket dibuat berdasarkan request user untuk profiling lanjutan"}]
+  },
+
+  {
+    id:"VD-307", title:"[UI/UX] Perbaikan Flow Upload & Profiling Dataset",
+    description:"Proses upload dataset terlalu polos tanpa indikator loading yang jelas. Perlu tambahan progress bar, serta tabel hasil profiling (Completeness, Uniqueness) dibuat lebih interaktif (sortable, visual bar chart).",
+    acceptance:["Ada progress bar animasi saat upload","Hasil profiling berupa tabel interaktif dengan bar chart kecil (sparklines)","Warning/Anomali disorot merah/kuning secara jelas"],
+    priority:"Medium", estimate:"M", assignee:"Agent-Frontend", dependencies:"-",
+    status:"done", blocker:"",
+    log:[{ts:"2026-07-25 10:30", note:"Ticket dibuat berdasarkan feedback UX"}]
+  },
+  {
+    id:"VD-308", title:"[UI/UX] Revamp Tampilan Review Cluster (Entity Resolution)",
+    description:"Tampilan review duplikat saat ini membingungkan (susah membedakan record A vs record B dalam satu cluster). Perlu dibuat tampilan side-by-side (diff view) yang menyorot perbedaan antar data.",
+    acceptance:["Diff view side-by-side untuk duplikat","Tombol 'Merge', 'Split', dan 'Confirm' dibuat intuitif","Highlight otomatis pada field yang berbeda (misal beda spasi di alamat)"],
+    priority:"High", estimate:"L", assignee:"Agent-Frontend", dependencies:"VD-301",
+    status:"done", blocker:"",
+    log:[{ts:"2026-07-25 10:30", note:"Ticket dibuat berdasarkan feedback UX"}]
+  },
+  {
+    id:"VD-309", title:"[UI/UX] Peningkatan Rule Builder (NL to Rule)",
+    description:"Halaman Rule Builder (khususnya kotak teks AI) tidak memberikan feedback visual saat LLM sedang memproses input dari user. Perlu perbaikan state loading dan preview rule yang dihasilkan.",
+    acceptance:["Loading state (skeleton/spinner) saat AI memproses rule","Preview card hasil aturan dibuat lebih rapi","Opsi untuk menolak atau mengedit saran AI lebih gampang"],
+    priority:"Medium", estimate:"S", assignee:"Agent-Frontend", dependencies:"-",
+    status:"done", blocker:"",
+    log:[{ts:"2026-07-25 10:30", note:"Ticket dibuat berdasarkan feedback UX"}]
+  }
+];
+
+const STATUS_LABEL = {
+  backlog:"Backlog", todo:"To Do", in_progress:"In Progress",
+  blocked:"Blocked", in_review:"In Review", done:"Done"
+};
+
+function render(){
+  const board = document.getElementById("board");
+  board.innerHTML = "";
+  const search = document.getElementById("searchInput").value.toLowerCase();
+  const prio = document.getElementById("priorityFilter").value;
+
+  COLUMNS.forEach(col=>{
+    const items = tickets.filter(t=>{
+      if(t.status !== col.key) return false;
+      if(prio && t.priority !== prio) return false;
+      if(search){
+        const hay = (t.id+" "+t.title+" "+t.assignee).toLowerCase();
+        if(!hay.includes(search)) return false;
+      }
+      return true;
+    });
+
+    const colEl = document.createElement("div");
+    colEl.className = "column";
+    colEl.dataset.col = col.key;
+    colEl.innerHTML = `
+      <div class="column-head">
+        <span class="name">${col.name}</span>
+        <span class="count">${items.length}</span>
+      </div>
+      <div class="cards"></div>
+    `;
+    const cardsWrap = colEl.querySelector(".cards");
+
+    if(items.length === 0){
+      cardsWrap.innerHTML = `<div class="empty-hint">Tidak ada ticket</div>`;
+    } else {
+      items.forEach(t=>{
+        const card = document.createElement("div");
+        card.className = "card" + (t.status==="blocked" ? " is-blocked" : "");
+        card.dataset.priority = t.priority;
+        card.innerHTML = `
+          <div class="card-id">${t.id}</div>
+          <div class="card-title">${t.title}</div>
+          <div class="card-meta">
+            <span class="badge ${t.priority}">${t.priority}</span>
+            <span class="assignee">${t.assignee || "unassigned"}</span>
+          </div>
+          ${t.status==="blocked" ? `<div class="blocker-tag">⛔ ${t.blocker}</div>` : ""}
+        `;
+        card.onclick = ()=>openModal(t.id);
+        cardsWrap.appendChild(card);
+      });
+    }
+    board.appendChild(colEl);
+  });
+}
+
+function openModal(id){
+  const t = tickets.find(x=>x.id===id);
+  const modal = document.getElementById("modal");
+  modal.innerHTML = `
+    <div class="modal-top">
+      <div>
+        <div class="modal-id">${t.id}</div>
+        <div class="modal-title">${t.title}</div>
+      </div>
+      <button class="close-btn" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="field-label">Deskripsi</div>
+    <div class="field-value">${t.description}</div>
+
+    <div class="field-label">Acceptance Criteria</div>
+    <ul class="ac-list">${t.acceptance.map(a=>`<li>${a}</li>`).join("")}</ul>
+
+    <div class="field-label">Detail</div>
+    <div class="field-value">
+      Priority: <span class="badge ${t.priority}">${t.priority}</span> &nbsp;·&nbsp;
+      Estimasi: <strong>${t.estimate}</strong> &nbsp;·&nbsp;
+      Assignee: <strong>${t.assignee || "unassigned"}</strong> &nbsp;·&nbsp;
+      Dependencies: <strong>${t.dependencies}</strong>
+    </div>
+
+    <div class="field-label">Update Status (simulasi agent)</div>
+    <div class="status-row">
+      ${COLUMNS.map(c=>`<button class="status-pill ${t.status===c.key?'active':''}" onclick="setStatus('${t.id}','${c.key}')">${c.name}</button>`).join("")}
+    </div>
+    ${t.status==="blocked" ? `<div class="blocker-box"><strong>Blocker:</strong> ${t.blocker}</div>` : ""}
+
+    <div class="field-label">Log / Riwayat</div>
+    <div class="log">${t.log.slice().reverse().map(l=>`<div class="log-entry">[${l.ts}] ${l.note}</div>`).join("")}</div>
+  `;
+  document.getElementById("overlay").classList.add("open");
+}
+
+function closeModal(){
+  document.getElementById("overlay").classList.remove("open");
+}
+
+function setStatus(id, newStatus){
+  const t = tickets.find(x=>x.id===id);
+  if(newStatus === "blocked"){
+    const reason = prompt("Alasan blocker (wajib diisi, jelas & actionable):", t.blocker || "");
+    if(reason === null) return;
+    if(!reason.trim()){ alert("Blocker harus diisi alasannya."); return; }
+    t.blocker = reason.trim();
+  } else {
+    t.blocker = "";
+  }
+  const now = new Date();
+  const ts = now.toISOString().slice(0,16).replace("T"," ");
+  t.status = newStatus;
+  t.log.push({ts: ts, note: `Moved to ${STATUS_LABEL[newStatus]}${newStatus==='blocked' ? ': '+t.blocker : ''}`});
+  render();
+  openModal(id); // refresh modal with new state
+}
+
+document.getElementById("overlay").addEventListener("click", (e)=>{
+  if(e.target.id === "overlay") closeModal();
+});
+document.getElementById("searchInput").addEventListener("input", render);
+document.getElementById("priorityFilter").addEventListener("change", render);
+
+render();
+</script>
+</body>
+</html>

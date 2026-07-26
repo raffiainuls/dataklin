@@ -1,0 +1,501 @@
+customer_id,nik,nama_lengkap,email,no_hp,alamat_domisili,kota,tanggal_lahir,tanggal_bergabung,total_belanja,status_pelanggan
+E9413F41,8577543009759510,Kayla Prayoga,kayla.prayoga@gmail.com,+62 (0109) 069-9570,"Gg. Medokan Ayu No. 7, Bitung, KI 92803",Kota Administrasi Jakarta Utara,2004-04-12,2023-08-24,4200000,Active
+61728A31,4915810902953718,Jelita S.,jelita.suartini@yahoo.com,+62-55-179-4679,"Jl. W.R. Supratman No. 4, Bau-Bau, LA 02403",Tomohon,1989-01-27,2022-07-11,1860000,Inactive
+09C6BE35,9038891612813088,Candrakanta Napitupulu,candrakanta.napitupulu@hotmail.com,+62-009-020-7528,"Jalan Dr. Djunjunan No. 5, Bontang, Jawa Barat 43737",Subulussalam,1991-03-30,2026-03-19,930000,Suspended
+80249EFF,8493641511074086,Cakrawangsa Usada (Baru),baru.cakrawangsa.usada@yahoo.com,(0025) 445-0169,"Gang Bangka Raya No. 4, Mataram, Nusa Tenggara Timur 80110",Kupang,1999-08-05,2023-05-30,3110000,Inactive
+11F33367,6794471407037065,Asmadi Rahayu,asmadi.rahayu@gmail.com,0865983632,"Gg. Medokan Ayu No. 01, Malang, PA 75205",Bukittinggi,1984-12-07,2023-01-15,4730000,Inactive
+8B6455E6,1564852307757424,Halima Uwais,halima.uwais@gmail.com,+62-70-593-4430,"Jl. Laswi No. 5, Singkawang, KU 84447",Pontianak,2005-06-30,2023-12-12,950000,Inactive
+E4738253,6772352207779881,Cawuk Widodo,cawuk.widodo@gmail.com,+62 (16) 331 8036,"Gg. Astana Anyar No. 47, Bogor, DI Yogyakarta 31319",Parepare,1980-06-14,2023-07-21,1070000,Inactive
+BE7CF6C2,5716530308672661,Alika Anggraini,alika.anggraini@hotmail.com,+62 (225) 612-3645,"Gang R.E Martadinata No. 358, Jambi, BA 03105",Pangkalpinang,1978-05-27,2025-09-12,2990000,Active
+6A109ED5,5869411002693209,Ratna Napitupulu,ratna.napitupulu@yahoo.com,+62 (54) 637-8381,"Jl. Jend. Sudirman No. 601, Samarinda, PB 00445",Kotamobagu,1978-12-01,2022-07-10,2900000,Active
+DB5FAFFA,6865741603841596,Zalindra Yuliarti,zalindra.yuliarti@gmail.com,+62-185-025-1557,"Gang Pelajar Pejuang No. 193, Kota Administrasi Jakarta Pusat, Bali 49491",Tebingtinggi,1963-02-02,2022-09-19,2270000,Inactive
+F91DF70E,7537231512859071,Gading Uyainah (Baru),baru.gading.uyainah@yahoo.com,+62-0612-580-1709,"Gg. Ahmad Yani No. 9, Solok, KI 97070",Kupang,1988-12-10,2024-08-22,4050000,Suspended
+27E653C3,9821671708759143,Darmanto Suryono,darmanto.suryono@hotmail.com,+62-0954-191-8904,"Gg. Jakarta No. 21, Tanjungbalai, YO 77409",Tasikmalaya,2002-05-16,2024-12-16,1300000,Suspended
+F162C571,2246962205694638,Hamima Waskita,hamima.waskita@gmail.com,+62 (038) 591 6530,"Jalan Gegerkalong Hilir No. 7, Parepare, Kepulauan Bangka Belitung 60909",Pematangsiantar,1963-03-15,2023-01-14,2640000,Inactive
+35CA0FA1,8235311511786716,Emas Situmorang,emas.situmorang@gmail.com,+62 (300) 287 2269,"Gg. Rumah Sakit No. 8, Bekasi, KI 48752",Banda Aceh,1988-10-08,2023-08-29,1740000,Inactive
+FC786B01,2430692808721977,Maria Setiawan,maria.setiawan@gmail.com,+62 (533) 988 0454,"Jl. BKR No. 88, Ternate, BT 18551",Madiun,1973-06-30,2021-12-02,4530000,Inactive
+AE7A455C,2130901404013816,Aris Permadi,aris.permadi@yahoo.com,+62-486-734-3755,"Gg. Pelajar Pejuang No. 408, Padangpanjang, ST 97673",Tangerang Selatan,2005-07-22,2026-01-09,2390000,Active
+7B858E9E,7468571902045192,Ophelia Yolanda,ophelia.yolanda@gmail.com,+62 (210) 958-7841,"Gg. Tubagus Ismail No. 3, Pekanbaru, SR 16108",Tanjungbalai,1964-03-01,2023-05-11,1750000,Inactive
+5F349FE9,5411722505047652,Mala Rahmawati,mala.rahmawati@hotmail.com,+62 (475) 888-9902,"Gang Raya Setiabudhi No. 22, Lubuklinggau, Sulawesi Tenggara 86610",Bengkulu,1994-12-31,2024-02-12,720000,Inactive
+EBC5AABB,1366531809626726,Bancar Maryadi,bancar.maryadi@yahoo.com,(0886) 487-6670,"Gang Rajawali Barat No. 97, Bandung, Nusa Tenggara Timur 60844",Bogor,1974-06-02,2023-01-20,4740000,Active
+1ECDB358,3990620107828030,Hamzah Rahmawati,hamzah.rahmawati@hotmail.com,(0310) 016 6476,"Gang Kutai No. 13, Tanjungpinang, BT 06303",Cimahi,1985-08-17,2025-05-11,1660000,Inactive
+310142EC,8395890204011909,Hasan Haryanto,hasan.haryanto@hotmail.com,+62 (114) 766 4532,"Jalan Abdul Muis No. 4, Kota Administrasi Jakarta Utara, KB 19163",Bogor,1994-01-26,2025-06-04,560000,Inactive
+AB862430,4220562604677407,Margana A.,margana.anggraini@hotmail.com,+62 (23) 813 1986,"Gg. Dipatiukur No. 2, Pariaman, Jawa Timur 93775",Cilegon,1984-04-11,2022-12-28,1880000,Inactive
+799611EE,2337861211889366,Embuh Usamah,embuh.usamah@yahoo.com,+62-0178-776-1420,"Gg. Surapati No. 998, Bitung, Gorontalo 48557",Depok,1995-12-28,2022-07-31,3950000,Suspended
+44701232,8318883004963955,Balamantri Prasasta,balamantri.prasasta@hotmail.com,+62 (007) 313 4979,"Gg. Setiabudhi No. 642, Pematangsiantar, JB 06104",Meulaboh,1964-04-14,2026-02-12,4940000,Active
+F3AC97E2,8438840902708786,Humaira Pratama (Baru),baru.humaira.pratama@gmail.com,+62-70-080-1498,"Jalan Ahmad Yani No. 413, Bengkulu, KU 59804",Kota Administrasi Jakarta Selatan,2004-01-13,2026-03-19,3340000,Suspended
+6F0C483E,2744760202692541,Prima Mahendra,prima.mahendra@yahoo.com,(026) 922 4876,"Gang Astana Anyar No. 11, Sawahlunto, Kepulauan Riau 26223",Bandar Lampung,1998-07-15,2022-06-07,700000,Active
+D3E8BCA7,3478200106041164,Citra Prasasta,citra.prasasta@gmail.com,+62 (059) 895-9710,"Jl. Astana Anyar No. 09, Banda Aceh, Sulawesi Barat 96296",Jayapura,1989-04-29,2025-03-14,2060000,Inactive
+E497C573,6823652908645402,Laras Purnawati,laras.purnawati@yahoo.com,+62-056-547-3535,"Jalan Sukajadi No. 86, Tanjungpinang, Sumatera Barat 08853",Kota Administrasi Jakarta Selatan,2007-03-06,2026-04-09,4610000,Active
+26124238,3390430709965741,Halim Z.,halim.zulaika@hotmail.com,0816541706,"Jl. Monginsidi No. 15, Balikpapan, SS 50595",Magelang,1971-10-24,2022-07-15,4400000,Inactive
+352E3416,7359180612913028,Ilyas Mandasari,ilyas.mandasari@hotmail.com,+62-63-271-9506,"Jl. Rajiman No. 367, Tanjungpinang, KI 90049",Gorontalo,1980-08-11,2022-05-24,980000,Suspended
+FA1E4EB4,5064510802766778,Elvina Nugroho,elvina.nugroho@gmail.com,+62 (096) 696 6327,"Jalan Rawamangun No. 861, Binjai, Papua 39997",Kota Administrasi Jakarta Barat,1971-11-05,2026-06-08,4650000,Inactive
+13749D9F,5151863001741380,Gamanto Saptono,gamanto.saptono@hotmail.com,(094) 936 8624,"Jalan Soekarno Hatta No. 034, Batam, SB 32688",Surakarta,2005-10-04,2023-05-01,2290000,Suspended
+B50A367F,7453871101076310,Yulia Pradana,yulia.pradana@gmail.com,0 (832) 823-1598,"Jalan Tebet Barat Dalam No. 520, Tangerang, Kalimantan Selatan 95238",Banjarmasin,1961-08-13,2025-02-08,4170000,Suspended
+FB287BE8,4242380808011560,Maimunah Gunawan,maimunah.gunawan@gmail.com,+62 (0706) 909-3022,"Jl. PHH. Mustofa No. 006, Sibolga, Sumatera Utara 96564",Tebingtinggi,1970-11-12,2024-08-30,2260000,Active
+53D17B08,5279740111806836,Gawati Pertiwi,gawati.pertiwi@gmail.com,+62-0183-265-1849,"Gang Gardujati No. 673, Batu, GO 56220",Tangerang Selatan,1978-11-13,2023-12-07,780000,Inactive
+ECCCDC14,1676310101691978,Darijan Nugroho,darijan.nugroho@hotmail.com,(0375) 928 7776,"Jl. KH Amin Jasuta No. 270, Kendari, Sumatera Barat 56155",Gorontalo,1964-08-19,2023-08-13,540000,Active
+58BBFAC3,3386710708871734,Agus Damanik,agus.damanik@hotmail.com,+62 (51) 289 2378,"Gang Rumah Sakit No. 609, Bima, KI 55721",Bandar Lampung,2001-10-02,2024-08-26,3070000,Suspended
+8EA0766B,2542292411827110,Jaeman Halim,jaeman.halim@gmail.com,+62 (037) 766 3774,"Gg. Moch. Toha No. 248, Kupang, BB 46600",Banda Aceh,2006-06-03,2023-12-20,2740000,Inactive
+D51331BA,7877281904621793,Dartono Prasetyo,dartono.prasetyo@gmail.com,+62 (0790) 815-4837,"Gg. Laswi No. 30, Banjarmasin, KI 77989",Kota Administrasi Jakarta Barat,1977-09-15,2022-11-06,3080000,Active
+51E37BEA,6663642907842696,Usyi Pangestu,usyi.pangestu@gmail.com,(0682) 653-3247,"Jl. Stasiun Wonokromo No. 6, Bandung, Maluku 55285",Padang Sidempuan,1985-11-28,2022-08-01,2290000,Suspended
+84E2E70B,9858501502968122,Hilda Situmorang,hilda.situmorang@yahoo.com,(0539) 926-6697,"Gg. Suniaraja No. 659, Tanjungbalai, SS 54761",Banjarmasin,2002-04-05,2025-05-02,2180000,Inactive
+327EAF46,6411880705891645,Tari Riyanti,tari.riyanti@yahoo.com,+62 (038) 593 7175,"Gang Ahmad Yani No. 86, Mojokerto, Sulawesi Utara 99536",Pangkalpinang,1997-12-15,2025-09-29,1570000,Active
+9E721962,6154622708673496,Tantri Permadi,tantri.permadi@yahoo.com,+62-16-206-1030,"Gang Yos Sudarso No. 0, Banjarmasin, DI Yogyakarta 54810",Bogor,1992-07-27,2026-03-17,4150000,Suspended
+533BD2C1,4146921903047058,Cakrabirawa Jailani,cakrabirawa.jailani@yahoo.com,+62 (508) 313-6549,"Jalan Ir. H. Djuanda No. 8, Palu, KS 40780",Serang,1995-01-01,2022-07-29,3180000,Suspended
+578A6B50,8078840505931348,Zalindra Safitri,zalindra.safitri@gmail.com,+62 (89) 106-0099,"Gang PHH. Mustofa No. 49, Blitar, KR 69161",Gorontalo,1982-12-20,2022-12-17,3680000,Suspended
+46FBEDC9,2240310206922382,Jono Budiyanto,jono.budiyanto@hotmail.com,+62 (0003) 975 6583,"Gang HOS. Cokroaminoto No. 55, Bima, KB 16264",Pasuruan,2002-01-25,2023-01-16,3270000,Suspended
+ECAA78DB,9868981407018401,Juli Anggriawan (Baru),baru.juli.anggriawan@hotmail.com,+62 (066) 242 0874,"Jalan Monginsidi No. 9, Bengkulu, PB 51805",Sabang,1981-05-25,2026-06-12,3080000,Suspended
+2A1546C7,1998840601937660,Cahya Novitasari,cahya.novitasari@hotmail.com,+62 (743) 147 5849,"Jl. HOS. Cokroaminoto No. 40, Pariaman, Bali 14737",Pangkalpinang,1977-08-06,2025-09-27,1260000,Suspended
+2F29E18F,6617961009898505,Vanya Waskita,vanya.waskita@gmail.com,080 232 1077,"Gg. Bangka Raya No. 11, Tebingtinggi, Maluku Utara 55672",Balikpapan,1982-03-27,2022-01-02,4670000,Active
+1F893728,8760491408871271,Cemani Astuti,cemani.astuti@gmail.com,(067) 229 4458,"Jalan Tebet Barat Dalam No. 80, Tomohon, SU 19327",Kota Administrasi Jakarta Barat,1960-11-19,2025-02-12,2300000,Active
+A14B15B1,2853532208667655,Yessi Mulyani,yessi.mulyani@yahoo.com,+62 (40) 786 4587,"Jl. Asia Afrika No. 891, Meulaboh, MA 31742",Kupang,1968-07-09,2025-07-15,1250000,Inactive
+EB614957,5166962403729338,Kanda Utama,kanda.utama@hotmail.com,086 452 5016,"Gg. S. Parman No. 511, Bandung, Sulawesi Tengah 86094",Lubuklinggau,1970-06-11,2025-12-05,4790000,Active
+3F689065,7022510611696372,Atmaja Laksita,atmaja.laksita@gmail.com,+62 (617) 419-8972,"Jl. Jamika No. 94, Banda Aceh, Sumatera Barat 90257",Sabang,1963-12-07,2022-05-09,3820000,Suspended
+4CC07B58,5517902109817147,Zaenab Kusmawati,zaenab.kusmawati@gmail.com,(0414) 225 1049,"Jalan Ir. H. Djuanda No. 510, Bima, BT 59674",Subulussalam,2006-05-17,2021-10-14,950000,Suspended
+464F3CED,7858903110835602,Lintang Sinaga,lintang.sinaga@yahoo.com,+62 (49) 180 9277,"Jalan Pelajar Pejuang No. 127, Tual, BA 28490",Kupang,2001-02-13,2021-11-12,2310000,Inactive
+B23FD417,8066800110893519,Kambali Hutagalung,kambali.hutagalung@gmail.com,+62 (057) 620 9694,"Gg. Ciwastra No. 831, Cirebon, Aceh 79263",Surakarta,1960-09-27,2023-11-28,4010000,Inactive
+0A6AC3E7,6848712105977091,Kambali Wacana,kambali.wacana@gmail.com,+62-0675-111-3418,"Gg. Kutisari Selatan No. 8, Sawahlunto, MA 55156",Mataram,1971-12-15,2024-10-19,4420000,Suspended
+E4602783,8224143010815205,Kenzie Wacana,kenzie.wacana@yahoo.com,+62-365-468-8504,"Jalan Cempaka No. 4, Manado, Gorontalo 60414",Payakumbuh,1963-05-10,2023-02-11,3150000,Suspended
+F5DE874F,4544901701883888,Dinda Aryani,dinda.aryani@gmail.com,(088) 999 8519,"Jalan Siliwangi No. 3, Tomohon, SR 70412",Ambon,2001-05-10,2023-05-29,1390000,Inactive
+7433CC35,2744760202692541,Prima Mahendra,prima.mahendra@yahoo.com,(026) 922 4876,"Gang Astana Anyar No. 11, Sawahlunto, Kepulauan Riau 26223",Bandar Lampung,1998-07-15,2022-06-07,700000,Active
+D92C1DFD,3972760901882877,Siti Hartati,siti.hartati@yahoo.com,+62-092-795-5142,"Gg. Rungkut Industri No. 1, Kupang, GO 03862",Kota Administrasi Jakarta Timur,1965-05-19,2023-06-27,1530000,Inactive
+FB2A9A37,3452710207082780,Mustofa Mandala,mustofa.mandala@gmail.com,(076) 989 0410,"Jl. Tubagus Ismail No. 878, Gorontalo, Sumatera Utara 15066",Banjar,2008-05-26,2024-05-06,1280000,Suspended
+3C14439F,1445150309997232,Ismail Pratiwi,ismail.pratiwi@hotmail.com,+62-0222-620-2960,"Jl. M.H Thamrin No. 99, Blitar, Nusa Tenggara Barat 81473",Kota Administrasi Jakarta Barat,1994-12-11,2023-03-22,4000000,Inactive
+C7233EB1,5240381609066984,Violet Safitri,violet.safitri@hotmail.com,+62 (040) 061 1021,"Gang Ahmad Yani No. 03, Pasuruan, Aceh 05381",Lhokseumawe,1976-01-29,2025-03-04,1600000,Inactive
+9CA2B699,7536740410823017,Wakiman Kusumo,wakiman.kusumo@hotmail.com,+62-0624-960-0467,"Jalan Cempaka No. 2, Meulaboh, Aceh 04169",Denpasar,1978-12-03,2023-11-21,3400000,Inactive
+C134561D,7667242009048481,Karimah Dabukke,karimah.dabukke@yahoo.com,(0282) 922-2162,"Gg. Kutisari Selatan No. 419, Tegal, SU 56000",Tanjungbalai,1964-02-28,2022-08-12,500000,Suspended
+7FBAD083,4687202202031444,Raisa Sitorus,raisa.sitorus@gmail.com,+62 (18) 665-3901,"Gg. Rajawali Barat No. 10, Bukittinggi, PB 68651",Balikpapan,1981-11-26,2022-12-16,4530000,Active
+FD387F63,1334812009067159,Jayeng Wacana,jayeng.wacana@yahoo.com,+62-822-480-6962,"Gg. Sentot Alibasa No. 03, Tanjungbalai, Jawa Tengah 17915",Banjarmasin,2006-09-22,2022-07-04,2060000,Active
+373DDE27,7418460407649192,Jumadi Rajata,jumadi.rajata@yahoo.com,0818272559,"Jl. Suniaraja No. 0, Sibolga, BB 65489",Pontianak,1990-10-06,2023-05-05,99000000000,Active
+3BEDA002,4332872103787343,Ellis Rahmawati,ellis.rahmawati@yahoo.com,082 502 9320,"Jalan Moch. Toha No. 04, Cilegon, JT 63603",Kota Administrasi Jakarta Selatan,1968-09-22,2022-07-22,2140000,Inactive
+2B7C004D,7346882711043908,Prasetyo Budiman,prasetyo.budiman@gmail.com,0809631322,"Gg. Tebet Barat Dalam No. 682, Magelang, DKI Jakarta 56718",Cirebon,1982-09-21,2023-08-24,1030000,Suspended
+C03120B3,8144802306627107,Almira Permata,almira.permata@hotmail.com,(075) 292-6481,"Gang Rungkut Industri No. 1, Kota Administrasi Jakarta Utara, Kalimantan Barat 87749",Depok,1984-01-11,2022-10-09,540000,Active
+F2F53A0F,5192262803036865,Darmana Latupono,darmana.latupono@hotmail.com,+62-0607-733-9217,"Jl. S. Parman No. 8, Denpasar, DKI Jakarta 84708",Denpasar,1963-02-08,2025-03-06,4750000,Suspended
+EBF774FD,1814982403837239,Fathonah P.,fathonah.prakasa@yahoo.com,+62-0467-125-6534,"Jalan Pasteur No. 9, Cirebon, Aceh 29957",Padang,1994-12-05,2022-03-18,910000,Active
+ABD191F8,9366552403857063,Saka Jailani,saka.jailani@hotmail.com,0890435767,"Gang Asia Afrika No. 6, Salatiga, Kalimantan Selatan 45167",Tual,1983-11-13,2022-10-16,1300000,Suspended
+DB17BA5D,9587761802988293,Hardana Y.,hardana.yulianti@gmail.com,+62 (068) 324-1696,"Jalan Indragiri No. 78, Pematangsiantar, BT 13691",Makassar,1990-05-19,2025-09-22,950000,Suspended
+A095EC8D,5463892009641552,Okta Wahyudin,okta.wahyudin@gmail.com,(098) 698 7761,"Jalan Otto Iskandardinata No. 254, Kota Administrasi Jakarta Utara, SR 91001",Ternate,1963-10-12,2023-12-21,3800000,Suspended
+44C908BA,1442742901947914,Irnanto Hidayat,irnanto.hidayat@gmail.com,(0565) 932 7991,"Gg. Veteran No. 8, Tarakan, Riau 54567",Pariaman,1984-10-25,2024-06-03,560000,Suspended
+BF3E8CC4,1920291209606942,Bella Novitasari,bella.novitasari@yahoo.com,+62 (648) 689 7560,"Jalan Rajiman No. 273, Probolinggo, Jawa Barat 53713",Tomohon,2005-01-18,2025-07-06,1000000,Inactive
+E4702D26,3822353010807850,Danu Hassanah,danu.hassanah@yahoo.com,+62 (394) 263 3544,"Gang Laswi No. 1, Samarinda, SU 82238",Banda Aceh,1981-08-01,2022-10-16,1130000,Active
+A272D839,3786181406662247,Gawati Zulaika,gawati.zulaika@hotmail.com,(0652) 750-8478,"Gg. Raya Setiabudhi No. 05, Mataram, YO 22489",Kediri,2004-09-27,2026-02-10,2860000,Inactive
+69166465,7284750410042233,Syahrini Pertiwi,syahrini.pertiwi@gmail.com,+62 (09) 325-3709,"Gang Erlangga No. 2, Bengkulu, Nusa Tenggara Timur 51294",Sorong,1962-09-09,2025-04-30,2170000,Suspended
+4186DC81,7942732201742782,Asman Waluyo,asman.waluyo@yahoo.com,+62-657-013-1345,"Jalan Kiaracondong No. 360, Cirebon, KU 41614",Tarakan,2007-08-24,2024-12-21,4900000,Active
+06F3C32C,5762451911646485,Kamila Namaga,kamila.namaga@yahoo.com,+62 (0317) 016 0762,"Gang Ronggowarsito No. 9, Kendari, BA 93893",Bekasi,1991-02-11,2024-08-03,1080000,Suspended
+0A208FB7,6116570112012589,Ian Napitupulu,ian.napitupulu@hotmail.com,+62-615-110-6260,"Jl. Cihampelas No. 5, Meulaboh, BB 33897",Palangkaraya,2002-06-09,2024-12-31,1870000,Active
+7E05FFA3,1667512109677324,Zelda Laksmiwati,zelda.laksmiwati@hotmail.com,+62 (091) 145 1051,"Gg. Rungkut Industri No. 021, Bengkulu, Maluku 59493",Probolinggo,1963-08-05,2022-01-15,4840000,Active
+D05D7661,9979590102981672,Ade Mustofa,ade.mustofa@yahoo.com,+62 (089) 719 8903,"Jl. Rajiman No. 77, Blitar, JI 46973",Kendari,1991-02-11,2023-07-18,1720000,Active
+8B4D75BD,7374290802853805,Argono Waluyo,argono.waluyo@yahoo.com,0824316921,"Gang Moch. Ramdan No. 463, Probolinggo, Lampung 89517",Jayapura,1979-09-23,2024-02-29,2640000,Suspended
+FFC89FC9,9439381406728066,Dina Handayani,dina.handayani@hotmail.com,(0811) 752-8003,"Gang Surapati No. 98, Tomohon, YO 34980",Semarang,1964-09-01,2023-12-30,1970000,Suspended
+F74E8D1C,3977202907744885,Rachel Sihombing,rachel.sihombing@yahoo.com,+62 (608) 667 5971,"Jl. Dr. Djunjunan No. 92, Kupang, Bengkulu 94247",Payakumbuh,1984-02-04,2022-07-13,3770000,Active
+E234F9CE,4817481708767241,Zahra Nababan,zahra.nababan@gmail.com,0-275-384-9634,"Jalan Abdul Muis No. 7, Lubuklinggau, KU 26428",Pontianak,1981-05-04,2026-06-20,1480000,Inactive
+A7861E62,8876381309947536,Chelsea Aryani,chelsea.aryani@yahoo.com,0863084954,"Gg. Dipatiukur No. 88, Manado, SS 30668",Pekanbaru,1991-01-01,2021-08-08,2280000,Active
+D8A2CADB,7148391106992068,Ade Hardiansyah,ade.hardiansyah@yahoo.com,+62 (175) 286-3430,"Gang Cikapayang No. 6, Pangkalpinang, SS 20129",Payakumbuh,1991-04-04,2022-08-07,3520000,Active
+07DD6168,5237111005015644,Belinda Maheswara,belinda.maheswara@gmail.com,+62 (0320) 311-7979,"Gang Joyoboyo No. 078, Balikpapan, Sumatera Selatan 49050",Padang,1985-12-08,2025-06-29,1790000,Active
+3D5576F5,4453850211852125,Jefri Usamah,jefri.usamah@gmail.com,+62-0420-082-9584,"Jl. Jend. Sudirman No. 45, Salatiga, DI Yogyakarta 74157",Tanjungpinang,1963-05-30,2025-01-07,2090000,Suspended
+E1474021,8367422905745210,Lutfan Suryatmi,lutfan.suryatmi@hotmail.com,+62 (43) 525-7740,"Gg. Cikutra Timur No. 51, Probolinggo, Sulawesi Utara 55964",Tasikmalaya,2007-09-05,2024-09-12,4690000,Active
+BC63B56C,6148851002022842,Hesti Damanik,hesti.damanik@gmail.com,(008) 161-7037,"Jalan Suniaraja No. 9, Bengkulu, BE 58683",Tanjungbalai,2001-05-06,2022-05-20,1990000,Inactive
+33911EF4,,Reza Waskita,reza.waskita@yahoo.com,,"Jalan Peta No. 01, Parepare, Kalimantan Utara 41431",Tebingtinggi,1996-04-16,2024-11-01,2900000,Suspended
+E4FB7E25,9546261811758247,Hesti Iswahyudi,hesti.iswahyudi@gmail.com,+62 (41) 350 1151,"Jl. Gardujati No. 5, Kota Administrasi Jakarta Pusat, Maluku 39025",Kota Administrasi Jakarta Utara,1984-02-29,2023-02-25,570000,Suspended
+8436A7E8,5452110609746409,Teddy Gunawan,teddy.gunawan@yahoo.com,086 397 6398,"Gang Cihampelas No. 7, Tasikmalaya, NB 03433",Tanjungpinang,2000-11-27,2024-04-13,3420000,Suspended
+7F9384AC,1118462410654875,Rudi Prabowo,rudi.prabowo@yahoo.com,+62-54-059-9383,"Gg. W.R. Supratman No. 51, Serang, BB 67403",Lubuklinggau,2003-09-02,2025-06-12,3740000,Inactive
+44C762C6,7873921409622534,Bakianto Hasanah,bakianto.hasanah@gmail.com,+62-0711-653-5373,"Gg. HOS. Cokroaminoto No. 57, Cilegon, Kalimantan Tengah 32608",Pekalongan,2000-10-19,2023-08-31,1620000,Suspended
+4ECFC1D0,3786181406662247,Gawati Z.,gawati.zulaika@hotmail.com,(0652) 750-8478,"Gg. Raya Setiabudhi No. 05, Mataram, YO 22489",Kediri,2004-09-27,2026-02-10,2860000,Inactive
+CE2604AF,2738862701029028,Jamil Haryanti,jamil.haryanti@yahoo.com,+62 (916) 465-2587,"Gang Moch. Toha No. 598, Kupang, Bali 67575",Sabang,1996-02-13,2026-04-06,1860000,Active
+53B19209,3019622701883159,Queen Pradana,queen.pradana@hotmail.com,(070) 611-9426,"Gg. Soekarno Hatta No. 814, Banjarmasin, DI Yogyakarta 14771",Tanjungpinang,1996-11-26,2022-03-07,1220000,Active
+77459292,9566823107927901,Sari Pradana,sari.pradana@hotmail.com,+62-0977-072-8820,"Gg. Dr. Djunjunan No. 45, Pematangsiantar, NT 09525",Bitung,1972-12-12,2024-12-15,1130000,Suspended
+DB5010F0,9129981003787675,Okta Wijayanti,okta.wijayanti@yahoo.com,(0179) 489 2920,"Gang Antapani Lama No. 5, Banjarbaru, Sulawesi Tenggara 71160",Jambi,1976-01-30,2022-12-06,3080000,Inactive
+51734C6A,4836852110001232,Hesti Latupono,hesti.latupono@gmail.com,+62 (0159) 553-8874,"Gg. Jend. A. Yani No. 83, Bima, SB 29822",Mojokerto,1995-11-19,2023-06-20,2360000,Active
+158219CC,3011782507778516,Okta Prabowo,okta.prabowo@gmail.com,+62 (116) 504-4202,"Gg. Suryakencana No. 2, Tebingtinggi, BT 56664",Blitar,1993-11-27,2022-11-02,3090000,Active
+0E4835AC,4220562604677407,Margana Anggraini,margana.anggraini@hotmail.com,+62 (23) 813 1986,"Gg. Dipatiukur No. 2, Pariaman, Jawa Timur 93775",Cilegon,1984-04-11,2022-12-28,1880000,Inactive
+ADAE5F8C,6411880705891645,Tari Riyanti,not-an-email-at-all,+62 (038) 593 7175,"Gg. Joyoboyo No. 57, Medan, BA 72421",Singkawang,1997-12-15,2025-09-29,1570000,Active
+0FE26927,7941773103043319,Kawaya Hastuti,kawaya.hastuti@gmail.com,+62 (066) 484 1461,"Gang Rungkut Industri No. 98, Pekalongan, Sulawesi Tenggara 48375",Padang,1962-05-15,2024-12-26,3660000,Suspended
+C735002D,6012290209753043,Cornelia Suartini,cornelia.suartini@gmail.com,+62-005-912-3553,"Gang Joyoboyo No. 7, Solok, Papua 33897",Purwokerto,2000-10-25,2021-10-26,2860000,Suspended
+F89715EA,8135412808037201,Adiarja Saptono,adiarja.saptono@yahoo.com,(064) 456 7755,"Gg. Pasir Koja No. 08, Sungai Penuh, Sulawesi Tengah 73142",Dumai,1996-07-23,2023-04-23,580000,Suspended
+524D42D2,6613121506697494,Gambira Wibowo,gambira.wibowo@yahoo.com,+62-633-673-6945,"Jl. W.R. Supratman No. 5, Kota Administrasi Jakarta Utara, SR 41352",Palembang,1978-11-28,2022-10-09,860000,Suspended
+F6372F2C,7049831401729693,Eva Yulianti,eva.yulianti@hotmail.com,+62-994-459-4005,"Jalan M.H Thamrin No. 3, Palopo, PB 03494",Padangpanjang,1969-11-21,2023-04-13,3060000,Active
+3683864C,3531531510004709,Nova Simbolon,nova.simbolon@gmail.com,+62 (314) 605 1541,"Jl. Astana Anyar No. 85, Prabumulih, NB 17137",Pagaralam,1990-10-24,2023-05-13,99000000000,Inactive
+06873840,9292402907832994,Baktiadi Rahmawati,baktiadi.rahmawati@hotmail.com,(0456) 201 8531,"Gang PHH. Mustofa No. 1, Lhokseumawe, SU 80381",Tangerang,2006-08-09,1900-01-01,1480000,Suspended
+45EE9968,3223663007778239,Kartika Laksita,kartika.laksita@gmail.com,+62-0438-863-3613,"Jalan Kutai No. 767, Banjarmasin, Kalimantan Timur 62404",Tomohon,2005-07-25,2023-06-14,3190000,Suspended
+D2712C8B,3046711601944943,Ellis Sihombing,ellis.sihombing@hotmail.com,+62-179-945-2100,"Jl. Moch. Toha No. 810, Salatiga, JK 44979",Denpasar,1987-11-28,2025-02-13,4950000,Inactive
+0DB81C0E,8235311511786716,Emas Situmorang,emas.situmorang@gmail.com,+62 (300) 287 2269,"Gang Lembong No. 603, Singkawang, Nusa Tenggara Timur 11708",Depok,1988-10-08,2023-08-29,1740000,Inactive
+07EDF96E,3995982401828286,Pardi Hassanah,pardi.hassanah@gmail.com,(0080) 339 0218,"Gg. Gegerkalong Hilir No. 3, Probolinggo, Bengkulu 89980",Banda Aceh,1978-04-06,2024-12-02,600000,Suspended
+854F28A0,9325782307845798,Gamblang Maulana,gamblang.maulana@yahoo.com,+62 (0214) 944-4799,"Jl. Jend. Sudirman No. 20, Sawahlunto, Jawa Timur 39783",Subulussalam,1990-08-17,2021-10-09,2700000,Inactive
+300F38DC,9525932502883513,Rusman Padmasari,rusman.padmasari@yahoo.com,+62-0551-297-2957,"Gg. Cihampelas No. 0, Makassar, JI 82527",Banjarmasin,1969-02-19,2024-04-27,3780000,Inactive
+4F5FECC0,5988862106872292,Ina Yuliarti,ina.yuliarti@yahoo.com,+62 (77) 462 3413,"Gg. Stasiun Wonokromo No. 8, Bima, NB 94024",Kupang,1994-07-20,2024-07-07,2300000,Suspended
+41D14A9D,5473471507671359,Patricia Mardhiyah,patricia.mardhiyah@gmail.com,+62 (525) 533-9927,"Jl. Kapten Muslihat No. 432, Depok, Sumatera Selatan 55447",Pematangsiantar,2002-08-27,2024-10-09,870000,Inactive
+898210E6,8531182508935873,Amalia Wahyuni,amalia.wahyuni@gmail.com,+62-12-833-3178,"Jalan S. Parman No. 8, Yogyakarta, DKI Jakarta 85015",Metro,1968-10-18,2026-04-01,4830000,Inactive
+2E2E0665,2943701504066236,Sidiq Susanti,sidiq.susanti@hotmail.com,+62-099-885-3985,"Jalan Ir. H. Djuanda No. 1, Kota Administrasi Jakarta Selatan, Papua Barat 74801",Depok,1997-12-31,2026-06-05,2670000,Inactive
+06E1F53F,5797213101059529,Qori Hutasoit,qori.hutasoit@gmail.com,+62 (083) 077-0747,"Jl. Asia Afrika No. 92, Sungai Penuh, RI 49028",Ambon,1969-05-02,2022-04-17,2510000,Active
+5E50B21E,2992131210917387,Sari Manullang,sari.manullang@gmail.com,+62 (009) 065-7405,"Gang M.H Thamrin No. 6, Manado, RI 35186",Tegal,2000-02-26,2022-08-20,3420000,Inactive
+7274C9FD,1974603009875770,Danu Rahmawati,danu.rahmawati@gmail.com,+62 (60) 510-7142,"Gang Rajiman No. 56, Tidore Kepulauan, Sumatera Utara 23111",Kotamobagu,1962-08-21,2025-01-16,3320000,Active
+A1DC6828,3738380907848295,Wawan Hasanah,wawan.hasanah@yahoo.com,+62 (211) 946 3571,"Gg. Surapati No. 98, Yogyakarta, Sumatera Utara 08196",Kota Administrasi Jakarta Barat,1963-03-07,2022-07-14,1890000,Inactive
+FF5BC797,2251720207999342,Heru Winarsih,heru.winarsih@gmail.com,+62 (94) 681-1626,"Gang Wonoayu No. 6, Batam, BT 33419",Jayapura,1986-01-29,2024-02-07,4140000,Active
+00467DA4,5147252408056745,Emil Mansur,emil.mansur@gmail.com,+62 (79) 156 1320,"Gg. Gedebage Selatan No. 9, Sungai Penuh, BB 13043",Serang,1988-12-26,2022-11-24,2340000,Suspended
+09F5A73E,3049780401824315,Elisa Namaga,elisa.namaga@yahoo.com,(0734) 029 6106,"Jalan M.T Haryono No. 62, Batam, BT 04245",Tasikmalaya,1964-11-23,2026-04-25,4000000,Active
+FCD17524,2562430911885477,Aslijan Fujiati,aslijan.fujiati@hotmail.com,+62 (0275) 684 5898,"Jalan KH Amin Jasuta No. 73, Cilegon, Sumatera Barat 57852",Bandung,1973-02-25,2021-10-17,1510000,Inactive
+616185E1,5845332609619606,Irma Rahmawati,irma.rahmawati@yahoo.com,0859525311,"Gg. Pasirkoja No. 588, Denpasar, SR 39274",Lhokseumawe,1994-10-16,2021-11-18,4900000,Active
+3ED44DE2,8491211302645913,Purwanto Purnawati,purwanto.purnawati@hotmail.com,+62 (53) 039 3813,"Jalan Raya Ujungberung No. 8, Sabang, Kalimantan Barat 37031",Banjarbaru,1981-02-12,2025-05-11,3300000,Inactive
+D573AC13,2085690910627171,Kamal Mandala,kamal.mandala@gmail.com,+62-0232-383-0740,"Jalan Ahmad Dahlan No. 0, Parepare, SB 96940",Pasuruan,1963-06-25,2024-02-03,4500000,Inactive
+C570F0F8,9973981904731626,Carub Anggriawan,carub.anggriawan@yahoo.com,+62 (44) 501 2810,"Jl. Rungkut Industri No. 483, Samarinda, Gorontalo 72815",Probolinggo,1997-10-24,2024-05-04,3120000,Active
+9FE94319,9478122804663112,Hamzah Rajasa,hamzah.rajasa@yahoo.com,(0488) 306 7286,"Gang Ahmad Yani No. 31, Pagaralam, Lampung 71811",Banjarbaru,1993-05-31,2021-08-11,3030000,Suspended
+808E3EA8,6834372903701790,Cawisono Permata,cawisono.permata@gmail.com,+62 (039) 063-7738,"Gang Tubagus Ismail No. 79, Bengkulu, KU 57735",Subulussalam,1970-03-19,2023-02-17,1020000,Inactive
+A4339F99,2240310206922382,Jono B.,jono.budiyanto@hotmail.com,+62 (0003) 975 6583,"Gang HOS. Cokroaminoto No. 55, Bima, KB 16264",Pasuruan,2002-01-25,2023-01-16,3270000,Suspended
+4DB50B03,7687592408844140,Emin Wibowo,emin.wibowo@gmail.com,0852751001,"Jl. Sukajadi No. 17, Ambon, Kepulauan Riau 63649",Tebingtinggi,1968-07-07,2022-12-25,3260000,Suspended
+A1C87EBB,3731362807701979,Melinda Pertiwi,melinda.pertiwi@hotmail.com,+62 (812) 364 2949,"Gang Dipatiukur No. 4, Padang Sidempuan, Papua 50754",Kota Administrasi Jakarta Timur,1977-02-03,2021-11-15,2590000,Inactive
+E9C73EDB,6834372903701790,Cawisono Permata (Baru),baru.cawisono.permata@gmail.com,+62 (0820) 611-5770,"Gang Tubagus Ismail No. 79, Bengkulu, KU 57735",Subulussalam,1970-03-19,2023-02-17,1020000,Inactive
+55F4675D,4962932302811896,Jarwadi Pranowo,jarwadi.pranowo@yahoo.com,+62 (0257) 402 7107,"Jl. Wonoayu No. 7, Kediri, GO 59373",Surakarta,1961-08-02,2025-07-01,4010000,Suspended
+CAD390A5,4174152301859414,Gasti Hutagalung,gasti.hutagalung@gmail.com,+62 (056) 349 3350,"Jl. Moch. Ramdan No. 00, Sorong, Sulawesi Tenggara 49915",Pontianak,1970-10-31,2024-02-07,1750000,Suspended
+A345876C,6166731004854551,Emil Mahendra,emil.mahendra@gmail.com,(082) 915-9891,"Jalan Moch. Toha No. 8, Depok, SU 94459",Pasuruan,1996-07-25,2026-02-15,1410000,Active
+C5B66006,5961690302043864,Hana R.,hana.rajasa@hotmail.com,+62 (0025) 620 0208,"Gg. Jend. A. Yani No. 3, Jambi, KS 23406",Pangkalpinang,1996-10-03,2024-10-07,4730000,Active
+A732B7D9,4947320304919901,Margana Pratama,margana.pratama@gmail.com,+62 (0720) 730-3963,"Jl. Sentot Alibasa No. 9, Pagaralam, NT 78283",Pontianak,1985-09-06,2024-08-05,3090000,Active
+63B2FB36,1219682406788827,Kamaria Maryati,kamaria.maryati@hotmail.com,(095) 075-2798,"Gg. Lembong No. 46, Subulussalam, NB 26367",Pasuruan,2004-03-07,2024-11-02,4960000,Suspended
+C520EA5C,9477860909983769,Radika Anggriawan,radika.anggriawan@gmail.com,+62-789-880-2352,"Jl. S. Parman No. 759, Batam, Kalimantan Utara 54214",Bau-Bau,2007-09-17,2024-03-14,1130000,Active
+39BC57A1,3714442112848586,Rendy Mandala,rendy.mandala@hotmail.com,+62 (052) 105 9673,"Gang Moch. Ramdan No. 96, Magelang, Aceh 83719",Pekanbaru,1967-01-01,2022-02-02,1540000,Active
+DF50EE38,4790500504615332,Icha Yuliarti,icha.yuliarti@hotmail.com,+62 (047) 510-0234,"Jalan Ronggowarsito No. 0, Banjarmasin, GO 52033",Cimahi,1994-05-02,2023-08-11,99000000000,Suspended
+1ACEEC22,9868981407018401,Juli Anggriawan,juli.anggriawan@hotmail.com,+62 (25) 530 9438,"Jalan Monginsidi No. 9, Bengkulu, PB 51805",Sabang,1981-05-25,2026-06-12,3080000,Suspended
+4F1CB4CE,9044410401651528,Yahya Ardianto,yahya.ardianto@gmail.com,+62 (053) 716-2807,"Gg. Kapten Muslihat No. 58, Palembang, NT 27245",Salatiga,2007-09-20,2025-10-24,1690000,Inactive
+529D34D6,7988512208027352,Anastasia Wacana,anastasia.wacana@yahoo.com,086 984 2139,"Gang Sadang Serang No. 1, Surakarta, SR 75007",Tegal,1975-08-01,2026-05-29,3140000,Suspended
+21BEA0D0,5273581104616801,Budi Maulana,budi.maulana@hotmail.com,+62 (152) 791 3474,"Gang Antapani Lama No. 543, Kotamobagu, Maluku Utara 27285",Gorontalo,1993-04-27,2021-08-11,1940000,Active
+2BDDCF26,4346861903674281,Hasim Damanik,hasim.damanik@gmail.com,0 (0286) 818-6241,"Gg. Astana Anyar No. 803, Depok, RI 21914",Gorontalo,1960-11-08,2022-08-20,840000,Suspended
+E202D423,5762111508654786,Diah Permadi,diah.permadi@gmail.com,(0003) 347 5090,"Gg. Monginsidi No. 3, Banda Aceh, SN 24282",Yogyakarta,1967-02-19,2022-10-03,2700000,Active
+3ED7B3E2,8112500501954981,Eja Nainggolan,eja.nainggolan@yahoo.com,+62 (669) 423-3605,"Gang Indragiri No. 2, Serang, LA 90855",Sungai Penuh,1963-01-25,2024-09-20,4680000,Suspended
+A0EEFBCD,5812841906658779,Chandra Permadi,chandra.permadi@yahoo.com,+62 (033) 373-7372,"Gg. Dipatiukur No. 0, Tual, JK 38194",Parepare,1963-06-23,2023-11-13,2780000,Inactive
+9B3B6919,3784490605776983,Zalindra Anggriawan,zalindra.anggriawan@hotmail.com,+62839435711,"Jl. Ahmad Dahlan No. 7, Sorong, Riau 85009",Batam,1990-10-06,2024-03-11,99000000000,Inactive
+B3EB7E78,6841391701021195,Mulyanto W.,mulyanto.wibisono@gmail.com,+62 (33) 768-5132,"Jl. Siliwangi No. 27, Banda Aceh, Sulawesi Selatan 86466",Balikpapan,1992-06-10,2026-06-22,1930000,Inactive
+BA9E22B4,2441950508704063,Ida Pudjiastuti,ida.pudjiastuti@hotmail.com,+62-73-782-1532,"Gg. Joyoboyo No. 64, Kota Administrasi Jakarta Utara, GO 31373",Metro,1992-07-12,2024-09-30,4260000,Active
+E45828EC,9121931007038752,Hafshah Haryanti,hafshah.haryanti@yahoo.com,+62 (050) 411-8469,"Jalan Joyoboyo No. 1, Pekalongan, Banten 22149",Surakarta,1978-12-28,2026-03-19,4090000,Suspended
+21FD57A9,1232491912682975,Hafshah Manullang,hafshah.manullang@hotmail.com,(0942) 500 8416,"Jl. KH Amin Jasuta No. 583, Solok, PB 36917",Kota Administrasi Jakarta Barat,1960-11-02,2021-09-01,1630000,Inactive
+A019A29E,7290952602645373,Wulan Riyanti,wulan.riyanti@yahoo.com,(097) 436 7819,"Jl. Jakarta No. 41, Tanjungpinang, KR 32471",Padang,1989-11-22,2025-08-15,1600000,Inactive
+74C945EC,7620781403969159,Yahya Prabowo,yahya.prabowo@gmail.com,+62-26-115-7475,"Gang Tebet Barat Dalam No. 302, Salatiga, MA 02100",Singkawang,1984-08-24,2024-03-10,1330000,Suspended
+4641F553,5147252408056745,Emil Mansur,emil.mansur@gmail.com,0 (79) 156 1320,"Gg. Gedebage Selatan No. 9, Sungai Penuh, BB 13043",Serang,1988-12-26,2022-11-24,2340000,Suspended
+80B1DC01,9036391507983629,Ina Andriani,ina.andriani@yahoo.com,+62 (55) 078 3414,"Gg. R.E Martadinata No. 27, Kota Administrasi Jakarta Utara, Riau 29428",Medan,1998-03-10,2026-01-23,1330000,Suspended
+4A3C567C,3676240707998192,Cemeti Kusmawati,cemeti.kusmawati@hotmail.com,(077) 307-6701,"Gg. Lembong No. 81, Kota Administrasi Jakarta Selatan, BT 22933",Meulaboh,1974-10-04,2022-08-03,4100000,Inactive
+F20A8694,7450820307653216,Harjo Hariyah,harjo.hariyah@gmail.com,(064) 845-7887,"Gang Soekarno Hatta No. 3, Banjar, BA 41823",Gorontalo,1996-10-24,2026-04-05,3150000,Active
+1518A87F,4687202202031444,Raisa Sitorus,raisa.sitorus@gmail.com,0 (18) 665-3901,"Gg. Rajawali Barat No. 10, Bukittinggi, PB 68651",Balikpapan,1981-11-26,2022-12-16,4530000,Active
+561571B0,3723122906672221,Jatmiko Kusmawati,jatmiko.kusmawati@gmail.com,+62 (90) 662-4602,"Jl. Abdul Muis No. 5, Samarinda, Kalimantan Tengah 87185",Bekasi,1995-01-11,2025-12-22,1330000,Inactive
+A88FF280,5734761302957647,Soleh Andriani,soleh.andriani@yahoo.com,+62874327151,"Jalan Antapani Lama No. 43, Tarakan, SN 16749",Gorontalo,1964-10-03,2022-07-01,4400000,Inactive
+F15E331F,7486821603042161,Lulut Yuniar,lulut.yuniar@gmail.com,+62 (91) 820-6619,"Gg. Kapten Muslihat No. 8, Yogyakarta, JK 44406",Kendari,1985-09-05,2025-09-29,4020000,Active
+C0389DB5,1154720412057333,Yessi Pradipta,yessi.pradipta@yahoo.com,(0385) 522 6398,"Jl. Wonoayu No. 51, Kotamobagu, DKI Jakarta 90690",Makassar,1982-04-29,2026-03-28,680000,Active
+88DFCB72,6612831703885934,Diah Sihombing,diah.sihombing@hotmail.com,+62-083-946-5957,"Jl. Moch. Toha No. 0, Malang, Kepulauan Bangka Belitung 38788",Kotamobagu,1977-09-17,2025-09-23,2060000,Inactive
+94926773,,Melinda Anggraini,melinda.anggraini@hotmail.com,,"Jl. Raya Setiabudhi No. 6, Blitar, Kalimantan Timur 03893",Cirebon,1996-09-15,2025-08-13,2800000,Suspended
+B23F1820,7378232801618129,Pangestu Winarno,pangestu.winarno@gmail.com,+62 (0136) 786-7184,"Gang Ahmad Dahlan No. 341, Jayapura, Sulawesi Barat 75724",Makassar,1969-08-24,2023-08-23,4040000,Inactive
+1A5470C9,9634300611001809,Maya Zulkarnain,maya.zulkarnain@gmail.com,+62-710-863-8298,"Jalan Gardujati No. 940, Prabumulih, BT 28832",Lhokseumawe,1977-09-23,2023-05-26,960000,Active
+19CBE7B9,9138501304713813,Ana W.,ana.winarsih@hotmail.com,+62 (92) 357 6603,"Gang Ciwastra No. 686, Sibolga, BT 68927",Parepare,1992-03-12,2026-02-18,3840000,Inactive
+49D2D9B0,7625592008681787,Ifa Winarsih,ifa.winarsih@yahoo.com,+62-81-003-4389,"Gang BKR No. 125, Batu, Kepulauan Riau 71444",Pontianak,2004-12-04,2024-10-06,4890000,Suspended
+E6189EAD,4817481708767241,Zahra Nababan,zahra.nababan@gmail.com,+62-275-384-9634,"Jalan Abdul Muis No. 7, Lubuklinggau, KU 26428",Pontianak,1981-05-04,2026-06-20,1480000,Inactive
+177F6B58,4589131509022744,Jais Hakim,jais.hakim@gmail.com,+62 (341) 442-1620,"Gang Cempaka No. 00, Prabumulih, Jawa Timur 70183",Tasikmalaya,1973-11-01,2024-10-17,560000,Inactive
+D803653E,9762782506993911,Eman Yuniar,eman.yuniar@gmail.com,0842336308,"Jalan Suniaraja No. 006, Palangkaraya, Maluku 59797",Tomohon,1984-03-07,2023-06-02,3600000,Inactive
+D9DCFCE0,9171221702881128,Jessica Hasanah,jessica.hasanah@hotmail.com,+62 (220) 448-3303,"Gang Ahmad Dahlan No. 446, Metro, MU 57170",Kota Administrasi Jakarta Utara,2003-05-27,2022-02-06,4210000,Inactive
+E8160F98,6841391701021195,Mulyanto Wibisono,mulyanto.wibisono@gmail.com,+62 (33) 768-5132,"Jl. Siliwangi No. 27, Banda Aceh, Sulawesi Selatan 86466",Balikpapan,1992-06-10,2026-06-22,1930000,Inactive
+B55D91D1,9638552609882407,Setya Pudjiastuti,setya.pudjiastuti@gmail.com,+62 (0669) 013 7802,"Jl. HOS. Cokroaminoto No. 465, Samarinda, Aceh 26678",Bandung,2005-06-02,2025-09-05,1660000,Suspended
+2F6E7C0F,4083980607055382,Shania Hakim,shania.hakim@gmail.com,+62 (0981) 318-7132,"Gg. Pasirkoja No. 2, Tasikmalaya, Gorontalo 84661",Langsa,1973-01-12,2023-02-16,4460000,Inactive
+9B506457,3034730706033501,Zelda Wibowo,zelda.wibowo@hotmail.com,(082) 874-4352,"Gg. KH Amin Jasuta No. 3, Bitung, SR 25390",Bogor,1972-07-10,2025-02-25,4780000,Active
+5054247D,7236182103838290,Teddy Prastuti,teddy.prastuti@hotmail.com,+62-390-696-6702,"Jl. Siliwangi No. 06, Palangkaraya, KB 02185",Palangkaraya,1980-09-26,2021-12-31,2860000,Suspended
+E44F3F54,5823792502798811,Uli Wulandari,uli.wulandari@gmail.com,+62 (0114) 988 2919,"Gg. Rumah Sakit No. 107, Kota Administrasi Jakarta Barat, KS 27667",Gorontalo,1973-04-15,2023-04-05,99000000000,Active
+32979384,2381422309746301,Jessica Winarsih,jessica.winarsih@yahoo.com,+62 (07) 645-0586,"Jalan Ahmad Dahlan No. 6, Pekanbaru, KB 57067",Balikpapan,2002-01-06,2025-04-26,1360000,Active
+22BE147D,4156742303652512,Endra Hastuti,endra.hastuti@gmail.com,080 076 9017,"Jalan Raya Ujungberung No. 8, Kota Administrasi Jakarta Selatan, Jawa Timur 63571",Mojokerto,1976-04-26,2025-10-17,3790000,Inactive
+2168EBCE,9440800705939717,Pangestu Kuswandari,pangestu.kuswandari@hotmail.com,+62-309-559-6001,"Gang Lembong No. 84, Cimahi, Sumatera Barat 59505",Jambi,1980-09-22,2021-09-14,590000,Suspended
+B5E0E21B,8567120709977585,Cengkir M.,cengkir.marpaung@gmail.com,+62 (076) 556-1733,"Gg. Antapani Lama No. 7, Samarinda, Sulawesi Selatan 36454",Salatiga,1989-12-15,2023-12-14,580000,Suspended
+C977AF65,5696351611673507,Maya Hasanah,maya.hasanah@gmail.com,+62 (972) 488-3122,"Gg. Cihampelas No. 093, Purwokerto, KT 84178",Bengkulu,1980-02-03,2021-11-10,540000,Inactive
+EC41E0C1,5815802204963743,Hana Fujiati,not-an-email-at-all,(0359) 816 7948,"Gg. Rajiman No. 23, Sorong, BB 81904",Tebingtinggi,1977-03-31,2024-10-03,2140000,Active
+508BD544,3153172010007482,Hasan Halimah,hasan.halimah@yahoo.com,+62-093-049-2646,"Gg. Kutai No. 43, Kota Administrasi Jakarta Selatan, Gorontalo 71538",Palopo,2006-08-28,2023-09-14,780000,Inactive
+72CE5043,7394431510706579,Ajiono Hidayanto,ajiono.hidayanto@yahoo.com,+62 (967) 358 3570,"Gang Rumah Sakit No. 69, Lubuklinggau, Gorontalo 45038",Blitar,1979-11-01,2024-04-23,2190000,Inactive
+670945C9,5790662010926208,Julia S.,julia.suartini@yahoo.com,(027) 067 7559,"Gang Rumah Sakit No. 4, Kota Administrasi Jakarta Timur, Jawa Timur 87676",Blitar,1997-04-25,2025-12-27,720000,Suspended
+281F0287,7881890511005867,Prabowo Maryati (Baru),baru.prabowo.maryati@gmail.com,+62 (18) 643-5899,"Gang Lembong No. 93, Singkawang, PB 24818",Mojokerto,2001-12-05,2023-01-27,3580000,Suspended
+EF056100,7398253004642192,Warsa Prasetyo,warsa.prasetyo@yahoo.com,+62 (0667) 907 7506,"Jl. Rajawali Timur No. 6, Parepare, Sumatera Selatan 28020",Bandung,1962-01-30,2024-12-15,1390000,Inactive
+6FBB7C13,3836153105714434,Pranawa Maulana,pranawa.maulana@gmail.com,+62 (16) 018-0231,"Jalan Pasir Koja No. 3, Tual, Maluku 09766",Parepare,1997-04-16,2023-01-20,4800000,Active
+71082102,8079951406737061,Wira Susanti,wira.susanti@yahoo.com,+62 (035) 583 1957,"Jalan Cikutra Barat No. 32, Batam, Aceh 00062",Sorong,1987-03-26,2026-02-16,1690000,Suspended
+A33B3248,1826910506869930,Iriana Tampubolon (Baru),baru.iriana.tampubolon@yahoo.com,087 979 2687,"Jl. Tebet Barat Dalam No. 5, Ternate, KT 95805",Sabang,1982-01-09,2025-05-10,2970000,Inactive
+FA184FEB,6811220306746972,Malika Pratiwi,malika.pratiwi@hotmail.com,+62 (06) 348 9033,"Gg. Asia Afrika No. 86, Langsa, ST 72234",Metro,1982-06-26,2025-05-28,3850000,Suspended
+AFB072B7,5979481502994545,Kani Usada,kani.usada@hotmail.com,+62-99-542-0027,"Jalan Antapani Lama No. 6, Dumai, NT 32919",Solok,1968-09-18,2021-10-19,3210000,Active
+58038056,9638552609882407,Setya Pudjiastuti (Baru),baru.setya.pudjiastuti@gmail.com,+62 (69) 370 3598,"Jl. HOS. Cokroaminoto No. 465, Samarinda, Aceh 26678",Bandung,2005-06-02,2025-09-05,1660000,Suspended
+D3A2CEF4,6423880907868818,Okto Riyanti,okto.riyanti@gmail.com,+62 (029) 897-2099,"Gg. Gardujati No. 29, Bontang, GO 53564",Banjarmasin,1998-12-09,2022-03-12,1300000,Active
+EC69E9FB,8321331912666635,Paris K.,paris.kuswandari@gmail.com,(0656) 527-2595,"Jl. BKR No. 3, Bandung, YO 68899",Parepare,1983-02-04,2022-08-14,3100000,Inactive
+CB8BA07A,,Fitriani Hastuti,fitriani.hastuti@gmail.com,,"Gg. Ir. H. Djuanda No. 172, Kota Administrasi Jakarta Pusat, PA 42503",Padang,2007-08-10,2022-12-05,3940000,Active
+E9F7305D,7488472507962011,Rahman Fujiati,rahman.fujiati@hotmail.com,+62 (089) 765 5970,"Gang PHH. Mustofa No. 477, Padangpanjang, RI 04804",Pariaman,1978-07-03,2025-04-11,1940000,Inactive
+52273597,1793592707727736,Kayla Siregar,kayla.siregar@hotmail.com,(093) 112 7647,"Gang Kutisari Selatan No. 0, Banjarbaru, MU 08990",Tidore Kepulauan,1987-10-14,2024-06-08,920000,Active
+DFF2D129,2246962205694638,Hamima Waskita,hamima.waskita@gmail.com,+62 (038) 591 6530,"Jl. K.H. Wahid Hasyim No. 60, Depok, Banten 41966",Tomohon,1963-03-15,2023-01-14,2640000,Inactive
+8CB13D6B,3348651802977696,Usyi Prayoga,usyi.prayoga@yahoo.com,(069) 372-7668,"Gg. Peta No. 3, Denpasar, Kalimantan Barat 83342",Tangerang,1975-11-25,2026-01-05,4190000,Suspended
+38DAE0F8,5678772705946553,Dono Fujiati,dono.fujiati@hotmail.com,(0557) 422 5374,"Jl. Rajawali Barat No. 36, Tarakan, Lampung 35117",Probolinggo,1961-09-02,2021-12-08,800000,Suspended
+EDE69039,6150951402759580,Darman Fujiati,darman.fujiati@gmail.com,+62-0517-582-6496,"Gang Cempaka No. 8, Magelang, Nusa Tenggara Timur 13314",Kotamobagu,1990-12-21,2021-09-20,870000,Suspended
+311D7A02,7982531503879549,Karja Dabukke,karja.dabukke@hotmail.com,+62-62-337-6934,"Jl. PHH. Mustofa No. 920, Bitung, Sulawesi Barat 37763",Dumai,1991-08-17,2022-08-28,3870000,Inactive
+6DE50522,9946341208649803,Cawisono Halimah,cawisono.halimah@gmail.com,(015) 085 2062,"Gang PHH. Mustofa No. 87, Kota Administrasi Jakarta Barat, Nusa Tenggara Timur 69305",Tual,1977-01-17,2022-01-12,690000,Inactive
+4DE1DBC2,2767822808958465,Mustika Hutapea,mustika.hutapea@yahoo.com,+62 (0593) 309 5100,"Gang Ciwastra No. 72, Bengkulu, Sulawesi Barat 23830",Pekalongan,1970-12-01,2024-06-19,520000,Suspended
+CFBFF5CC,3245701711726380,Gasti Fujiati,gasti.fujiati@yahoo.com,+62 (049) 013-8008,"Jl. Kapten Muslihat No. 78, Jambi, KU 28351",Kupang,1962-03-16,2024-12-10,4610000,Suspended
+CDC75770,4174152301859414,Gasti H.,gasti.hutagalung@gmail.com,+62 (056) 349 3350,"Jl. Moch. Ramdan No. 00, Sorong, Sulawesi Tenggara 49915",Pontianak,1970-10-31,2024-02-07,1750000,Suspended
+26D462B7,8164272403022787,Atmaja Rahimah,atmaja.rahimah@gmail.com,+62 (001) 959-2551,"Jalan Moch. Toha No. 717, Probolinggo, Papua 89089",Tanjungpinang,1964-07-19,2023-01-31,3730000,Suspended
+FB996806,5574500107947264,Mahfud Habibi,mahfud.habibi@yahoo.com,0801071956,"Jl. Indragiri No. 917, Blitar, Lampung 56130",Tidore Kepulauan,1968-02-24,2024-03-05,2630000,Suspended
+67D2A0D5,5416901005906105,Cayadi Uwais,cayadi.uwais@yahoo.com,+62 (0800) 510-4975,"Gg. Siliwangi No. 15, Pasuruan, LA 81418",Singkawang,1979-08-01,2025-01-16,3200000,Inactive
+07E89E3C,,Sari Mandala,sari.mandala@yahoo.com,,"Gang Dipatiukur No. 2, Sabang, BT 34648",Tanjungpinang,1966-07-29,2024-02-21,2440000,Active
+E7F23832,6846572212067000,Cawisono Siregar,cawisono.siregar@gmail.com,0862034679,"Gg. M.T Haryono No. 870, Jayapura, SU 85956",Parepare,1963-10-28,2025-03-08,4590000,Inactive
+A82FD154,1974603009875770,Danu Rahmawati (Baru),baru.danu.rahmawati@gmail.com,(0725) 077 5548,"Gang Rajiman No. 56, Tidore Kepulauan, Sumatera Utara 23111",Kotamobagu,1962-08-21,2025-01-16,3320000,Active
+C01EE727,5355562205964559,Reksa Salahudin,reksa.salahudin@hotmail.com,+62 (070) 252-3109,"Jl. Asia Afrika No. 218, Tegal, BT 75924",Pangkalpinang,1993-08-16,2023-06-22,3780000,Suspended
+91A89B5E,4332872103787343,Ellis R.,ellis.rahmawati@yahoo.com,082 502 9320,"Jalan Moch. Toha No. 04, Cilegon, JT 63603",Kota Administrasi Jakarta Selatan,1968-09-22,2022-07-22,2140000,Inactive
+04341A03,3080642802015426,Raisa Uyainah,raisa.uyainah@hotmail.com,+62-941-906-2666,"Jalan Peta No. 00, Palu, Jawa Timur 10912",Gorontalo,1975-02-01,2024-12-25,1590000,Inactive
+8943F47A,3457931503835723,Gamblang Uyainah,gamblang.uyainah@hotmail.com,086 921 9816,"Jalan Ronggowarsito No. 56, Pontianak, ST 98265",Palu,2002-12-28,2026-01-29,750000,Suspended
+62245D4A,7358881907859117,Lulut Mustofa,lulut.mustofa@hotmail.com,+62 (090) 049-5907,"Gg. Wonoayu No. 966, Banjarbaru, Bengkulu 62246",Kota Administrasi Jakarta Timur,1976-04-14,2023-02-24,4810000,Inactive
+8DD24591,7559262907649030,Caket Laksita,caket.laksita@gmail.com,+62 (0698) 738-8930,"Gg. Peta No. 2, Tegal, Papua 48341",Makassar,1996-10-28,2025-01-31,1530000,Suspended
+46AB50F8,8321331912666635,Paris Kuswandari,paris.kuswandari@gmail.com,(0656) 527-2595,"Jl. BKR No. 3, Bandung, YO 68899",Parepare,1983-02-04,2022-08-14,3100000,Inactive
+82F86188,5590171003757185,Raihan Jailani,raihan.jailani@hotmail.com,+62-990-185-5240,"Gang Gardujati No. 54, Bima, Sulawesi Selatan 58070",Tasikmalaya,1995-12-09,2023-03-26,1700000,Suspended
+ED5488D5,7524270105927125,Lili Rajata (Baru),baru.lili.rajata@hotmail.com,0855175629,"Gg. Pasirkoja No. 5, Padang, KB 50414",Padang Sidempuan,1965-05-25,2025-08-25,2170000,Active
+DD4CCB35,3493462512783539,Eman Hutapea,eman.hutapea@gmail.com,(0162) 529 0680,"Jl. Sentot Alibasa No. 862, Padang, AC 35371",Palembang,1971-07-29,2021-10-12,3130000,Active
+C73807B4,4620741106653670,Ade Rajasa,ade.rajasa@gmail.com,+62-96-107-6041,"Jalan Surapati No. 71, Ambon, Jambi 87958",Tasikmalaya,1978-06-14,2025-02-26,3010000,Suspended
+45A71430,1817353007832849,Wani Situmorang,wani.situmorang@gmail.com,0810923765,"Jl. Pelajar Pejuang No. 67, Semarang, Riau 22054",Kota Administrasi Jakarta Timur,1983-02-14,2022-11-21,1690000,Suspended
+0AAFE3C1,1219450305728524,Cahyadi Firgantoro,cahyadi.firgantoro@yahoo.com,+62-87-151-9220,"Jalan Kiaracondong No. 73, Tanjungbalai, SU 22341",Pekalongan,2006-04-01,2021-12-26,4480000,Active
+4E2E0526,7083311211071380,Cayadi Adriansyah,cayadi.adriansyah@yahoo.com,+62-47-900-6144,"Gang Kebonjati No. 9, Pariaman, Maluku 54764",Jayapura,1983-02-28,2024-04-01,1060000,Active
+27656C56,5761332312815588,Harjasa Pradipta,harjasa.pradipta@hotmail.com,+62 (84) 523-1893,"Gang Rungkut Industri No. 375, Semarang, Bali 24460",Pagaralam,1974-08-14,2024-12-22,570000,Inactive
+6D9AD2EE,8078840505931348,Zalindra Safitri,zalindra.safitri@gmail.com,0 (89) 106-0099,"Gang PHH. Mustofa No. 49, Blitar, KR 69161",Gorontalo,1982-12-20,2022-12-17,3680000,Suspended
+82039290,1826910506869930,Iriana Tampubolon,iriana.tampubolon@yahoo.com,+62 (0899) 582 5999,"Jl. Tebet Barat Dalam No. 5, Ternate, KT 95805",Sabang,1982-01-09,2025-05-10,2970000,Inactive
+AAB599CE,6924652107755494,Emas Habibi,emas.habibi@hotmail.com,+62 (438) 871 6630,"Gg. Cihampelas No. 9, Padangpanjang, DI Yogyakarta 00815",Subulussalam,1989-04-05,2025-11-21,2890000,Inactive
+BCBEB61B,5729710601989203,Iriana Lazuardi,iriana.lazuardi@yahoo.com,+62 (0839) 865 1049,"Jl. Rawamangun No. 70, Depok, SU 41413",Metro,1990-06-07,2026-03-01,1790000,Inactive
+79E714D0,8966811604894981,Johan Mansur,johan.mansur@yahoo.com,+62 (0838) 142 5837,"Gang Gegerkalong Hilir No. 76, Kupang, ST 25675",Palangkaraya,1979-10-14,2026-01-19,3430000,Suspended
+60F76B0D,7444122508002512,Hari Fujiati,hari.fujiati@gmail.com,+62-71-115-2436,"Gang Jamika No. 592, Langsa, SU 78579",Parepare,1961-05-09,2024-09-09,1080000,Suspended
+7DE870E6,8438840902708786,Humaira Pratama,humaira.pratama@gmail.com,+62 (17) 077 9327,"Jalan Ahmad Yani No. 413, Bengkulu, KU 59804",Kota Administrasi Jakarta Selatan,2004-01-13,2026-03-19,3340000,Suspended
+7053D5F6,6984862301737085,Pia Nainggolan,pia.nainggolan@hotmail.com,+62 (063) 843 8515,"Jl. Cikapayang No. 2, Bekasi, SG 50093",Jayapura,2002-01-29,2026-03-03,2400000,Active
+E7D85293,4483432103037456,Intan Habibi,intan.habibi@hotmail.com,(004) 640 2805,"Jalan Rawamangun No. 59, Sukabumi, MU 67295",Samarinda,1975-03-07,2024-11-14,4240000,Inactive
+EDB0D78A,1224392309961881,Jagapati Laksmiwati,jagapati.laksmiwati@yahoo.com,(0587) 637 5831,"Gang Gegerkalong Hilir No. 908, Surabaya, Kalimantan Tengah 90434",Pasuruan,1998-05-21,2022-03-20,4050000,Suspended
+A9AA199D,9065802507041090,Karen Mahendra,karen.mahendra@gmail.com,+62 (18) 167 6406,"Jl. Gegerkalong Hilir No. 671, Serang, RI 20091",Solok,1983-09-27,2022-08-22,99000000000,Active
+146D2ECF,6671232405706515,Kasiyah Permadi,kasiyah.permadi@gmail.com,+62 (45) 413 0068,"Jalan Moch. Toha No. 8, Tanjungpinang, MU 63299",Batam,1979-04-19,2022-11-09,3920000,Inactive
+DCBF1036,,Darsirah Nasyidah,darsirah.nasyidah@gmail.com,,"Jalan Jend. A. Yani No. 61, Yogyakarta, Bengkulu 07987",Banda Aceh,1993-02-23,2025-06-04,4310000,Suspended
+88489104,3893132601025284,Hani Padmasari,hani.padmasari@gmail.com,+62-056-319-5266,"Gg. Moch. Toha No. 4, Mojokerto, JB 41708",Jayapura,2003-04-20,2025-04-25,4040000,Inactive
+F01376B8,7953540412675849,Zizi Uwais,zizi.uwais@yahoo.com,(0627) 628 1467,"Jl. Setiabudhi No. 11, Tangerang Selatan, Papua Barat 13170",Bima,2004-03-29,2025-06-15,1340000,Inactive
+5AE4B01C,5131740104877400,Ajeng Thamrin,ajeng.thamrin@gmail.com,+62-87-245-1176,"Gg. Otto Iskandardinata No. 821, Sawahlunto, Kalimantan Timur 04876",Palu,1978-10-04,2025-06-07,4260000,Suspended
+171A7B8B,8665111707055008,Zalindra Permata,zalindra.permata@yahoo.com,+62-073-097-8100,"Jalan Cempaka No. 7, Pangkalpinang, BB 16056",Tanjungbalai,1982-05-06,2025-02-13,4510000,Suspended
+34244A2A,4088751009983856,Almira Kurniawan,almira.kurniawan@gmail.com,+62 (073) 251-1461,"Gang Kebonjati No. 522, Banjar, SG 51775",Prabumulih,2004-10-27,2023-08-03,650000,Active
+28CB2030,4034770706774338,Halima Hakim,halima.hakim@yahoo.com,+62 (95) 125 5503,"Gang Pasteur No. 93, Tasikmalaya, NT 02477",Purwokerto,1987-01-12,2022-10-09,2450000,Active
+9BB318EB,5827212103818917,Harimurti Marbun,harimurti.marbun@yahoo.com,(061) 037 7256,"Jalan Suryakencana No. 1, Tidore Kepulauan, Banten 63379",Tomohon,1974-04-21,2022-06-17,4730000,Active
+7908844D,6186141404676989,Balidin Usamah,balidin.usamah@yahoo.com,0875133565,"Jalan Cikutra Timur No. 47, Pematangsiantar, KS 67606",Sibolga,1985-10-16,2025-04-08,2290000,Inactive
+ABC9B3DE,2657670109001848,Putri Fujiati,putri.fujiati@hotmail.com,(073) 803 0241,"Jalan Gedebage Selatan No. 378, Padang Sidempuan, Sulawesi Tengah 42623",Semarang,1990-06-09,2022-08-09,1790000,Active
+21740329,9770782408014477,Lili Gunarto,lili.gunarto@yahoo.com,+62 (038) 591 1542,"Jalan Wonoayu No. 36, Bandar Lampung, SR 74185",Tasikmalaya,1997-10-29,2025-03-11,1150000,Suspended
+91309F14,6732431906036527,Lili Najmudin,lili.najmudin@gmail.com,+62 (79) 393-5953,"Gg. Siliwangi No. 1, Sungai Penuh, Gorontalo 67231",Tebingtinggi,1999-12-26,2023-08-27,4070000,Inactive
+557829D0,8542820609026070,Widya Sihotang,widya.sihotang@yahoo.com,(0204) 699-2998,"Jalan Setiabudhi No. 104, Langsa, Sulawesi Tenggara 36051",Ambon,1986-03-15,2023-03-10,3820000,Active
+42F13304,2981912301883751,Zaenab Kuswandari (Baru),baru.zaenab.kuswandari@yahoo.com,+62-0771-914-8173,"Gang W.R. Supratman No. 84, Kendari, JT 11235",Serang,1990-12-21,2026-01-23,2110000,Active
+995B9CC5,2938810602855580,Gatot Puspita,not-an-email-at-all,+62-39-413-8519,"Gang M.T Haryono No. 86, Dumai, KT 05654",Yogyakarta,1974-09-21,2023-09-29,2470000,Inactive
+559F6FBD,6928441307662585,Rama Maheswara,rama.maheswara@yahoo.com,0841391669,"Jalan Jend. A. Yani No. 9, Subulussalam, Sumatera Barat 25866",Bandar Lampung,1987-07-20,2024-09-20,4640000,Suspended
+B3771E0C,6990662203833929,Genta Agustina,genta.agustina@yahoo.com,(0184) 990 5923,"Gang Lembong No. 6, Pekanbaru, Riau 56750",Pekalongan,1995-04-04,2024-05-24,3360000,Active
+2634E62C,5836512302702843,Maida Manullang,maida.manullang@hotmail.com,(0106) 942-6581,"Gang Wonoayu No. 031, Tebingtinggi, Nusa Tenggara Barat 96595",Serang,1998-09-16,2024-07-25,670000,Suspended
+EE57627F,6464521506636359,Nurul Santoso,nurul.santoso@yahoo.com,+62 (124) 644 0172,"Gang Rajawali Barat No. 582, Makassar, JK 17221",Pariaman,1977-02-24,2022-10-10,2970000,Active
+E42B27AA,3219863008734424,Dagel H.,dagel.halim@yahoo.com,+62-612-508-4501,"Jalan Kutai No. 7, Padangpanjang, BB 09177",Bitung,1970-03-17,2025-09-20,1550000,Active
+563B0F5B,8088441709977400,Dwi Saputra,dwi.saputra@hotmail.com,+62 (421) 805-9627,"Gang Dipenogoro No. 5, Binjai, DKI Jakarta 54730",Pariaman,1963-03-01,2022-08-29,2010000,Inactive
+8BF5A226,6352890704989123,Vivi Pertiwi,vivi.pertiwi@yahoo.com,+62 (048) 602 8064,"Gg. Indragiri No. 2, Kota Administrasi Jakarta Selatan, Banten 50238",Tasikmalaya,2003-05-11,2023-11-22,540000,Inactive
+788F65AE,1241701202943214,Estiono Yulianti,estiono.yulianti@gmail.com,+62-013-555-0613,"Jl. Veteran No. 94, Metro, NB 37772",Purwokerto,1972-03-18,2021-07-27,3010000,Inactive
+0A59C428,3011420609995035,Carub Widiastuti,carub.widiastuti@hotmail.com,(0110) 448-6537,"Jl. M.T Haryono No. 79, Bengkulu, Kepulauan Bangka Belitung 87075",Jayapura,2003-05-06,2024-04-05,1880000,Inactive
+B06CEF05,9599212511987967,Mala Suwarno,mala.suwarno@yahoo.com,+62 (145) 919-7793,"Jl. Antapani Lama No. 267, Bima, Jawa Barat 10407",Depok,1973-01-10,2023-10-18,1810000,Inactive
+1EB26337,7152391102945909,Carla Mandasari (Baru),baru.carla.mandasari@yahoo.com,087 976 3068,"Gg. Rajawali Timur No. 0, Pariaman, Sulawesi Tenggara 66366",Tanjungbalai,1968-05-07,2022-07-18,1060000,Active
+FE7B9A50,5546502908037724,Gilda Lazuardi,gilda.lazuardi@yahoo.com,+62-651-193-1936,"Gang Bangka Raya No. 69, Surabaya, Sulawesi Barat 06364",Medan,1992-04-18,2024-04-10,3030000,Active
+957D3CFD,5211200908783049,Hasim Zulkarnain,hasim.zulkarnain@yahoo.com,(0626) 049-1969,"Jalan Stasiun Wonokromo No. 61, Bontang, DKI Jakarta 98994",Surakarta,1963-12-11,2026-06-13,4290000,Suspended
+02B3B4E7,8758802102748063,Prima Hakim,prima.hakim@hotmail.com,(0246) 661-7100,"Gg. H.J Maemunah No. 926, Parepare, BE 62592",Tidore Kepulauan,1968-07-09,2022-11-18,3000000,Suspended
+E9126CD6,7524270105927125,Lili Rajata,lili.rajata@hotmail.com,+62-0077-466-1241,"Gg. Pasirkoja No. 5, Padang, KB 50414",Padang Sidempuan,1965-05-25,2025-08-25,2170000,Active
+2C0608A4,2337861211889366,Embuh Usamah,embuh.usamah@yahoo.com,0-0178-776-1420,"Gg. Surapati No. 998, Bitung, Gorontalo 48557",Depok,1995-12-28,2022-07-31,99000000000,Suspended
+4F429F0A,4468800212818862,Jasmin Wulandari,jasmin.wulandari@gmail.com,+62-802-058-5636,"Gang Jayawijaya No. 841, Tebingtinggi, Kepulauan Riau 49168",Singkawang,1964-12-31,2026-01-23,830000,Active
+84CEEE6A,1798322205974014,Estiono Hutasoit,estiono.hutasoit@yahoo.com,+62 (017) 076-6818,"Gang Kebonjati No. 6, Ambon, Jambi 52571",Kota Administrasi Jakarta Utara,1988-08-05,2024-02-16,2590000,Suspended
+E573B147,4485203110856609,Restu Hartati,restu.hartati@yahoo.com,+62 (0938) 297 2153,"Jalan Ahmad Dahlan No. 71, Cirebon, Sulawesi Tenggara 00886",Batu,1961-06-15,2024-12-26,2940000,Active
+C75CCFA9,8465703003714162,Nadia Prasasta,nadia.prasasta@yahoo.com,+62 (064) 708 1618,"Jalan Joyoboyo No. 904, Salatiga, BA 99186",Kotamobagu,1972-10-04,2024-05-28,2760000,Suspended
+CA704912,7343900210667752,Sakura Rajasa,sakura.rajasa@gmail.com,+62-601-167-4520,"Gg. Otto Iskandardinata No. 51, Ternate, JA 98883",Banjarbaru,1995-12-02,2022-09-16,4560000,Inactive
+9025FFA2,8591360309009272,Ika Tampubolon,ika.tampubolon@yahoo.com,+62 (50) 046-4152,"Gg. Erlangga No. 15, Kediri, SG 52729",Kota Administrasi Jakarta Barat,1962-05-12,2022-10-17,4900000,Active
+F12D4721,1442742901947914,Irnanto Hidayat,irnanto.hidayat@gmail.com,(0565) 932 7991,"Gg. Veteran No. 8, Tarakan, Riau 54567",Pariaman,1984-10-25,2024-06-03,560000,Suspended
+F9C2201D,4897191003006654,Vivi Tamba,vivi.tamba@gmail.com,+62 (282) 569 1292,"Gg. Joyoboyo No. 7, Tangerang, DKI Jakarta 11896",Jambi,1972-03-11,2024-12-24,4800000,Inactive
+70C80F15,7152391102945909,Carla Mandasari,carla.mandasari@yahoo.com,+62-018-381-6329,"Gg. Rajawali Timur No. 0, Pariaman, Sulawesi Tenggara 66366",Tanjungbalai,1968-05-07,2022-07-18,1060000,Active
+8DD7277C,9387861905866977,Farah Pranowo,farah.pranowo@yahoo.com,+62-333-985-5334,"Jl. Pelajar Pejuang No. 49, Batu, Nusa Tenggara Barat 85656",Pekanbaru,2005-04-27,2023-01-08,3960000,Suspended
+1A382934,2767822808958465,Mustika H.,mustika.hutapea@yahoo.com,+62 (0593) 309 5100,"Gang Ciwastra No. 72, Bengkulu, Sulawesi Barat 23830",Pekalongan,1970-12-01,2024-06-19,520000,Suspended
+34996C3A,8581192508685642,Lala Saragih,lala.saragih@hotmail.com,(0269) 491-8055,"Jalan Lembong No. 34, Bukittinggi, JI 51347",Payakumbuh,1994-06-13,2025-10-04,3830000,Suspended
+EBD1E654,1542461305737647,Raharja Prasasta,raharja.prasasta@gmail.com,+62 (981) 283 2744,"Gg. Rungkut Industri No. 01, Lubuklinggau, Nusa Tenggara Barat 07056",Tidore Kepulauan,1975-10-06,2026-03-01,2960000,Suspended
+260E04B5,1320331511762830,Calista Saefullah,calista.saefullah@gmail.com,+62 (0966) 273 6923,"Gang Kapten Muslihat No. 001, Banjarmasin, Kepulauan Riau 13776",Tomohon,2002-06-06,2022-03-29,2120000,Active
+C9BC9264,1218880101074616,Estiawan Utama,estiawan.utama@yahoo.com,+62 (16) 856-4748,"Jalan Ciwastra No. 946, Prabumulih, SB 92708",Banjar,1974-05-12,2025-01-29,960000,Active
+B91A1D1B,8896700309801264,Bella Habibi,bella.habibi@hotmail.com,+62 (81) 260 6459,"Gg. Dr. Djunjunan No. 4, Sabang, MA 62096",Tarakan,1973-07-29,2025-06-04,720000,Active
+6797A91F,5152391108854969,Elisa Rahmawati,elisa.rahmawati@yahoo.com,+62-727-533-8746,"Jl. Cikutra Barat No. 87, Langsa, DI Yogyakarta 76885",Pekanbaru,1970-02-12,2025-04-08,1070000,Active
+5A91041F,1788751905651160,Ayu Nasyidah,ayu.nasyidah@yahoo.com,089 579 7718,"Gang Kutai No. 67, Dumai, MU 08256",Kotamobagu,1982-05-27,2024-06-05,2150000,Active
+240C80E0,3938521612663981,Nilam Prasetya,nilam.prasetya@gmail.com,(066) 936-1196,"Jl. HOS. Cokroaminoto No. 6, Makassar, Gorontalo 75148",Pariaman,1964-04-02,2023-11-28,1850000,Inactive
+5AAD603B,1572281511972520,Eka Nashiruddin,eka.nashiruddin@yahoo.com,0816422613,"Jl. Pasirkoja No. 9, Tebingtinggi, Gorontalo 49116",Depok,2008-02-13,2023-09-17,2850000,Inactive
+38EB57B4,6671232405706515,Kasiyah Permadi,kasiyah.permadi@gmail.com,+62 (45) 413 0068,"Gang Sukabumi No. 12, Probolinggo, PA 00032",Kota Administrasi Jakarta Timur,1979-04-19,2022-11-09,3920000,Inactive
+F6CFE0F7,1819281906836049,Fathonah Saputra,fathonah.saputra@hotmail.com,+62 (373) 721-9032,"Gang Wonoayu No. 74, Salatiga, DI Yogyakarta 36063",Bandar Lampung,1973-01-20,2025-05-24,1960000,Active
+8F7D5DDE,9867421801029205,Vanesa Pangestu,vanesa.pangestu@yahoo.com,+62 (0072) 631-0297,"Jl. M.T Haryono No. 369, Semarang, Papua 63240",Banjar,1963-11-26,2024-10-25,1950000,Inactive
+76E4530A,6613511003916429,Waluyo Padmasari,waluyo.padmasari@yahoo.com,(083) 103-4244,"Jl. Indragiri No. 46, Tebingtinggi, KR 32120",Subulussalam,1961-09-01,2022-07-16,4000000,Suspended
+A57EC26B,3781613006621260,Tasnim Widiastuti,tasnim.widiastuti@hotmail.com,+62 (002) 374-0996,"Jl. Ciwastra No. 009, Singkawang, JT 36222",Magelang,2002-01-19,2026-01-18,3290000,Inactive
+F98E627B,4436150107856472,Kacung Saefullah,kacung.saefullah@yahoo.com,+62 (95) 294-1247,"Jalan Sukajadi No. 62, Lubuklinggau, Jambi 73516",Kendari,1985-05-28,2022-09-12,4270000,Active
+3C22AA3E,3034730706033501,Zelda W.,zelda.wibowo@hotmail.com,(082) 874-4352,"Gg. KH Amin Jasuta No. 3, Bitung, SR 25390",Bogor,1972-07-10,2025-02-25,99000000000,Active
+16BBAE85,5442402509964158,Ifa Suryatmi,ifa.suryatmi@gmail.com,0823955820,"Gg. Rungkut Industri No. 089, Tangerang, Sulawesi Barat 29068",Sabang,1975-05-04,2022-02-03,99000000000,Inactive
+857EDE5A,2479781402821528,Xanana Dabukke,xanana.dabukke@gmail.com,+62 (057) 526 7362,"Jalan M.T Haryono No. 31, Ternate, Nusa Tenggara Barat 83353",Kotamobagu,1967-03-28,2024-05-01,4350000,Inactive
+CFC2F881,5327580412846090,Yahya Pertiwi,yahya.pertiwi@hotmail.com,+62 (0049) 528-5738,"Gang Jamika No. 9, Surakarta, Kepulauan Riau 51493",Tomohon,1967-04-13,2021-10-23,4850000,Suspended
+6E189248,3027810205801140,Vera Fujiati,vera.fujiati@hotmail.com,0832153665,"Jl. Suniaraja No. 4, Kota Administrasi Jakarta Barat, Jawa Timur 92054",Surabaya,1969-10-01,2025-03-20,4510000,Active
+835DFE8C,2999752510665692,Anita Suryono,anita.suryono@gmail.com,+62 (10) 866-2951,"Jl. Erlangga No. 76, Kotamobagu, Maluku Utara 58341",Manado,1964-08-04,2024-06-19,2020000,Suspended
+25F54101,3520680211825927,Syahrini Santoso,syahrini.santoso@gmail.com,(095) 414-1621,"Jl. Asia Afrika No. 348, Tangerang Selatan, Maluku Utara 45198",Tebingtinggi,1970-11-29,2023-02-25,1350000,Suspended
+D0F29D4C,1120401307713928,Padma Winarno,padma.winarno@yahoo.com,+62 (091) 459 9560,"Gg. Tubagus Ismail No. 80, Parepare, Papua Barat 05821",Lhokseumawe,1979-06-12,2025-04-21,960000,Active
+A5EAACAE,4485203110856609,Restu H.,restu.hartati@yahoo.com,+62 (0938) 297 2153,"Jalan Ahmad Dahlan No. 71, Cirebon, Sulawesi Tenggara 00886",Batu,1961-06-15,2024-12-26,2940000,Active
+F0A48542,4146921903047058,Cakrabirawa Jailani,cakrabirawa.jailani@yahoo.com,+62 (508) 313-6549,"Gg. Gegerkalong Hilir No. 542, Bontang, Kalimantan Barat 82154",Cimahi,1995-01-01,2022-07-29,3180000,Suspended
+110F8A3F,3339442306618435,Sakti Maryati,sakti.maryati@hotmail.com,+62 (056) 903-8632,"Jalan Gardujati No. 877, Palembang, YO 45567",Pematangsiantar,2001-12-07,2024-08-31,2410000,Suspended
+BB71B13E,2179411002648673,Nilam Widodo,nilam.widodo@hotmail.com,+62 (97) 519 8009,"Jalan Gegerkalong Hilir No. 21, Salatiga, MU 01290",Padangpanjang,1972-04-20,2022-09-18,1810000,Active
+49B6B7CB,2627661905794121,Prabawa Marpaung,prabawa.marpaung@gmail.com,+62 (098) 915 7414,"Jl. Indragiri No. 794, Kediri, Aceh 77383",Kupang,1967-01-18,2024-01-19,2200000,Inactive
+D6EE5999,7218292403813340,Mala Saptono,mala.saptono@yahoo.com,+62 (494) 909-7428,"Gang Jend. A. Yani No. 3, Kota Administrasi Jakarta Barat, MA 38212",Palangkaraya,1994-05-15,2026-06-09,2630000,Suspended
+842C6580,1575722311657910,Raisa Hardiansyah,raisa.hardiansyah@hotmail.com,(0328) 592-3425,"Jl. Bangka Raya No. 087, Tasikmalaya, Nusa Tenggara Timur 03533",Bitung,2005-03-25,2022-04-11,830000,Suspended
+68AEC86E,8567120709977585,Cengkir Marpaung,cengkir.marpaung@gmail.com,+62 (076) 556-1733,"Gg. Antapani Lama No. 7, Samarinda, Sulawesi Selatan 36454",Salatiga,1989-12-15,2023-12-14,580000,Suspended
+B9E439BA,2662131103841563,Rahmi Hutasoit,rahmi.hutasoit@hotmail.com,083 151 5659,"Gang Erlangga No. 902, Bengkulu, Sulawesi Tenggara 28777",Parepare,1989-02-10,2025-11-11,1310000,Inactive
+1DFB6964,5961690302043864,Hana Rajasa,hana.rajasa@hotmail.com,+62 (0025) 620 0208,"Gg. Jend. A. Yani No. 3, Jambi, KS 23406",Pangkalpinang,1996-10-03,2024-10-07,4730000,Active
+2F5E992D,4119681706033255,Gatra Prasetyo,gatra.prasetyo@gmail.com,(0181) 043 8604,"Gang S. Parman No. 494, Pangkalpinang, JB 07951",Pekalongan,2000-02-04,2023-01-01,1250000,Suspended
+BA299876,1333502207615004,Unjani Dabukke,unjani.dabukke@hotmail.com,(054) 587 8114,"Jl. Stasiun Wonokromo No. 6, Padangpanjang, SG 99438",Kota Administrasi Jakarta Utara,1996-09-11,2021-12-15,2440000,Suspended
+D5C1F199,3961362710928377,Uli Melani,uli.melani@gmail.com,+62-45-338-1573,"Gg. Cikutra Timur No. 97, Batu, NB 97958",Pekalongan,1974-02-21,2021-10-27,3360000,Active
+574442B1,1841921805708235,Widya Mandala (Baru),not-an-email-at-all,+62 (0355) 684-2225,"Gang Ir. H. Djuanda No. 873, Tanjungpinang, PA 88163",Palopo,1979-06-30,2024-01-05,3940000,Inactive
+1CD6A20B,5157760712014410,Hardi Winarno,hardi.winarno@hotmail.com,+62 (0948) 430-1730,"Gg. Monginsidi No. 2, Pematangsiantar, JT 00050",Semarang,1978-09-29,2023-01-15,1840000,Inactive
+0BD4DF61,4219331410648787,Estiono Astuti,estiono.astuti@hotmail.com,+62 (0541) 668-3671,"Gang Merdeka No. 94, Palopo, SU 54178",Sibolga,1967-07-22,2021-09-16,3480000,Inactive
+484317B2,3990620107828030,Hamzah Rahmawati,hamzah.rahmawati@hotmail.com,(0310) 016 6476,"Jl. Veteran No. 07, Kotamobagu, KS 96338",Bogor,1985-08-17,2025-05-11,1660000,Inactive
+B444BBDC,2981912301883751,Zaenab Kuswandari,zaenab.kuswandari@yahoo.com,+62 (0052) 764 1005,"Gang W.R. Supratman No. 84, Kendari, JT 11235",Serang,1990-12-21,2026-01-23,2110000,Active
+8652E2D0,3219863008734424,Dagel Halim,dagel.halim@yahoo.com,+62-612-508-4501,"Jalan Kutai No. 7, Padangpanjang, BB 09177",Bitung,1970-03-17,2025-09-20,1550000,Active
+15E2D0D3,8619660301765535,Halima Wijayanti,halima.wijayanti@gmail.com,081 219 8671,"Jalan Kapten Muslihat No. 1, Tangerang Selatan, MA 63346",Semarang,1970-03-25,2021-11-16,3750000,Inactive
+CD11B345,3478200106041164,Citra P.,citra.prasasta@gmail.com,+62 (059) 895-9710,"Jl. Astana Anyar No. 09, Banda Aceh, Sulawesi Barat 96296",Jayapura,1989-04-29,2025-03-14,2060000,Inactive
+720F2EA8,2039451010884562,Mahdi Pradana,mahdi.pradana@yahoo.com,+62-0172-257-8740,"Gg. Cihampelas No. 97, Palopo, Jawa Timur 91023",Batam,1997-09-27,2025-02-07,1290000,Active
+5CB30FAE,7881890511005867,Prabowo Maryati,prabowo.maryati@gmail.com,(0271) 973 7931,"Gang Lembong No. 93, Singkawang, PB 24818",Mojokerto,2001-12-05,2023-01-27,3580000,Suspended
+55763C83,8315430209985661,Vega Budiyanto,vega.budiyanto@gmail.com,(057) 908-2370,"Gang Rungkut Industri No. 67, Madiun, Sulawesi Tenggara 12118",Purwokerto,1989-12-01,2023-06-10,2740000,Suspended
+85F93C1F,2979951607766577,Devi Purwanti,devi.purwanti@yahoo.com,+62-0390-036-1555,"Jl. Siliwangi No. 438, Palangkaraya, Sumatera Barat 00006",Tanjungpinang,1988-11-12,2023-07-04,3090000,Suspended
+1D831D9D,4369652201773798,Warsita Megantara,warsita.megantara@yahoo.com,+62 (067) 646 1189,"Jl. Gedebage Selatan No. 23, Lhokseumawe, KS 74021",Tanjungpinang,1972-09-01,2022-06-15,510000,Active
+BDF96BAB,5497910512607560,Cakrajiya Permata,cakrajiya.permata@gmail.com,+62 (91) 597-8813,"Gang Rajiman No. 9, Pontianak, Riau 90607",Lubuklinggau,1992-06-19,2023-12-30,3190000,Inactive
+1911038D,8665111707055008,Zalindra Permata,zalindra.permata@yahoo.com,0-073-097-8100,"Jalan Cempaka No. 7, Pangkalpinang, BB 16056",Tanjungbalai,1982-05-06,2025-02-13,4510000,Suspended
+E9C0D485,4382550506666938,Mahdi Rajasa,mahdi.rajasa@yahoo.com,(0362) 821 3293,"Gg. Soekarno Hatta No. 9, Palopo, JK 31780",Tanjungpinang,1970-07-22,2024-11-02,4440000,Inactive
+5AF9B11F,6259481310683752,Ibrani Sihombing,ibrani.sihombing@hotmail.com,0848334467,"Jalan HOS. Cokroaminoto No. 554, Salatiga, Jawa Tengah 35504",Tebingtinggi,1967-09-19,2024-12-10,2400000,Active
+613423C0,1158220410981920,Hamima Tampubolon,hamima.tampubolon@hotmail.com,(0523) 588 0728,"Gang Soekarno Hatta No. 771, Cirebon, MA 43089",Parepare,1967-04-09,2024-05-05,750000,Inactive
+3AE5FE55,8599960506833900,Jagaraga Mandala,jagaraga.mandala@hotmail.com,+62 (050) 586-0754,"Gang Waringin No. 08, Bekasi, BA 97889",Sukabumi,1967-10-28,2023-06-16,1730000,Suspended
+9841EF6F,5919461411928246,Hafshah Halim,hafshah.halim@hotmail.com,0837674320,"Gg. Jamika No. 0, Samarinda, NB 50254",Surabaya,2004-04-07,2026-03-22,4900000,Suspended
+D1CBE140,7825853005674409,Galiono Waluyo,galiono.waluyo@gmail.com,+62 (0842) 194 4826,"Gang Dr. Djunjunan No. 776, Balikpapan, Sulawesi Tengah 18077",Kotamobagu,1993-05-25,2026-07-23,4470000,Inactive
+EC70D3D4,7731202906758819,Azalea Ardianto,azalea.ardianto@yahoo.com,+62-22-227-7652,"Jl. Gardujati No. 32, Bekasi, BT 05231",Jayapura,1994-05-23,2023-03-29,4960000,Inactive
+2BA1B28D,4957392007833035,Sadina Saputra,sadina.saputra@yahoo.com,(063) 548 8585,"Jl. M.T Haryono No. 66, Pontianak, MA 09525",Blitar,1998-02-16,2021-09-01,1670000,Active
+1AFC8089,4544901701883888,Dinda Aryani,dinda.aryani@gmail.com,(088) 999 8519,"Jalan Siliwangi No. 3, Tomohon, SR 70412",Ambon,2001-05-10,2023-05-29,1390000,Inactive
+C3007617,1841921805708235,Widya Mandala,widya.mandala@yahoo.com,(0358) 730-7612,"Gang Ir. H. Djuanda No. 873, Tanjungpinang, PA 88163",Palopo,1979-06-30,2024-01-05,3940000,Inactive
+0543C763,7625592008681787,Ifa Winarsih,ifa.winarsih@yahoo.com,+62-81-003-4389,"Gg. Jend. Sudirman No. 64, Lhokseumawe, Riau 52867",Kota Administrasi Jakarta Utara,2004-12-04,2024-10-06,4890000,Suspended
+0A0BFF8B,5845411507741278,Hani Maryati,hani.maryati@yahoo.com,+62-430-779-3771,"Gg. Suryakencana No. 789, Palangkaraya, Maluku 42749",Palangkaraya,1976-05-22,2024-12-08,1490000,Active
+7B0EE7B4,2741150106789505,Cemplunk Yuniar,cemplunk.yuniar@hotmail.com,+62-83-815-8554,"Jalan Laswi No. 241, Bima, Sulawesi Utara 46554",Padangpanjang,1967-09-13,2025-09-02,1270000,Active
+E22991C8,9918770907918758,Puput Anggriawan,puput.anggriawan@gmail.com,+62-522-457-6635,"Jl. Veteran No. 69, Kendari, JK 24829",Pematangsiantar,1966-09-07,2023-07-23,1720000,Inactive
+7ED9886F,4882932205064339,Faizah Puspita,faizah.puspita@gmail.com,(079) 655-9262,"Jl. Surapati No. 551, Depok, Aceh 94869",Tegal,1961-06-29,2023-08-06,4690000,Inactive
+36F536EB,3046711601944943,Ellis S.,ellis.sihombing@hotmail.com,+62-179-945-2100,"Jl. Moch. Toha No. 810, Salatiga, JK 44979",Denpasar,1987-11-28,2025-02-13,4950000,Inactive
+6D0666A6,5881322705671522,Leo Adriansyah,leo.adriansyah@hotmail.com,+62 (0133) 984 2706,"Gang M.H Thamrin No. 1, Jambi, Kepulauan Bangka Belitung 18339",Tegal,1971-06-03,2025-01-06,4560000,Active
+931B83C1,3347471211052579,Maryadi Manullang,maryadi.manullang@hotmail.com,0841370760,"Gang Surapati No. 226, Lubuklinggau, Sulawesi Selatan 48183",Makassar,2003-05-09,2023-04-03,4180000,Active
+45BEBDCF,9065802507041090,Karen M.,karen.mahendra@gmail.com,+62 (18) 167 6406,"Jl. Gegerkalong Hilir No. 671, Serang, RI 20091",Solok,1983-09-27,2022-08-22,3080000,Active
+C9FDFD5F,5058862106795327,Winda Hutapea,winda.hutapea@hotmail.com,+62-0257-719-5135,"Gg. Cempaka No. 4, Yogyakarta, Sulawesi Barat 87980",Pekanbaru,1971-06-05,2022-10-03,2540000,Suspended
+BB889DD5,6429633105624560,Jelita Winarsih,jelita.winarsih@yahoo.com,(065) 012 1636,"Jalan Pasirkoja No. 7, Cimahi, BB 98999",Palu,2004-04-14,2022-07-03,770000,Inactive
+6A253916,5543580208806187,Salwa Zulkarnain,salwa.zulkarnain@yahoo.com,(015) 977-3750,"Gang S. Parman No. 3, Binjai, BE 96559",Malang,2003-11-28,2023-12-08,2550000,Active
+3F57ED5A,4915810902953718,Jelita Suartini,jelita.suartini@yahoo.com,+62-55-179-4679,"Jl. W.R. Supratman No. 4, Bau-Bau, LA 02403",Tomohon,1989-01-27,2022-07-11,1860000,Inactive
+A921337C,3613832201036607,Tiara Suartini,tiara.suartini@gmail.com,(049) 648-6111,"Jalan Surapati No. 146, Palangkaraya, KT 75155",Tual,1971-05-30,2025-02-15,550000,Suspended
+69A29116,7793370809009929,Bahuwarna Puspasari,bahuwarna.puspasari@yahoo.com,(0729) 877 9244,"Jalan Yos Sudarso No. 74, Magelang, Kalimantan Tengah 58603",Metro,2004-07-23,2022-06-08,2080000,Active
+0B174773,1742350203816443,Jati Hardiansyah,jati.hardiansyah@gmail.com,082 228 3931,"Jl. R.E Martadinata No. 543, Kota Administrasi Jakarta Selatan, KT 72860",Bau-Bau,1993-06-06,2023-07-18,3330000,Suspended
+D41342ED,1265661006663832,Tira Samosir,tira.samosir@hotmail.com,+62 (079) 006-2043,"Gang Otto Iskandardinata No. 51, Payakumbuh, Bali 47376",Manado,1984-11-05,2023-01-28,4210000,Suspended
+B701B2B2,8413430309042352,Gamani Suryatmi,gamani.suryatmi@hotmail.com,0887560605,"Gg. Cikutra Barat No. 66, Batam, Jawa Barat 29781",Gorontalo,1995-08-23,2023-08-08,1940000,Active
+D9805E03,7178141703687758,Sidiq Nuraini,sidiq.nuraini@gmail.com,(081) 045 3981,"Gang Moch. Ramdan No. 334, Ternate, BA 92136",Jambi,2007-02-20,2026-04-28,700000,Inactive
+C904A8E9,4576452505953909,Ihsan Hasanah,ihsan.hasanah@yahoo.com,+62-0471-314-1822,"Gang Pasir Koja No. 58, Magelang, Kepulauan Riau 25710",Batu,1963-05-26,2023-04-05,1820000,Inactive
+71758ED8,7028142801867272,Ika Pradana,ika.pradana@gmail.com,+62 (0904) 221-3621,"Gg. Dr. Djunjunan No. 94, Tarakan, Kalimantan Selatan 90437",Tarakan,1977-09-16,2025-07-09,3890000,Active
+8785ACCD,9587761802988293,Hardana Yulianti,hardana.yulianti@gmail.com,+62 (068) 324-1696,"Jl. Kiaracondong No. 531, Meulaboh, Jawa Timur 48978",Bandung,1990-05-19,2025-09-22,950000,Suspended
+34CBFC63,6065910403701832,Almira Laksmiwati,almira.laksmiwati@yahoo.com,+62 (68) 124-1632,"Gang Pasir Koja No. 802, Banjarbaru, YO 62637",Lhokseumawe,1975-04-10,2022-08-06,4640000,Suspended
+CBFA8C0D,6627180909672599,Viman Saefullah,viman.saefullah@yahoo.com,(063) 809-1305,"Gg. Sukabumi No. 7, Pasuruan, Gorontalo 86416",Jambi,1998-02-14,2023-07-02,2900000,Suspended
+B87B327F,7274930802758316,Rusman Winarsih,rusman.winarsih@yahoo.com,0841262826,"Jalan Sukabumi No. 146, Sungai Penuh, Papua Barat 30252",Batam,1982-09-28,2023-09-13,1730000,Inactive
+36983C4A,8345332904673864,Aurora Zulaika,aurora.zulaika@gmail.com,+62 (071) 463 8849,"Jalan PHH. Mustofa No. 691, Bitung, JK 89814",Bogor,2002-12-19,2022-01-19,99000000000,Inactive
+B1A1B624,3927560605698221,Ida Astuti,ida.astuti@gmail.com,+62 (566) 307 5176,"Gang Dipatiukur No. 0, Palangkaraya, Sulawesi Utara 97842",Kotamobagu,2000-08-01,2024-04-27,3600000,Suspended
+AA819EE5,4465632711792861,Embuh Maryati,embuh.maryati@yahoo.com,(0701) 985-0752,"Gang Rungkut Industri No. 0, Banjar, MA 96218",Balikpapan,1991-08-01,2025-05-13,1070000,Active
+C0E64EA9,4872872101041640,Taswir Laksita,taswir.laksita@hotmail.com,(0077) 546-0118,"Jalan Pasteur No. 16, Gorontalo, Maluku Utara 03001",Tanjungpinang,1983-04-17,2025-01-05,4520000,Suspended
+1926855F,9671231212754473,Shania Kuswandari,shania.kuswandari@gmail.com,+62-0687-845-7504,"Jalan Suniaraja No. 695, Salatiga, Sumatera Utara 27106",Sawahlunto,1992-10-11,2025-07-02,1050000,Suspended
+0B7229AD,4695472011011349,Ega Wahyuni,ega.wahyuni@yahoo.com,+62 (44) 278-9632,"Gg. Astana Anyar No. 01, Bandar Lampung, KI 90374",Cirebon,2000-10-16,2026-03-12,1320000,Inactive
+A0C05417,5979481502994545,Kani Usada,kani.usada@hotmail.com,+62-99-542-0027,"Jl. Suryakencana No. 0, Jayapura, PA 99625",Tangerang Selatan,1968-09-18,2021-10-19,3210000,Active
+493FAB56,1866480801948180,Irma Thamrin,irma.thamrin@gmail.com,+62-017-591-9243,"Jalan Ahmad Yani No. 156, Ambon, Papua 31193",Sabang,2000-09-03,2025-07-22,3980000,Active
+DCD1B4E6,1189182212012981,Teguh Kuswoyo,teguh.kuswoyo@hotmail.com,+62 (038) 216 7311,"Jl. Antapani Lama No. 730, Padangpanjang, Papua 99326",Jayapura,1993-09-19,2023-10-07,4220000,Active
+470162E6,1272792902805948,Nilam Wastuti,nilam.wastuti@yahoo.com,(0227) 151 7944,"Gg. Veteran No. 043, Batu, SB 90386",Binjai,1966-03-13,1900-01-01,3430000,Active
+28DBDFB4,3429642811991057,Anastasia Siregar,anastasia.siregar@hotmail.com,+62 (0786) 297-6382,"Gang Ronggowarsito No. 24, Manado, Nusa Tenggara Timur 16447",Padangpanjang,1977-11-09,2025-07-20,1970000,Suspended
+599F4D7A,8837231502914984,Cici Mardhiyah,cici.mardhiyah@hotmail.com,+62 (46) 510-6878,"Gg. Soekarno Hatta No. 99, Lhokseumawe, Papua 19988",Magelang,1976-01-30,2022-04-19,2470000,Suspended
+553D3E38,2678691612825184,Puji Usamah,puji.usamah@yahoo.com,+62 (0132) 902 3821,"Gg. Jend. Sudirman No. 530, Denpasar, Banten 16443",Pekanbaru,1982-07-09,2026-05-18,4800000,Inactive
+962C6D4C,2338991308643446,Danu Manullang,danu.manullang@yahoo.com,+62 (0486) 912-2030,"Jl. Moch. Toha No. 721, Bengkulu, Kalimantan Tengah 95256",Manado,1974-10-29,2025-10-09,890000,Active
+7DFC8131,3832903101006887,Ulva Waskita,ulva.waskita@hotmail.com,+62-922-473-0313,"Jalan Otto Iskandardinata No. 176, Ternate, SB 95509",Pariaman,1961-01-15,2023-04-18,4090000,Inactive
+6F00CD69,4589131509022744,Jais H.,jais.hakim@gmail.com,+62 (341) 442-1620,"Gang Cempaka No. 00, Prabumulih, Jawa Timur 70183",Tasikmalaya,1973-11-01,2024-10-17,560000,Inactive
+F6FEB3A4,7745231908714226,Jaya Kuswandari,jaya.kuswandari@yahoo.com,+62 (017) 437-7478,"Jalan W.R. Supratman No. 4, Kota Administrasi Jakarta Utara, Banten 30668",Bima,1992-01-05,2025-02-23,2670000,Suspended
+9D61B251,6645852805044050,Bakijan Setiawan,bakijan.setiawan@hotmail.com,(0002) 722 8386,"Jl. Yos Sudarso No. 2, Pontianak, YO 60329",Palembang,1992-11-14,2026-04-26,3250000,Suspended
+7C172AAB,4346861903674281,Hasim Damanik,hasim.damanik@gmail.com,+62 (0286) 818-6241,"Gg. Astana Anyar No. 803, Depok, RI 21914",Gorontalo,1960-11-08,2022-08-20,840000,Suspended
+16911C8B,3884621007636075,Hamima Maulana,hamima.maulana@gmail.com,089 699 0518,"Gang Astana Anyar No. 39, Cirebon, BB 61838",Samarinda,1978-02-03,2022-11-29,2060000,Suspended
+2DA6C400,5095152011771161,Elvina Kurniawan,elvina.kurniawan@gmail.com,+62 (12) 051 0616,"Gang Ir. H. Djuanda No. 884, Tebingtinggi, SU 49407",Cilegon,1987-04-30,2023-12-16,1260000,Inactive
+8C730570,5879252612059494,Bagas Anggriawan,bagas.anggriawan@hotmail.com,(0520) 679-4533,"Jl. Gegerkalong Hilir No. 79, Payakumbuh, JI 62849",Serang,1963-02-06,2021-08-24,2630000,Inactive
+A62DBBC1,4979980903632528,Dartono Saptono,dartono.saptono@gmail.com,+62 (002) 752-5745,"Gang Wonoayu No. 07, Kendari, Sumatera Utara 69384",Tanjungpinang,1970-01-01,2021-09-05,1140000,Suspended
+FC4E04A2,9764200705735145,Yunita Kurniawan,yunita.kurniawan@gmail.com,(054) 221 8025,"Jl. Stasiun Wonokromo No. 05, Depok, Riau 66616",Purwokerto,1981-12-08,2023-06-25,2770000,Suspended
+BA9FEDB6,9560610501817283,Gamblang Rahayu,gamblang.rahayu@hotmail.com,(058) 645 8768,"Gg. Pasir Koja No. 5, Pekanbaru, AC 36571",Tasikmalaya,1963-08-09,2024-07-23,800000,Active
+2B7FC66B,2139352607844298,Vero Damanik,vero.damanik@hotmail.com,+62 (25) 984-1583,"Jalan Raya Ujungberung No. 613, Bitung, DI Yogyakarta 79852",Madiun,1997-09-11,2024-03-31,3010000,Active
+E2CB91A4,6928441307662585,Rama M.,rama.maheswara@yahoo.com,0841391669,"Jalan Jend. A. Yani No. 9, Subulussalam, Sumatera Barat 25866",Bandar Lampung,1987-07-20,2024-09-20,4640000,Suspended
+73DBC957,6922140501785468,Gasti Rajata,gasti.rajata@yahoo.com,+62 (933) 349-1267,"Gg. Rajiman No. 584, Meulaboh, SG 38518",Kota Administrasi Jakarta Selatan,1993-04-13,2024-06-23,710000,Suspended
+7DD11E4B,6211492703018003,Gatot Mangunsong,gatot.mangunsong@yahoo.com,(0782) 520-1847,"Gang Siliwangi No. 97, Bima, GO 29306",Padang,2006-11-10,2022-07-20,1090000,Suspended
+CC516E7A,8099140809695726,Ani Sirait,ani.sirait@yahoo.com,+62 (072) 122-9637,"Jalan H.J Maemunah No. 36, Parepare, LA 09892",Manado,1975-10-23,2022-07-02,4420000,Active
+BC31E642,4677210812895572,Kusuma Nababan,kusuma.nababan@yahoo.com,+62-0059-100-4403,"Jl. Ahmad Dahlan No. 66, Pematangsiantar, SS 15753",Tual,1999-10-10,2025-03-15,2600000,Suspended
+4D7E215D,4520712805905769,Intan Hutapea,intan.hutapea@yahoo.com,0828293035,"Jl. Cempaka No. 54, Prabumulih, SU 17203",Pematangsiantar,1973-12-14,2025-12-14,4770000,Active
+F68CE3F0,2979692707818403,Olivia Pratiwi,olivia.pratiwi@gmail.com,+62-099-106-6281,"Gg. Gegerkalong Hilir No. 274, Bekasi, Aceh 40142",Tasikmalaya,2000-06-19,2024-12-28,2330000,Active
+E79FEA9A,6732431906036527,Lili Najmudin (Baru),baru.lili.najmudin@gmail.com,082 939 5630,"Gg. Siliwangi No. 1, Sungai Penuh, Gorontalo 67231",Tebingtinggi,1999-12-26,2023-08-27,4070000,Inactive
+57D25F23,8133372604665733,Dian Gunawan,dian.gunawan@hotmail.com,+62 (35) 219-3370,"Gang Dr. Djunjunan No. 2, Banda Aceh, Bali 45080",Solok,2003-05-23,2024-10-11,4780000,Suspended
+A132FEF1,2339620305702689,Rina Mulyani,rina.mulyani@yahoo.com,+62 (75) 989-1184,"Gang Stasiun Wonokromo No. 545, Serang, Sumatera Utara 56136",Lubuklinggau,1988-10-11,2026-01-04,650000,Active
+C88B8CDC,4130862612934571,Puput Irawan,puput.irawan@gmail.com,+62 (74) 222 3616,"Jl. Ciwastra No. 3, Sukabumi, JB 88838",Tanjungpinang,1960-09-05,2021-08-08,3930000,Active
+CD280984,6627180909672599,Viman Saefullah (Baru),baru.viman.saefullah@yahoo.com,+62 (044) 118 6106,"Gg. Sukabumi No. 7, Pasuruan, Gorontalo 86416",Jambi,1998-02-14,2023-07-02,2900000,Suspended
+AB603A85,5535831705859502,Wardi Wacana,wardi.wacana@hotmail.com,+62-004-097-3661,"Jalan Pacuan Kuda No. 419, Salatiga, Nusa Tenggara Timur 95496",Bekasi,1973-02-06,2025-01-16,4310000,Inactive
+B07644E1,8518612502924552,Emil Kusmawati,emil.kusmawati@yahoo.com,(025) 874 5046,"Jl. Surapati No. 0, Balikpapan, NT 89490",Sorong,1971-11-21,2026-06-29,2750000,Active
+4D9B6B41,1814982403837239,Fathonah Prakasa,fathonah.prakasa@yahoo.com,+62-0467-125-6534,"Jalan Pasteur No. 9, Cirebon, Aceh 29957",Padang,1994-12-05,2022-03-18,910000,Active
+6E3D4F4F,2781221511853866,Sidiq Waluyo,sidiq.waluyo@yahoo.com,+62 (988) 634-2641,"Jalan Peta No. 7, Yogyakarta, BE 23888",Manado,1960-11-04,2022-12-05,1020000,Inactive
+018D99E8,1862131411047148,Nalar Iswahyudi,nalar.iswahyudi@gmail.com,+62 (272) 566 4068,"Jalan Cihampelas No. 00, Bau-Bau, SU 80234",Kota Administrasi Jakarta Utara,2000-11-30,2025-07-03,3140000,Suspended
+A20AA084,6523990201942567,Sari Sihotang,sari.sihotang@yahoo.com,+62-011-084-8011,"Jl. BKR No. 42, Mojokerto, SU 55549",Subulussalam,1962-06-09,2023-10-31,1630000,Active
+D52C56DC,4623650305614765,Kamila Narpati,kamila.narpati@hotmail.com,+62 (092) 941-6215,"Gg. Yos Sudarso No. 01, Banjar, PA 68600",Pasuruan,1974-07-31,2022-12-18,1170000,Suspended
+6B47127A,5734761302957647,Soleh Andriani,soleh.andriani@yahoo.com,0874327151,"Jalan Antapani Lama No. 43, Tarakan, SN 16749",Gorontalo,1964-10-03,2022-07-01,4400000,Inactive
+AD9450E8,9581150512987987,Ivan Januar,ivan.januar@gmail.com,(034) 613 5942,"Gang Pasirkoja No. 48, Bima, Banten 17613",Lubuklinggau,1977-01-15,2023-03-12,4470000,Inactive
+D2C9C5B7,3997331109034637,Irma Santoso,irma.santoso@gmail.com,+62 (009) 919 4005,"Gg. S. Parman No. 026, Bau-Bau, MA 28897",Prabumulih,1972-02-27,2022-01-22,3990000,Active
+6B352F65,5795590402729622,Agus Riyanti,agus.riyanti@yahoo.com,+62-074-708-3704,"Gang Gardujati No. 7, Sukabumi, BE 30363",Singkawang,1981-06-29,2025-12-19,3110000,Inactive
+2F2AA17D,8543960901658808,Asmuni Susanti,asmuni.susanti@yahoo.com,+62 (92) 367 6090,"Jl. Sukajadi No. 484, Depok, BT 14686",Singkawang,1971-01-02,2024-03-13,1720000,Inactive
+0C9EDC0D,6613121506697494,Gambira Wibowo,gambira.wibowo@yahoo.com,0-633-673-6945,"Jl. W.R. Supratman No. 5, Kota Administrasi Jakarta Utara, SR 41352",Palembang,1978-11-28,2022-10-09,860000,Suspended
+82382D87,8567120709977585,Cengkir Marpaung (Baru),baru.cengkir.marpaung@gmail.com,+62-0253-773-0804,"Gg. Antapani Lama No. 7, Samarinda, Sulawesi Selatan 36454",Salatiga,1989-12-15,2023-12-14,580000,Suspended
+0BB82319,8493641511074086,Cakrawangsa Usada,cakrawangsa.usada@yahoo.com,(099) 822-0787,"Gang Bangka Raya No. 4, Mataram, Nusa Tenggara Timur 80110",Kupang,1999-08-05,2023-05-30,3110000,Inactive
+9DD88E1A,3428132208921397,Candra Irawan,candra.irawan@gmail.com,+62 (82) 982 7835,"Gg. Ciwastra No. 13, Padang, Jambi 13676",Magelang,2004-05-12,2023-01-12,3320000,Suspended
+FD6E087F,8112500501954981,Eja N.,eja.nainggolan@yahoo.com,+62 (669) 423-3605,"Gang Indragiri No. 2, Serang, LA 90855",Sungai Penuh,1963-01-25,2024-09-20,4680000,Suspended
+1257BF59,3159492609079030,Yani Hassanah,yani.hassanah@yahoo.com,(0184) 134-7555,"Gang Gedebage Selatan No. 9, Padang Sidempuan, Sumatera Utara 40909",Pematangsiantar,1987-10-17,2022-03-04,2940000,Suspended
+07FEBAD2,9918420202659680,Darmaji U.,darmaji.utama@hotmail.com,+62-099-574-3194,"Jl. Jakarta No. 337, Tebingtinggi, Jawa Barat 08613",Medan,2004-09-18,2025-08-05,4280000,Inactive
+CC5FBED8,5582611611051674,Lili Purwanti,lili.purwanti@gmail.com,+62-71-168-8801,"Jalan Rajawali Barat No. 9, Bima, Kepulauan Bangka Belitung 88097",Lhokseumawe,2007-09-28,2023-07-06,3480000,Suspended
+5C6EE8B5,6051723012661160,Jessica Hidayanto,jessica.hidayanto@yahoo.com,+62-766-428-4826,"Gg. R.E Martadinata No. 02, Kotamobagu, Aceh 50617",Mojokerto,2001-03-15,2023-02-07,3380000,Active
+B55FBD6B,4123153008048761,Joko Haryanti,joko.haryanti@hotmail.com,+62-45-403-7990,"Gg. Cikapayang No. 0, Pariaman, MU 73325",Bogor,1966-09-15,2022-07-22,3370000,Inactive
+96C82703,2479781402821528,Xanana Dabukke,xanana.dabukke@gmail.com,+62 (057) 526 7362,"Jl. Indragiri No. 14, Pariaman, NB 92255",Palu,1967-03-28,2024-05-01,4350000,Inactive
+379C27EA,6644552102959210,Tami Saptono,tami.saptono@gmail.com,+62 (025) 893-9230,"Gang Surapati No. 69, Balikpapan, PB 65841",Padangpanjang,2007-07-06,2022-01-08,4180000,Active
+75A3C3C3,3312301309633864,Darmaji Adriansyah,darmaji.adriansyah@yahoo.com,+62-34-464-7586,"Jalan Indragiri No. 727, Palu, Sumatera Barat 29466",Palangkaraya,1982-11-18,2023-11-04,550000,Active
+7835B91E,4029451101678922,Dwi Winarsih (Baru),baru.dwi.winarsih@gmail.com,+62 (97) 996-6928,"Gang M.H Thamrin No. 922, Tebingtinggi, RI 10089",Bengkulu,1976-06-12,2022-11-23,4710000,Suspended
+9886AB86,4821221103048180,Gandewa Hutasoit,gandewa.hutasoit@hotmail.com,+62 (875) 253-7665,"Gang Surapati No. 9, Probolinggo, KU 79249",Ambon,1971-02-17,2023-01-04,2620000,Active
+08E2B89B,8051230912654366,Usman Marpaung,usman.marpaung@hotmail.com,(041) 447-0092,"Gang Kutai No. 389, Balikpapan, Sulawesi Tenggara 73901",Semarang,1981-07-02,2024-07-16,4240000,Active
+F1DF41EE,,Adiarja Saptono,adiarja.saptono@yahoo.com,,"Gg. Dipatiukur No. 9, Cimahi, Papua Barat 06270",Sungai Penuh,1996-07-23,2023-04-23,580000,Suspended
+0A642F54,8647662601897869,Juli Wulandari,juli.wulandari@gmail.com,+62 (60) 804-1699,"Gg. Rajiman No. 006, Binjai, PB 19220",Padang,1996-10-10,2022-07-22,4650000,Active
+582E1650,9776880609815870,Ivan Maheswara,ivan.maheswara@gmail.com,+62-020-096-3640,"Gang Kapten Muslihat No. 346, Kota Administrasi Jakarta Selatan, Gorontalo 27978",Padang Sidempuan,1998-12-13,2022-06-13,3700000,Active
+9BF8B322,9018691508603651,Vanesa Safitri,vanesa.safitri@hotmail.com,(0026) 414-9435,"Gg. Wonoayu No. 3, Yogyakarta, KB 75937",Kendari,1991-03-30,2024-05-19,4310000,Active
+3B4E8AD8,6928441307662585,Rama Maheswara (Baru),baru.rama.maheswara@yahoo.com,085 144 3071,"Jalan Jend. A. Yani No. 9, Subulussalam, Sumatera Barat 25866",Bandar Lampung,1987-07-20,2024-09-20,4640000,Suspended
+9B4C4FE9,2517720907057870,Opan Haryanti,opan.haryanti@hotmail.com,0868568409,"Jl. Pasteur No. 32, Gorontalo, BA 03527",Kota Administrasi Jakarta Barat,1987-10-01,2024-03-11,2230000,Suspended
+6A7565C2,8078840505931348,Zalindra Safitri,zalindra.safitri@gmail.com,+62 (89) 106-0099,"Gg. Suniaraja No. 66, Pasuruan, KR 39546",Solok,1982-12-20,2022-12-17,3680000,Suspended
+75D953F8,3390430709965741,Halim Zulaika,halim.zulaika@hotmail.com,0816541706,"Jl. Monginsidi No. 15, Balikpapan, SS 50595",Magelang,1971-10-24,2022-07-15,4400000,Inactive
+F28D5E69,2380360511048227,Ivan Palastri,ivan.palastri@hotmail.com,+62-021-002-7219,"Gang Rajawali Barat No. 069, Probolinggo, KR 83935",Balikpapan,1989-03-25,2022-09-04,4060000,Active
+EF2E0A17,7343900210667752,Sakura R.,sakura.rajasa@gmail.com,+62-601-167-4520,"Gg. Otto Iskandardinata No. 51, Ternate, JA 98883",Banjarbaru,1995-12-02,2022-09-16,4560000,Inactive
+9A6A9B7B,4385342609969794,Elvina Ramadan,elvina.ramadan@hotmail.com,+62 (0603) 385 6792,"Gg. Veteran No. 1, Sukabumi, Nusa Tenggara Barat 48680",Tangerang,1995-01-24,2021-09-29,4700000,Active
+BDD3BE2D,7358492912626687,Queen Sihombing,queen.sihombing@gmail.com,+62 (11) 629 3207,"Jalan Siliwangi No. 3, Singkawang, Jawa Timur 57806",Bogor,1973-06-28,2024-12-25,1260000,Suspended
+9134BE4E,1548642405973604,Darsirah Nasyidah,darsirah.nasyidah@gmail.com,+62-636-817-5829,"Gang Pasteur No. 86, Banjar, Jambi 43988",Cirebon,1993-02-23,2025-06-04,4310000,Suspended
+784565FA,9573681306961294,Baktiadi Budiman,baktiadi.budiman@gmail.com,+62 (086) 445 5281,"Jl. Raya Setiabudhi No. 1, Binjai, Maluku Utara 14902",Pariaman,1992-02-07,2024-06-13,820000,Active
+23518058,6433321505858643,Soleh Permata,soleh.permata@yahoo.com,+62 (0933) 163-8352,"Jl. S. Parman No. 6, Batu, BB 11135",Jayapura,1973-03-05,2022-08-03,2360000,Active
+8AE0C0FA,6367461907774697,Diana Saputra,diana.saputra@yahoo.com,+62 (0555) 282-4390,"Jalan Asia Afrika No. 4, Pekanbaru, LA 48440",Tanjungbalai,1963-04-04,2022-01-06,4670000,Active
+D27BEC4A,,Gading Uyainah,gading.uyainah@yahoo.com,,"Gg. Ahmad Yani No. 9, Solok, KI 97070",Kupang,1988-12-10,2024-08-22,4050000,Suspended
+1A305E1E,3529151005933956,Eva Wahyuni,eva.wahyuni@yahoo.com,+62 (42) 074-5255,"Jl. Rungkut Industri No. 6, Samarinda, LA 28921",Sungai Penuh,1987-07-08,2021-11-08,1970000,Suspended
+C1FEB1C6,1243950802064211,Sabri Purwanti,sabri.purwanti@yahoo.com,+62 (0395) 415 4465,"Gg. PHH. Mustofa No. 96, Kupang, YO 77692",Singkawang,1994-11-18,2023-07-31,2370000,Inactive
+A11B95DC,3784490605776983,Zalindra Anggriawan,zalindra.anggriawan@hotmail.com,0839435711,"Jl. Ahmad Dahlan No. 7, Sorong, Riau 85009",Batam,1990-10-06,2024-03-11,1370000,Inactive
+89CC8B82,7453871101076310,Yulia Pradana,yulia.pradana@gmail.com,+62 (832) 823-1598,"Jalan Tebet Barat Dalam No. 520, Tangerang, Kalimantan Selatan 95238",Banjarmasin,1961-08-13,2025-02-08,4170000,Suspended
+8117C032,7044821404844738,Gabriella Wibowo,gabriella.wibowo@hotmail.com,+62-915-945-0375,"Gang Jamika No. 1, Tomohon, MU 85893",Depok,2006-02-26,2025-11-04,1130000,Inactive
+931DFCC9,3328832809668365,Balidin Prasetyo,balidin.prasetyo@gmail.com,+62-64-006-3600,"Jalan Rajawali Timur No. 40, Prabumulih, JT 78214",Madiun,1966-11-05,2022-09-05,4410000,Active
+889839D0,2959802201747623,Icha Thamrin,icha.thamrin@hotmail.com,+62 (026) 585-5453,"Jalan Bangka Raya No. 1, Padangpanjang, LA 86362",Palembang,1967-08-09,1900-01-01,2830000,Active
+757D7443,5324251608997368,Amalia Rahimah,amalia.rahimah@hotmail.com,+62 (22) 795 3472,"Gang PHH. Mustofa No. 8, Cilegon, SG 01083",Samarinda,1984-08-07,2025-05-22,2990000,Active
+35D05836,5223962601713443,Rendy Winarsih,rendy.winarsih@hotmail.com,+62 (0030) 427 4423,"Jl. Sukajadi No. 27, Banjar, MA 65727",Metro,1978-10-01,2025-12-30,3140000,Inactive
+B880E8B5,5790662010926208,Julia Suartini,julia.suartini@yahoo.com,(027) 067 7559,"Gang Rumah Sakit No. 4, Kota Administrasi Jakarta Timur, Jawa Timur 87676",Blitar,1997-04-25,2025-12-27,720000,Suspended
+1B9FB9E2,4576712505781154,Titin Prayoga,titin.prayoga@hotmail.com,0852564872,"Gang Peta No. 780, Ambon, Jawa Timur 55414",Tomohon,1960-10-23,2023-04-15,3090000,Inactive
+88C4A275,5517902109817147,Zaenab Kusmawati,zaenab.kusmawati@gmail.com,(0414) 225 1049,"Gg. Jayawijaya No. 633, Cirebon, Jawa Timur 17180",Yogyakarta,2006-05-17,2021-10-14,950000,Suspended
+29CD11B1,9587761802988293,Hardana Yulianti,hardana.yulianti@gmail.com,+62 (068) 324-1696,"Jalan Indragiri No. 78, Pematangsiantar, BT 13691",Makassar,1990-05-19,2025-09-22,950000,Suspended
+AA770134,6361152102696514,Hamima Hartati,hamima.hartati@hotmail.com,+62 (0498) 823 1519,"Gg. Cihampelas No. 726, Banjar, JK 51809",Subulussalam,2001-05-11,2024-02-15,710000,Active
+F6E1283A,6645852805044050,Bakijan Setiawan (Baru),baru.bakijan.setiawan@hotmail.com,+62 (089) 281 6909,"Jl. Yos Sudarso No. 2, Pontianak, YO 60329",Palembang,1992-11-14,2026-04-26,3250000,Suspended
+EAFE663D,1494763004794249,Kasiran Sihotang,kasiran.sihotang@yahoo.com,(0304) 610-3831,"Gg. BKR No. 797, Tasikmalaya, Bali 42618",Bima,1991-05-24,1900-01-01,2130000,Inactive
+C8F0EE24,3046711601944943,Ellis Sihombing,ellis.sihombing@hotmail.com,+62-179-945-2100,"Jl. Kapten Muslihat No. 1, Bau-Bau, Banten 86284",Cilegon,1987-11-28,2025-02-13,4950000,Inactive
+E5D2BC36,8389961607893893,Ella Suwarno,ella.suwarno@gmail.com,+62 (0223) 411 4588,"Jl. Sadang Serang No. 0, Samarinda, Jawa Tengah 97777",Ambon,1988-06-04,2022-02-07,4710000,Active
+0AD137D6,8180561504035119,Nasim Prakasa,nasim.prakasa@hotmail.com,(0433) 000 0338,"Gang KH Amin Jasuta No. 821, Magelang, Sulawesi Utara 47966",Makassar,1960-11-05,2024-10-09,2940000,Inactive
+07199D38,7085301201029856,Ika Najmudin,ika.najmudin@yahoo.com,+62-927-611-2459,"Gg. Jend. Sudirman No. 89, Batu, JT 70863",Cimahi,1999-03-22,2025-04-10,4300000,Suspended
+D78655F6,2884821009052201,Wira Najmudin,wira.najmudin@hotmail.com,+62 (0085) 034 3475,"Gg. Sukabumi No. 1, Madiun, RI 50480",Binjai,1994-09-17,2024-04-21,4460000,Active
+B75291B4,4029451101678922,Dwi Winarsih,dwi.winarsih@gmail.com,+62 (82) 958-0932,"Gang M.H Thamrin No. 922, Tebingtinggi, RI 10089",Bengkulu,1976-06-12,2022-11-23,4710000,Suspended
+FA967C5E,8325282104087688,Tami Pranowo,tami.pranowo@yahoo.com,+62 (58) 318-5686,"Jalan W.R. Supratman No. 618, Pekalongan, SU 64887",Tanjungbalai,1997-12-19,2023-01-24,1970000,Inactive
+BEE45D03,6049260306993824,Warji Pratiwi,warji.pratiwi@yahoo.com,+62 (044) 078-9970,"Jl. Stasiun Wonokromo No. 411, Pangkalpinang, GO 21014",Balikpapan,1999-06-07,2024-02-15,850000,Suspended
+18C55038,1989542112786478,Icha Haryanti,icha.haryanti@yahoo.com,+62 (998) 168-8883,"Gg. Ir. H. Djuanda No. 2, Tomohon, KB 81280",Palopo,1970-11-22,2022-08-20,2570000,Active
+51E81E16,9918420202659680,Darmaji Utama,darmaji.utama@hotmail.com,+62-099-574-3194,"Jl. Jakarta No. 337, Tebingtinggi, Jawa Barat 08613",Medan,2004-09-18,2025-08-05,4280000,Inactive
+5D89DB0E,3058681804886816,Intan Nasyidah,intan.nasyidah@hotmail.com,086 939 0220,"Gang H.J Maemunah No. 46, Pekanbaru, DI Yogyakarta 55523",Sabang,1962-07-10,2024-01-27,3670000,Active
+26A6748D,3359140907881094,Kemba Kuswoyo,kemba.kuswoyo@hotmail.com,+62 (664) 240 4365,"Gg. Cikutra Timur No. 8, Bukittinggi, Kalimantan Barat 90557",Banda Aceh,1997-02-18,2023-06-13,2260000,Inactive
+D1C42508,8991342209645239,Jaga Maryadi,jaga.maryadi@gmail.com,+62 (375) 278-8903,"Gang Veteran No. 717, Kendari, DI Yogyakarta 23698",Bandar Lampung,1969-12-02,2024-11-28,1810000,Suspended
+415A49CB,9138501304713813,Ana Winarsih,ana.winarsih@hotmail.com,+62 (92) 357 6603,"Gang Ciwastra No. 686, Sibolga, BT 68927",Parepare,1992-03-12,2026-02-18,3840000,Inactive

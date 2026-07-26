@@ -1,0 +1,535 @@
+"use client";
+
+import { useSearchParams } from "next/navigation";
+import { Suspense, useCallback, useEffect, useState } from "react";
+import Shell from "@/components/Shell";
+import { api } from "@/lib/api";
+
+function RulesContent() {
+  const search = useSearchParams();
+  const [datasets, setDatasets] = useState<any[]>([]);
+  const [datasetId, setDatasetId] = useState<string>(search.get("dataset_id") || "");
+  const [rules, setRules] = useState<any[]>([]);
+  const [ruleTypes, setRuleTypes] = useState<any[]>([]);
+  const [columns, setColumns] = useState<string[]>([]);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+
+  const [newColumn, setNewColumn] = useState("");
+  const [newType, setNewType] = useState("not_null");
+  const [newParams, setNewParams] = useState("");
+  const [newDesc, setNewDesc] = useState("");
+
+  const [nlText, setNlText] = useState("");
+  const [nlBusy, setNlBusy] = useState(false);
+  const [proposal, setProposal] = useState<any>(null);
+  const [llmAvailable, setLlmAvailable] = useState<boolean | null>(null);
+
+  const [suggestions, setSuggestions] = useState<any[] | null>(null);
+  const [suggestBusy, setSuggestBusy] = useState(false);
+
+  useEffect(() => {
+    api("/datasets/")
+      .then((ds) => {
+        setDatasets(ds);
+        if (!datasetId && ds.length) setDatasetId(String(ds[0].id));
+      })
+      .catch((e) => setError(e.message));
+    api("/rule-types").then(setRuleTypes).catch(() => {});
+    api("/llm-status").then((s) => setLlmAvailable(s.available)).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const loadRules = useCallback(() => {
+    if (!datasetId) return;
+    api(`/datasets/${datasetId}/rules`).then(setRules).catch((e) => setError(e.message));
+    api(`/datasets/${datasetId}`)
+      .then((d) => setColumns((d.columns || []).map((c: any) => c.name)))
+      .catch(() => {});
+  }, [datasetId]);
+
+  useEffect(() => {
+    loadRules();
+  }, [loadRules]);
+
+  async function toggle(rule: any) {
+    try {
+      await api(`/rules/${rule.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ enabled: !rule.enabled }),
+      });
+      loadRules();
+    } catch (e: any) {
+      setError(e.message);
+    }
+  }
+
+  async function removeRule(rule: any) {
+    try {
+      await api(`/rules/${rule.id}`, { method: "DELETE" });
+      loadRules();
+    } catch (e: any) {
+      setError(e.message);
+    }
+  }
+
+  async function createRule(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    let params: any = {};
+    if (newParams.trim()) {
+      try {
+        params = JSON.parse(newParams);
+      } catch {
+        setError('Params harus JSON valid, contoh: {"min": 0, "max": 100}');
+        return;
+      }
+    }
+    try {
+      await api(`/datasets/${datasetId}/rules`, {
+        method: "POST",
+        body: JSON.stringify({
+          column_name: newColumn,
+          rule_type: newType,
+          params,
+          description: newDesc,
+        }),
+      });
+      setNewColumn("");
+      setNewParams("");
+      setNewDesc("");
+      setNotice("Rule dibuat. Jalankan ulang validasi untuk melihat hasilnya.");
+      loadRules();
+    } catch (err: any) {
+      setError(err.message);
+    }
+  }
+
+  async function rerun() {
+    setError("");
+    try {
+      await api(`/datasets/${datasetId}/rules/rerun`, { method: "POST" });
+      setNotice("Validasi dijalankan ulang di background — refresh beberapa saat lagi.");
+    } catch (e: any) {
+      setError(e.message);
+    }
+  }
+
+  async function generateFromNL() {
+    setError("");
+    setProposal(null);
+    setNlBusy(true);
+    try {
+      const p = await api(`/datasets/${datasetId}/rules/generate`, {
+        method: "POST",
+        body: JSON.stringify({ instruction: nlText }),
+      });
+      setProposal(p);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setNlBusy(false);
+    }
+  }
+
+  async function activateProposal() {
+    if (!proposal) return;
+    setError("");
+    try {
+      await api(`/datasets/${datasetId}/rules`, {
+        method: "POST",
+        body: JSON.stringify({ ...proposal, source: "ai" }),
+      });
+      setProposal(null);
+      setNlText("");
+      setNotice("Rule AI diaktifkan. Jalankan ulang validasi untuk melihat hasilnya.");
+      loadRules();
+    } catch (e: any) {
+      setError(e.message);
+    }
+  }
+
+  function editProposal() {
+    if (!proposal) return;
+    setNewColumn(proposal.column_name);
+    setNewType(proposal.rule_type);
+    setNewParams(Object.keys(proposal.params || {}).length ? JSON.stringify(proposal.params) : "");
+    setNewDesc(proposal.description || "");
+    setProposal(null);
+  }
+
+  async function fetchSuggestions() {
+    setError("");
+    setSuggestBusy(true);
+    setSuggestions(null);
+    try {
+      setSuggestions(await api(`/datasets/${datasetId}/rules/suggest`, { method: "POST" }));
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setSuggestBusy(false);
+    }
+  }
+
+  async function activateSuggestion(s: any, index: number) {
+    setError("");
+    try {
+      await api(`/datasets/${datasetId}/rules`, {
+        method: "POST",
+        body: JSON.stringify({ ...s, source: "ai" }),
+      });
+      setSuggestions((prev) => (prev ? prev.filter((_, i) => i !== index) : prev));
+      setNotice("Rule AI diaktifkan. Jalankan ulang validasi untuk melihat hasilnya.");
+      loadRules();
+    } catch (e: any) {
+      setError(e.message);
+    }
+  }
+
+  function dismissSuggestion(index: number) {
+    setSuggestions((prev) => (prev ? prev.filter((_, i) => i !== index) : prev));
+  }
+
+  const needsParams = ["numeric_range", "date_range", "regex", "cross_column"].includes(newType);
+
+  return (
+    <Shell title="Rule Builder" subtitle="Aturan validasi per kolom — bawaan, manual, atau AI">
+      {error && <div className="error-box">{error}</div>}
+      {notice && <div className="info-box">{notice}</div>}
+
+      <div className="panel">
+        <div className="section-label">Pipeline / Dataset</div>
+        <select
+          className="form-input"
+          style={{ maxWidth: 420, padding: "10px", borderRadius: "var(--radius)", border: "1px solid var(--border)", width: "100%" }}
+          value={datasetId}
+          onChange={(e) => setDatasetId(e.target.value)}
+        >
+          {datasets.map((d) => (
+            <option key={d.id} value={d.id}>
+              {d.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
+        <div className="panel">
+          <div className="section-label">Buat Rule Baru (Bahasa Natural) ✨</div>
+          <textarea
+            className="form-input"
+            rows={3}
+            value={nlText}
+            onChange={(e) => setNlText(e.target.value)}
+            placeholder="Contoh: nomor HP harus 10-13 digit dan diawali 08"
+            style={{ width: "100%", padding: "10px", borderRadius: "var(--radius)", border: "1px solid var(--border)", fontFamily: "inherit" }}
+          />
+          <div style={{ marginTop: 8 }}>
+            <button
+              className="btn primary"
+              type="button"
+              disabled={nlBusy || !datasetId || !nlText.trim() || llmAvailable === false}
+              onClick={generateFromNL}
+            >
+              {nlBusy ? "Menghubungi LLM..." : "✨ Generate Rule dengan AI"}
+            </button>
+          </div>
+          {llmAvailable === false && (
+            <div style={{ fontSize: 11, color: "#92400e", marginTop: 6 }}>
+              LLM gateway belum dikonfigurasi — isi LLM_BASE_URL / LLM_API_KEY / LLM_MODEL di
+              .env lalu restart backend.
+            </div>
+          )}
+          {proposal && (
+            <div
+              style={{
+                border: "1px solid #c7d2fe",
+                background: "#eef2ff",
+                borderRadius: 8,
+                padding: 12,
+                marginTop: 10,
+                fontSize: 13,
+              }}
+            >
+              <strong>Rule terdeteksi:</strong>
+              <div style={{ marginTop: 6 }}>
+                Kolom: <em>{proposal.column_name}</em>
+                <br />
+                Jenis: {proposal.rule_label}
+                <br />
+                {Object.keys(proposal.params || {}).length > 0 && (
+                  <>
+                    Params: <code>{JSON.stringify(proposal.params)}</code>
+                    <br />
+                  </>
+                )}
+                Deskripsi: {proposal.description}
+              </div>
+              <div style={{ marginTop: 10, display: "flex", gap: 8 }}>
+                <button className="btn" type="button" onClick={editProposal}>
+                  Edit
+                </button>
+                <button className="btn primary" type="button" onClick={activateProposal}>
+                  Aktifkan Rule
+                </button>
+              </div>
+            </div>
+          )}
+
+          <div className="section-label" style={{ marginTop: 22 }}>
+            Sarankan Rule Otomatis ✨
+          </div>
+          <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 8 }}>
+            LLM menyarankan rule dari skema & sample data — tanpa perlu menulis instruksi.
+          </div>
+          <button
+            className="btn"
+            type="button"
+            disabled={suggestBusy || !datasetId || llmAvailable === false}
+            onClick={fetchSuggestions}
+          >
+            {suggestBusy ? "Menganalisis skema..." : "✨ Sarankan Rule dari Skema"}
+          </button>
+          {suggestions && (
+            <div style={{ marginTop: 10 }}>
+              {suggestions.length === 0 ? (
+                <div className="empty" style={{ padding: "16px" }}>Tidak ada saran tambahan yang relevan saat ini</div>
+              ) : (
+                suggestions.map((s, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      border: "1px solid var(--border)",
+                      borderRadius: 8,
+                      padding: 10,
+                      marginBottom: 8,
+                      fontSize: 13,
+                    }}
+                  >
+                    <strong>{s.column_name}</strong> — {s.rule_label}
+                    <div style={{ fontSize: 12, color: "#6b7280", margin: "4px 0" }}>
+                      {s.description}
+                    </div>
+                    <div style={{ display: "flex", gap: 6 }}>
+                      <button
+                        className="btn primary"
+                        style={{ padding: "4px 10px", fontSize: 11 }}
+                        onClick={() => activateSuggestion(s, i)}
+                      >
+                        Aktifkan
+                      </button>
+                      <button
+                        className="btn"
+                        style={{ padding: "4px 10px", fontSize: 11 }}
+                        onClick={() => dismissSuggestion(i)}
+                      >
+                        Lewati
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+
+          <div className="section-label" style={{ marginTop: 32 }}>
+            Buat Rule Manual
+          </div>
+          <form onSubmit={createRule}>
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "8px", fontWeight: 500 }}>Kolom</label>
+              {columns.length ? (
+                <select
+                  className="form-input"
+                  style={{ width: "100%", padding: "10px", borderRadius: "var(--radius)", border: "1px solid var(--border)" }}
+                  value={newColumn}
+                  onChange={(e) => setNewColumn(e.target.value)}
+                  required
+                >
+                  <option value="">— pilih kolom —</option>
+                  {columns.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  className="form-input"
+                  style={{ width: "100%", padding: "10px", borderRadius: "var(--radius)", border: "1px solid var(--border)" }}
+                  value={newColumn}
+                  onChange={(e) => setNewColumn(e.target.value)}
+                  placeholder="nama kolom"
+                  required
+                />
+              )}
+            </div>
+            
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "8px", fontWeight: 500 }}>Jenis Rule</label>
+              <select 
+                className="form-input"
+                style={{ width: "100%", padding: "10px", borderRadius: "var(--radius)", border: "1px solid var(--border)" }}
+                value={newType} 
+                onChange={(e) => setNewType(e.target.value)}
+              >
+                {ruleTypes.map((rt) => (
+                  <option key={rt.type} value={rt.type}>
+                    {rt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            {needsParams && (
+              <div style={{ marginBottom: "16px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: 500 }}>
+                  Params (JSON){" "}
+                  <span style={{ fontWeight: 400, color: "#6b7280", fontSize: "0.85rem" }}>
+                    {newType === "regex"
+                      ? 'contoh: {"pattern": "^08[0-9]+$"}'
+                      : newType === "cross_column"
+                        ? 'contoh: {"left": "tanggal_checkout", "op": ">", "right": "tanggal_checkin"}'
+                        : 'contoh: {"min": 0, "max": 100}'}
+                  </span>
+                </label>
+                <input
+                  className="form-input"
+                  style={{ width: "100%", padding: "10px", borderRadius: "var(--radius)", border: "1px solid var(--border)" }}
+                  value={newParams}
+                  onChange={(e) => setNewParams(e.target.value)}
+                />
+              </div>
+            )}
+            
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "8px", fontWeight: 500 }}>Deskripsi (opsional)</label>
+              <input
+                className="form-input"
+                style={{ width: "100%", padding: "10px", borderRadius: "var(--radius)", border: "1px solid var(--border)" }}
+                value={newDesc}
+                onChange={(e) => setNewDesc(e.target.value)}
+                placeholder="mis. nomor HP harus valid format Indonesia"
+              />
+            </div>
+            
+            <div style={{ marginTop: 24, display: "flex", gap: 12 }}>
+              <button className="btn primary" type="submit" disabled={!datasetId}>
+                Simpan Rule
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div className="panel">
+          <div className="section-label" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span>Rule Aktif</span>
+            <button className="btn" type="button" onClick={rerun} disabled={!datasetId}>
+              ▶ Jalankan Ulang Validasi
+            </button>
+          </div>
+          
+          {rules.length ? (
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {rules.map((r) => (
+                <div key={r.id} style={{ 
+                  border: "1px solid var(--border)", 
+                  borderRadius: "var(--radius)", 
+                  padding: "16px",
+                  background: r.enabled ? "var(--bg-surface)" : "#f8fafc",
+                  opacity: r.enabled ? 1 : 0.6
+                }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                    <div style={{ fontWeight: 600, fontSize: "1.05rem" }}>{r.column_name}</div>
+                    <div style={{ display: "flex", gap: "8px" }}>
+                      <span style={{ 
+                        fontSize: "0.75rem", 
+                        padding: "2px 8px", 
+                        borderRadius: "12px", 
+                        background: r.source === "builtin" ? "#e2e8f0" : r.source === "ai" ? "#dbeafe" : "#f1f5f9",
+                        color: r.source === "builtin" ? "#475569" : r.source === "ai" ? "#1e40af" : "#64748b",
+                        display: "flex",
+                        alignItems: "center"
+                      }}>
+                        {r.source === "builtin" ? "Bawaan" : r.source === "ai" ? "AI" : "Manual"}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginBottom: "12px" }}>
+                    {r.description || r.rule_label}
+                  </div>
+                  
+                  <div style={{ 
+                    display: "flex", 
+                    justifyContent: "space-between", 
+                    alignItems: "center",
+                    paddingTop: "12px",
+                    borderTop: "1px dashed var(--border)"
+                  }}>
+                    <div style={{ fontSize: "0.85rem" }}>
+                      <span style={{ color: "var(--text-secondary)" }}>Pelanggaran: </span>
+                      {r.last_result ? (
+                        <span style={{ 
+                          fontWeight: 600, 
+                          color: r.last_result.violations > 0 ? "var(--danger)" : "var(--success)" 
+                        }}>
+                          {r.last_result.violations.toLocaleString("id-ID")} / {r.last_result.checked.toLocaleString("id-ID")}
+                        </span>
+                      ) : (
+                        <span>—</span>
+                      )}
+                    </div>
+                    
+                    <div style={{ display: "flex", gap: "8px" }}>
+                      <button 
+                        className="btn" 
+                        style={{ padding: "4px 10px", fontSize: "0.85rem" }} 
+                        onClick={() => toggle(r)}
+                      >
+                        {r.enabled ? "Nonaktifkan" : "Aktifkan"}
+                      </button>
+                      <button
+                        className="btn"
+                        style={{ padding: "4px 10px", fontSize: "0.85rem", color: "var(--danger)", borderColor: "#fecaca" }}
+                        onClick={() => removeRule(r)}
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {r.last_result?.samples?.length > 0 && r.enabled && (
+                    <div style={{ 
+                      fontSize: "0.8rem", 
+                      color: "#6b7280", 
+                      marginTop: "12px",
+                      background: "#fef2f2",
+                      padding: "8px",
+                      borderRadius: "6px"
+                    }}>
+                      <div style={{ fontWeight: 600, color: "var(--danger)", marginBottom: "4px" }}>Contoh Pelanggaran:</div>
+                      {r.last_result.samples.slice(0, 2).map((s: any, idx: number) => (
+                        <div key={idx}>Baris {s.row}: <strong>"{s.value}"</strong></div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="empty" style={{ padding: "40px" }}>Belum ada rule untuk dataset/pipeline ini</div>
+          )}
+        </div>
+      </div>
+    </Shell>
+  );
+}
+
+export default function RulesPage() {
+  return (
+    <Suspense>
+      <RulesContent />
+    </Suspense>
+  );
+}

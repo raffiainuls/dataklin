@@ -1,0 +1,150 @@
+<svg viewBox="0 0 1160 950" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#374151"/>
+    </marker>
+    <marker id="arrowDashed" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1160" height="950" fill="#ffffff"/>
+  <text x="580" y="28" text-anchor="middle" font-size="22" font-weight="bold" fill="#111827">Veridata — System Architecture</text>
+
+  <!-- LAYER 1: CLIENT -->
+  <rect x="40" y="50" width="1080" height="110" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="55" y="70" font-size="13" font-weight="bold" fill="#4338ca">CLIENT LAYER (Web App — Next.js)</text>
+  <g font-size="12" fill="#1f2937">
+    <rect x="60" y="82" width="196" height="60" rx="6" fill="#ffffff" stroke="#4f46e5"/>
+    <text x="158" y="108" text-anchor="middle">Dashboard</text>
+    <text x="158" y="124" text-anchor="middle" font-size="10" fill="#6b7280">Ringkasan &amp; skor</text>
+
+    <rect x="266" y="82" width="196" height="60" rx="6" fill="#ffffff" stroke="#4f46e5"/>
+    <text x="364" y="108" text-anchor="middle">Upload &amp; Profiling</text>
+    <text x="364" y="124" text-anchor="middle" font-size="10" fill="#6b7280">Laporan kualitas</text>
+
+    <rect x="472" y="82" width="196" height="60" rx="6" fill="#ffffff" stroke="#4f46e5"/>
+    <text x="570" y="108" text-anchor="middle">Rule Builder</text>
+    <text x="570" y="124" text-anchor="middle" font-size="10" fill="#6b7280">NL rule authoring</text>
+
+    <rect x="678" y="82" width="196" height="60" rx="6" fill="#ffffff" stroke="#4f46e5"/>
+    <text x="776" y="108" text-anchor="middle">Dedup Review</text>
+    <text x="776" y="124" text-anchor="middle" font-size="10" fill="#6b7280">Human-in-the-loop</text>
+
+    <rect x="884" y="82" width="196" height="60" rx="6" fill="#ffffff" stroke="#4f46e5"/>
+    <text x="982" y="108" text-anchor="middle">Reports</text>
+    <text x="982" y="124" text-anchor="middle" font-size="10" fill="#6b7280">Scorecard export</text>
+  </g>
+
+  <line x1="580" y1="160" x2="580" y2="192" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- LAYER 2: API -->
+  <rect x="40" y="192" width="1080" height="70" rx="10" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="55" y="210" font-size="13" font-weight="bold" fill="#0e7490">API LAYER</text>
+  <rect x="60" y="216" width="1040" height="36" rx="6" fill="#ffffff" stroke="#0891b2"/>
+  <text x="580" y="239" text-anchor="middle" font-size="12" fill="#1f2937">API Gateway — Auth (OAuth2/JWT) · REST/GraphQL Endpoints · Webhook Receiver</text>
+
+  <line x1="580" y1="262" x2="580" y2="294" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- LAYER 3: PROCESSING -->
+  <rect x="40" y="294" width="1080" height="110" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="55" y="314" font-size="13" font-weight="bold" fill="#15803d">PROCESSING LAYER (Async Workers / Queue)</text>
+  <g font-size="12" fill="#1f2937">
+    <rect x="60" y="326" width="196" height="60" rx="6" fill="#ffffff" stroke="#16a34a"/>
+    <text x="158" y="352" text-anchor="middle">Profiling Service</text>
+    <text x="158" y="368" text-anchor="middle" font-size="10" fill="#6b7280">Statistik kolom</text>
+
+    <rect x="266" y="326" width="196" height="60" rx="6" fill="#ffffff" stroke="#16a34a"/>
+    <text x="364" y="352" text-anchor="middle">Rule Engine</text>
+    <text x="364" y="368" text-anchor="middle" font-size="10" fill="#6b7280">Validity &amp; business rule</text>
+
+    <rect x="472" y="326" width="196" height="60" rx="6" fill="#ffffff" stroke="#16a34a"/>
+    <text x="570" y="352" text-anchor="middle">Entity Resolution</text>
+    <text x="570" y="368" text-anchor="middle" font-size="10" fill="#6b7280">Fuzzy match + clustering → cluster_id</text>
+
+    <rect x="678" y="326" width="196" height="60" rx="6" fill="#ffffff" stroke="#16a34a"/>
+    <text x="776" y="352" text-anchor="middle">Anomaly Detection</text>
+    <text x="776" y="368" text-anchor="middle" font-size="10" fill="#6b7280">Outlier statistik</text>
+
+    <rect x="884" y="326" width="196" height="60" rx="6" fill="#ffffff" stroke="#16a34a"/>
+    <text x="982" y="352" text-anchor="middle">PII Detection</text>
+    <text x="982" y="368" text-anchor="middle" font-size="10" fill="#6b7280">Regex + NER</text>
+  </g>
+
+  <!-- AI Layer connections (bidirectional) -->
+  <line x1="364" y1="404" x2="364" y2="434" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="570" y1="434" x2="570" y2="404" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="776" y1="404" x2="776" y2="434" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- LAYER 4: AI -->
+  <rect x="290" y="436" width="580" height="70" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="305" y="454" font-size="13" font-weight="bold" fill="#6d28d9">AI LAYER</text>
+  <rect x="310" y="460" width="540" height="36" rx="6" fill="#ffffff" stroke="#7c3aed"/>
+  <text x="580" y="483" text-anchor="middle" font-size="12" fill="#1f2937">LLM Service (Claude API) — Rule Generation · Root-Cause Explanation · NL Summary</text>
+
+  <line x1="580" y1="404" x2="580" y2="436" stroke="#374151" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="0"/>
+  <line x1="580" y1="506" x2="580" y2="540" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- LAYER 5: DATA -->
+  <rect x="40" y="540" width="1080" height="110" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="55" y="560" font-size="13" font-weight="bold" fill="#c2410c">DATA LAYER</text>
+  <g font-size="12" fill="#1f2937">
+    <rect x="60" y="572" width="256" height="60" rx="6" fill="#ffffff" stroke="#ea580c"/>
+    <text x="188" y="598" text-anchor="middle">PostgreSQL</text>
+    <text x="188" y="614" text-anchor="middle" font-size="10" fill="#6b7280">Metadata, rule, skor</text>
+
+    <rect x="326" y="572" width="256" height="60" rx="6" fill="#ffffff" stroke="#ea580c"/>
+    <text x="454" y="598" text-anchor="middle">Vector Store (pgvector)</text>
+    <text x="454" y="614" text-anchor="middle" font-size="10" fill="#6b7280">Embedding entity resolution</text>
+
+    <rect x="592" y="572" width="256" height="60" rx="6" fill="#ffffff" stroke="#ea580c"/>
+    <text x="720" y="598" text-anchor="middle">Object Storage</text>
+    <text x="720" y="614" text-anchor="middle" font-size="10" fill="#6b7280">File mentah (S3-compatible)</text>
+
+    <rect x="858" y="572" width="222" height="60" rx="6" fill="#ffffff" stroke="#ea580c"/>
+    <text x="969" y="598" text-anchor="middle">Redis</text>
+    <text x="969" y="614" text-anchor="middle" font-size="10" fill="#6b7280">Queue broker &amp; cache</text>
+  </g>
+
+  <line x1="580" y1="650" x2="580" y2="682" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- LAYER 6: MONITORING -->
+  <rect x="40" y="682" width="1080" height="90" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="55" y="700" font-size="13" font-weight="bold" fill="#b91c1c">MONITORING &amp; NOTIFICATION LAYER</text>
+  <g font-size="12" fill="#1f2937">
+    <rect x="60" y="712" width="340" height="48" rx="6" fill="#ffffff" stroke="#dc2626"/>
+    <text x="230" y="740" text-anchor="middle">Scheduler (cron)</text>
+
+    <rect x="410" y="712" width="340" height="48" rx="6" fill="#ffffff" stroke="#dc2626"/>
+    <text x="580" y="740" text-anchor="middle">Drift Detection Engine</text>
+
+    <rect x="760" y="712" width="320" height="48" rx="6" fill="#ffffff" stroke="#dc2626"/>
+    <text x="920" y="740" text-anchor="middle">Notification Service</text>
+  </g>
+
+  <line x1="580" y1="772" x2="580" y2="804" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- LAYER 7: EXTERNAL -->
+  <rect x="40" y="804" width="1080" height="100" rx="10" fill="#f3f4f6" stroke="#4b5563" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="55" y="822" font-size="13" font-weight="bold" fill="#374151">EXTERNAL INTEGRATIONS</text>
+  <g font-size="12" fill="#1f2937">
+    <rect x="60" y="834" width="256" height="54" rx="6" fill="#ffffff" stroke="#4b5563"/>
+    <text x="188" y="866" text-anchor="middle">Slack</text>
+
+    <rect x="326" y="834" width="256" height="54" rx="6" fill="#ffffff" stroke="#4b5563"/>
+    <text x="454" y="866" text-anchor="middle">Email</text>
+
+    <rect x="592" y="834" width="256" height="54" rx="6" fill="#ffffff" stroke="#4b5563"/>
+    <text x="720" y="866" text-anchor="middle">Webhook Endpoint</text>
+
+    <rect x="858" y="834" width="222" height="54" rx="6" fill="#ffffff" stroke="#4b5563"/>
+    <text x="969" y="860" text-anchor="middle">Customer DB /</text>
+    <text x="969" y="875" text-anchor="middle">Warehouse Connector</text>
+  </g>
+
+  <!-- Dashed connector: API layer directly to DB connector (Fase 2) -->
+  <path d="M 1000 228 C 1090 400, 1090 700, 1000 834" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arrowDashed)"/>
+  <text x="1005" y="520" font-size="10" fill="#6b7280">Koneksi DB langsung (Fase 2)</text>
+
+  <text x="580" y="930" text-anchor="middle" font-size="11" fill="#9ca3af">Veridata — Architecture Diagram v0.1 · Lampiran PRD Data Quality &amp; Entity Resolution Platform</text>
+</svg>

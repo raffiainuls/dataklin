@@ -1,0 +1,342 @@
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
+import Shell from "@/components/Shell";
+import { LineChart } from "@/components/widgets";
+import { api } from "@/lib/api";
+
+export default function MonitoringPage() {
+  const [datasets, setDatasets] = useState<any[]>([]);
+  const [datasetId, setDatasetId] = useState<string>("");
+  const [history, setHistory] = useState<any[]>([]);
+  const [alerts, setAlerts] = useState<any[]>([]);
+  const [threshold, setThreshold] = useState<number>(75);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [monitorEnabled, setMonitorEnabled] = useState(false);
+  const [monitorInterval, setMonitorInterval] = useState(1440);
+  const [monitorBusy, setMonitorBusy] = useState(false);
+  const [webhookUrl, setWebhookUrl] = useState("");
+  const [slackWebhookUrl, setSlackWebhookUrl] = useState("");
+  const [notifyEmails, setNotifyEmails] = useState("");
+  const [notifBusy, setNotifBusy] = useState(false);
+  const [testResults, setTestResults] = useState<Record<string, string> | null>(null);
+
+  function loadDatasets() {
+    api("/datasets")
+      .then((ds) => {
+        setDatasets(ds);
+        if (ds.length && !datasetId) setDatasetId(String(ds[0].id));
+      })
+      .catch((e) => setError(e.message));
+  }
+
+  useEffect(() => {
+    loadDatasets();
+    api("/alerts").then(setAlerts).catch(() => {});
+    api("/settings")
+      .then((s) => {
+        setThreshold(s.alert_threshold);
+        setWebhookUrl(s.webhook_url || "");
+        setSlackWebhookUrl(s.slack_webhook_url || "");
+        setNotifyEmails(s.notify_emails || "");
+      })
+      .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const ds = datasets.find((d) => String(d.id) === datasetId);
+    if (ds) {
+      setMonitorEnabled(!!ds.monitoring_enabled);
+      setMonitorInterval(ds.monitoring_interval_minutes || 1440);
+    }
+  }, [datasetId, datasets]);
+
+  const loadHistory = useCallback(() => {
+    if (!datasetId) return;
+    api(`/datasets/${datasetId}/history`).then(setHistory).catch(() => {});
+  }, [datasetId]);
+
+  useEffect(() => {
+    loadHistory();
+  }, [loadHistory]);
+
+  async function saveMonitoring(enabled: boolean) {
+    if (!datasetId) return;
+    setMonitorBusy(true);
+    setError("");
+    try {
+      await api(`/datasets/${datasetId}/monitoring`, {
+        method: "PUT",
+        body: JSON.stringify({ enabled, interval_minutes: monitorInterval }),
+      });
+      setMonitorEnabled(enabled);
+      setNotice(
+        enabled
+          ? `Pemantauan otomatis diaktifkan — validasi ulang setiap ${
+              monitorInterval >= 1440 ? monitorInterval / 1440 + " hari" : monitorInterval + " menit"
+            }.`
+          : "Pemantauan otomatis dinonaktifkan."
+      );
+      loadDatasets();
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setMonitorBusy(false);
+    }
+  }
+
+  async function saveThreshold() {
+    setError("");
+    try {
+      await api("/settings", {
+        method: "PUT",
+        body: JSON.stringify({ alert_threshold: Number(threshold) }),
+      });
+      setNotice("Threshold tersimpan. Alert baru dibuat saat skor di bawah threshold.");
+    } catch (e: any) {
+      setError(e.message);
+    }
+  }
+
+  async function saveNotifications() {
+    setNotifBusy(true);
+    setError("");
+    try {
+      await api("/settings/notifications", {
+        method: "PUT",
+        body: JSON.stringify({
+          webhook_url: webhookUrl,
+          slack_webhook_url: slackWebhookUrl,
+          notify_emails: notifyEmails,
+        }),
+      });
+      setNotice("Pengaturan notifikasi tersimpan.");
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setNotifBusy(false);
+    }
+  }
+
+  async function sendTestNotification() {
+    setNotifBusy(true);
+    setError("");
+    setTestResults(null);
+    try {
+      setTestResults(await api("/settings/notifications/test", { method: "POST" }));
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setNotifBusy(false);
+    }
+  }
+
+  async function resolveAlert(id: number) {
+    try {
+      await api(`/alerts/${id}/resolve`, { method: "POST" });
+      setAlerts(await api("/alerts"));
+    } catch (e: any) {
+      setError(e.message);
+    }
+  }
+
+  const points = history.map((h) => ({
+    label: new Date(h.created_at + "Z").toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "short",
+    }),
+    value: h.score,
+  }));
+
+  return (
+    <Shell title="Monitoring & Alerts" subtitle="Histori skor kualitas dan notifikasi">
+      {error && <div className="error-box">{error}</div>}
+      {notice && <div className="info-box">{notice}</div>}
+
+      <div className="panel">
+        <div
+          className="section-label"
+          style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+        >
+          <span>Skor Kualitas dari Waktu ke Waktu</span>
+          <select
+            className="field"
+            style={{ width: 260 }}
+            value={datasetId}
+            onChange={(e) => setDatasetId(e.target.value)}
+          >
+            {datasets.map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <LineChart points={points} threshold={threshold} />
+        <div style={{ fontSize: 11, color: "#6b7280" }}>
+          Garis putus-putus merah = threshold alert ({threshold}). Setiap pemrosesan/validasi
+          ulang menambah titik histori baru.
+        </div>
+      </div>
+
+      <div className="panel">
+        <div className="section-label">Pemantauan Terjadwal (Drift Monitoring)</div>
+        <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 10 }}>
+          Validasi rule & skor kualitas dijalankan ulang otomatis pada interval yang
+          ditentukan — menangkap efek review cluster duplikat atau perubahan rule dari
+          waktu ke waktu, tanpa perlu diklik manual. Alert dibuat otomatis bila skor turun
+          di bawah threshold, turun tajam dibanding pemeriksaan sebelumnya, ATAU pembaruan
+          terlambat dari jadwal yang ditentukan (dimensi <em>Timeliness</em> baru muncul
+          setelah minimal dua kali siklus pemantauan).
+        </div>
+        <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13 }}>
+            <input
+              type="checkbox"
+              checked={monitorEnabled}
+              disabled={monitorBusy || !datasetId}
+              onChange={(e) => saveMonitoring(e.target.checked)}
+            />
+            Aktifkan untuk dataset ini
+          </label>
+          <select
+            className="field"
+            style={{ width: 180 }}
+            value={monitorInterval}
+            disabled={monitorBusy}
+            onChange={(e) => setMonitorInterval(Number(e.target.value))}
+          >
+            <option value={15}>Setiap 15 menit</option>
+            <option value={60}>Setiap 1 jam</option>
+            <option value={360}>Setiap 6 jam</option>
+            <option value={1440}>Setiap 24 jam</option>
+            <option value={10080}>Setiap 7 hari</option>
+          </select>
+          {monitorEnabled && (
+            <button
+              className="btn"
+              disabled={monitorBusy}
+              onClick={() => saveMonitoring(true)}
+            >
+              Terapkan Interval Baru
+            </button>
+          )}
+        </div>
+      </div>
+
+      <div className="two-col">
+        <div className="panel" style={{ maxWidth: 380 }}>
+          <div className="section-label">Konfigurasi Threshold</div>
+          <label className="flabel">Alert jika skor kualitas turun di bawah</label>
+          <input
+            className="field"
+            type="number"
+            min={0}
+            max={100}
+            value={threshold}
+            onChange={(e) => setThreshold(Number(e.target.value))}
+          />
+          <button className="btn primary" onClick={saveThreshold}>
+            Simpan Konfigurasi
+          </button>
+        </div>
+
+        <div className="panel">
+          <div className="section-label">Pengaturan Notifikasi</div>
+          <label className="flabel">Webhook URL (payload JSON generik)</label>
+          <input
+            className="field"
+            value={webhookUrl}
+            onChange={(e) => setWebhookUrl(e.target.value)}
+            placeholder="https://pipeline-anda.example.com/webhook"
+          />
+          <label className="flabel">Slack Incoming Webhook URL</label>
+          <input
+            className="field"
+            value={slackWebhookUrl}
+            onChange={(e) => setSlackWebhookUrl(e.target.value)}
+            placeholder="https://hooks.slack.com/services/..."
+          />
+          <label className="flabel">Email Penerima (pisahkan dengan koma)</label>
+          <input
+            className="field"
+            value={notifyEmails}
+            onChange={(e) => setNotifyEmails(e.target.value)}
+            placeholder="analyst@perusahaan.com, ops@perusahaan.com"
+          />
+          <div style={{ marginTop: 10, display: "flex", gap: 8 }}>
+            <button className="btn primary" disabled={notifBusy} onClick={saveNotifications}>
+              Simpan
+            </button>
+            <button className="btn" disabled={notifBusy} onClick={sendTestNotification}>
+              Kirim Uji
+            </button>
+          </div>
+          {testResults && (
+            <div style={{ fontSize: 12, marginTop: 10 }}>
+              {Object.entries(testResults).map(([channel, status]) => (
+                <div key={channel}>
+                  <strong>{channel}</strong>: {status}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="two-col">
+        <div className="panel">
+          <div className="section-label">Alert Terbaru</div>
+          {alerts.length ? (
+            <table className="wire">
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>Dataset</th>
+                  <th>Pesan</th>
+                  <th>Tingkat</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {alerts.map((a) => (
+                  <tr key={a.id} style={{ opacity: a.status === "resolved" ? 0.5 : 1 }}>
+                    <td>{new Date(a.created_at + "Z").toLocaleDateString("id-ID")}</td>
+                    <td>{a.dataset_name}</td>
+                    <td>{a.message}</td>
+                    <td>
+                      <span
+                        className={`badge ${
+                          a.severity === "tinggi" ? "bad" : a.severity === "sedang" ? "mid" : "neutral"
+                        }`}
+                      >
+                        {a.severity}
+                      </span>
+                    </td>
+                    <td>
+                      {a.status === "open" ? (
+                        <button
+                          className="btn"
+                          style={{ padding: "3px 10px", fontSize: 11 }}
+                          onClick={() => resolveAlert(a.id)}
+                        >
+                          Tandai Selesai
+                        </button>
+                      ) : (
+                        "✓"
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div className="empty">Belum ada alert</div>
+          )}
+        </div>
+      </div>
+    </Shell>
+  );
+}
