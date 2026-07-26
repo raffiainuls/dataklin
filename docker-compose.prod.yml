@@ -23,4 +23,4 @@ services:
 
   frontend:
     volumes: []
-    command: sh -c "npm run build && npm run start"
+    command: sh -c "NEXT_PUBLIC_API_URL=http://43.134.129.64:8000 npm run build && NEXT_PUBLIC_API_URL=http://43.134.129.64:8000 npm run start"
