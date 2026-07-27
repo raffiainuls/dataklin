@@ -6,7 +6,7 @@ services:
       POSTGRES_PASSWORD: dataklin
       POSTGRES_DB: dataklin
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - ./docker_data/pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -58,7 +58,7 @@ services:
       # Kunci dev saja — generate ulang untuk produksi (lihat .env.example)
       ENCRYPTION_KEY: nbnabpQ3JJHhYHbflUaR2Bof65FneqFrThjlGqEmB8Y=
     ports:
-      - "8005:8000"
+      - "8005:8005"
     volumes:
       - ./backend/app:/app/app
     depends_on:
