@@ -23,4 +23,4 @@ services:
 
   frontend:
     volumes: []
-    command: sh -c "NEXT_PUBLIC_API_URL=https://api.dataklin.raffs.biz.id npm run build && NEXT_PUBLIC_API_URL=https://api.dataklin.raffs.biz.id npm run start"
+    command: sh -c "NEXT_PUBLIC_API_URL=https://dataklin.raffs.biz.id/api npm run build && NEXT_PUBLIC_API_URL=https://dataklin.raffs.biz.id/api npm run start"
