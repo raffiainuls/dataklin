@@ -11,57 +11,88 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-import { AlertCircle, PlayCircle, Settings, FileText } from "lucide-react";
+import { AlertCircle, PlayCircle, Settings, FileText, Trash2 } from "lucide-react";
 
 export default function EditPipelinePage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const [pipeline, setPipeline] = useState<any>(null);
-  const [datasets, setDatasets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
-  
+  const [info, setInfo] = useState("");
+
   const [form, setForm] = useState({
     name: "",
-    dataset_id: "",
     enable_profiling: true,
     enable_deduplication: false,
     schedule: "manual"
   });
 
-  useEffect(() => {
-    // Di MVP ini, ID Pipeline sebenarnya adalah Dataset ID
-    // jadi kita ambil dataset sebagai pipeline
-    Promise.all([
-      api(`/datasets/${params.id}`),
-      api("/datasets/")
-    ]).then(([ds, allDs]) => {
-      setPipeline(ds);
-      setDatasets(allDs);
+  function load() {
+    api(`/pipelines/${params.id}`).then((p) => {
+      setPipeline(p);
       setForm({
-        name: `Pipeline for ${ds.name}`,
-        dataset_id: String(ds.id),
-        enable_profiling: true,
-        enable_deduplication: false,
-        schedule: "manual"
+        name: p.name,
+        enable_profiling: p.enable_profiling,
+        enable_deduplication: p.enable_deduplication,
+        schedule: p.schedule,
       });
       setLoading(false);
     }).catch((e) => {
-      console.error(e);
       setError(e.message);
       setLoading(false);
     });
+  }
+
+  useEffect(() => {
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    
-    // Simulasi update
-    setTimeout(() => {
-      router.push(`/rules?dataset_id=${form.dataset_id}`);
-    }, 1000);
+    setError("");
+    try {
+      const updated = await api(`/pipelines/${params.id}`, {
+        method: "PATCH",
+        body: JSON.stringify(form),
+      });
+      setPipeline(updated);
+      setSaving(false);
+    } catch (err: any) {
+      setError(err.message || "Gagal menyimpan pipeline");
+      setSaving(false);
+    }
+  };
+
+  const runNow = async () => {
+    setRunning(true);
+    setInfo("");
+    setError("");
+    try {
+      await api(`/pipelines/${params.id}/run`, { method: "POST" });
+      setInfo("Pipeline sedang dijalankan di background...");
+      setTimeout(() => {
+        load();
+        setRunning(false);
+      }, 2500);
+    } catch (err: any) {
+      setError(err.message || "Gagal menjalankan pipeline");
+      setRunning(false);
+    }
+  };
+
+  const remove = async () => {
+    if (!window.confirm(`Yakin ingin menghapus pipeline "${pipeline?.name}"?`)) return;
+    try {
+      await api(`/pipelines/${params.id}`, { method: "DELETE" });
+      router.push("/pipelines");
+    } catch (err: any) {
+      setError(err.message || "Gagal menghapus pipeline");
+    }
   };
 
   if (loading) {
@@ -74,7 +105,7 @@ export default function EditPipelinePage() {
       </Shell>
     );
   }
-  
+
   if (!pipeline && !error) {
     return (
       <Shell title="Error">
@@ -95,7 +126,22 @@ export default function EditPipelinePage() {
             <p>{error}</p>
           </div>
         )}
-        
+        {info && (
+          <div className="bg-primary/10 text-primary p-4 rounded-md border border-primary/20 flex items-center gap-2">
+            <PlayCircle className="h-5 w-5" />
+            <p>{info}</p>
+          </div>
+        )}
+        {pipeline?.last_run_at && (
+          <div className="text-sm text-muted-foreground">
+            Run terakhir: {new Date(pipeline.last_run_at).toLocaleString("id-ID")} —{" "}
+            <span className={pipeline.last_run_status === "error" ? "text-destructive font-medium" : "text-primary font-medium"}>
+              {pipeline.last_run_status === "error" ? "Gagal" : "Berhasil"}
+            </span>
+            {pipeline.last_run_message && `: ${pipeline.last_run_message}`}
+          </div>
+        )}
+
         <Card>
           <CardHeader>
             <CardTitle>Pengaturan Pipeline</CardTitle>
@@ -105,9 +151,9 @@ export default function EditPipelinePage() {
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="name">Nama Pipeline</Label>
-                <Input 
+                <Input
                   id="name"
-                  type="text" 
+                  type="text"
                   required
                   value={form.name}
                   onChange={e => setForm({...form, name: e.target.value})}
@@ -117,15 +163,15 @@ export default function EditPipelinePage() {
               <div className="space-y-2">
                 <Label htmlFor="dataset">Sumber Data (Data Source)</Label>
                 <div className="flex h-10 w-full rounded-md border border-input bg-muted px-3 py-2 text-sm ring-offset-background disabled:cursor-not-allowed disabled:opacity-50">
-                  {pipeline ? `${pipeline.name} (ID: ${pipeline.id})` : "Memuat..."}
+                  {pipeline ? `${pipeline.dataset_name} (ID: ${pipeline.dataset_id})` : "Memuat..."}
                 </div>
                 <p className="text-xs text-muted-foreground">Sumber data tidak bisa diubah setelah pipeline dibuat.</p>
               </div>
 
               <div className="pt-4 border-t space-y-4">
                 <h3 className="font-medium">Opsi Pemrosesan</h3>
-                
-                <RadioGroup 
+
+                <RadioGroup
                   value={(form.enable_profiling && form.enable_deduplication) ? "both" : form.enable_deduplication ? "dedup" : "profiling"}
                   onValueChange={(val) => {
                     if (val === "both") setForm({...form, enable_profiling: true, enable_deduplication: true});
@@ -147,11 +193,15 @@ export default function EditPipelinePage() {
                     <Label htmlFor="r-both" className="font-normal cursor-pointer font-medium text-primary">Jalankan Keduanya Sekaligus (Profiling & Deduplikasi)</Label>
                   </div>
                 </RadioGroup>
+                <p className="text-xs text-muted-foreground">
+                  Mode tunggal (Profiling Saja / Dedup Saja) hanya menjalankan tahap itu saja — tanpa evaluasi rule,
+                  deteksi anomali, atau skor ulang. Pilih "Keduanya" untuk validasi kualitas penuh.
+                </p>
               </div>
-              
+
               <div className="pt-4 border-t space-y-2">
                 <Label htmlFor="schedule">Jadwal Eksekusi</Label>
-                <Select 
+                <Select
                   value={form.schedule}
                   onValueChange={(val) => setForm({...form, schedule: val || ""})}
                 >
@@ -168,11 +218,21 @@ export default function EditPipelinePage() {
               </div>
             </CardContent>
             <CardFooter className="flex flex-wrap items-center justify-between gap-4 border-t bg-muted/10 p-6">
-              <Button type="button" variant="outline" onClick={() => router.back()}>
-                Batal
-              </Button>
               <div className="flex gap-2">
-                <Button type="button" variant="secondary" onClick={() => router.push(`/rules?dataset_id=${form.dataset_id}`)}>
+                <Button type="button" variant="outline" onClick={() => router.back()}>
+                  Batal
+                </Button>
+                <Button type="button" variant="outline" className="text-destructive hover:text-destructive hover:bg-destructive/10" onClick={remove}>
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Hapus
+                </Button>
+              </div>
+              <div className="flex gap-2">
+                <Button type="button" variant="secondary" onClick={runNow} disabled={running}>
+                  <PlayCircle className="h-4 w-4 mr-2" />
+                  {running ? "Menjalankan..." : "Run Now"}
+                </Button>
+                <Button type="button" variant="secondary" onClick={() => router.push(`/rules?dataset_id=${pipeline.dataset_id}`)}>
                   <FileText className="h-4 w-4 mr-2" />
                   Kelola Rules
                 </Button>

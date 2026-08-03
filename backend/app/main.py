@@ -15,6 +15,7 @@ from .routers import (
     cross_dataset,
     datasets,
     monitoring,
+    pipelines,
     rules,
     scorecard,
 )
@@ -41,6 +42,7 @@ app.include_router(monitoring.router)
 app.include_router(api_keys.router)
 app.include_router(connections.router)
 app.include_router(cross_dataset.router)
+app.include_router(pipelines.router)
 
 
 def _wait_for_db(retries: int = 30) -> None:

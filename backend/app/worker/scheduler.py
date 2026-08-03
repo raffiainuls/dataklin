@@ -41,3 +41,26 @@ def cancel_monitoring(job_id: str | None) -> None:
         _get_scheduler().cancel(job_id)
     except Exception:  # noqa: BLE001 - job mungkin sudah tidak ada, aman diabaikan
         pass
+
+
+def schedule_pipeline(pipeline_id: int, interval_minutes: int) -> str:
+    """Jadwalkan run_pipeline berulang setiap interval_minutes; kembalikan job_id."""
+    scheduler = _get_scheduler()
+    job = scheduler.schedule(
+        scheduled_time=datetime.now(timezone.utc),
+        func="app.worker.tasks.run_pipeline",
+        args=[pipeline_id],
+        interval=interval_minutes * 60,
+        repeat=None,
+        id=f"pipeline-{pipeline_id}",
+    )
+    return job.id
+
+
+def cancel_pipeline(job_id: str | None) -> None:
+    if not job_id:
+        return
+    try:
+        _get_scheduler().cancel(job_id)
+    except Exception:  # noqa: BLE001 - job mungkin sudah tidak ada, aman diabaikan
+        pass

@@ -108,6 +108,8 @@ def pair_score(ra: dict, rb: dict, roles: dict, dedup_config: dict | None = None
         final_prob = odds / (1.0 + odds)
         return final_prob, parts
     else:
+        total_w = 0.0
+        acc = 0.0
         for role, weight in WEIGHTS.items():
             col = roles.get(role)
             if not col:
