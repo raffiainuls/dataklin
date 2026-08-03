@@ -17,6 +17,7 @@ from ..models import (
     EntityCluster,
     GoldenRecord,
     Organization,
+    Pipeline,
     QualityScoreHistory,
     RecordMatchScore,
     RuleResult,
@@ -25,7 +26,7 @@ from ..models import (
 from ..services import storage
 from ..services.anomaly import detect_anomalies
 from ..services.db_connector import decrypt_password, fetch_dataframe
-from ..services.entity_resolution import json_safe_record, resolve_entities
+from ..services.entity_resolution import detect_roles, json_safe_record, resolve_entities
 from ..services.loader import load_dataframe
 from ..services.notifier import notify_alert, notify_dataset_processed
 from ..services.pii import detect_pii
@@ -125,7 +126,14 @@ def _check_and_alert(db, dataset, score: dict) -> None:
                         "banyak nilai kosong dibanding pemeriksaan sebelumnya")
 
 
-def process_dataset(dataset_id: int) -> None:
+def process_dataset(dataset_id: int, run_profiling: bool = True, run_rules: bool = True,
+                    run_dedup: bool = True) -> None:
+    """Jalankan tahap pipeline sesuai flag (dipakai Pipeline granular run — lihat
+    run_pipeline di bawah). Default semua True mempertahankan perilaku lama (dipakai
+    trigger upload/refresh_from_database yang selalu ingin pemrosesan penuh).
+    run_rules turut menggerbang anomaly/PII/scoring karena keempatnya sama-sama
+    bagian dari "validasi kualitas", berbeda konsep dari profiling statistik deskriptif
+    murni atau entity resolution."""
     db = SessionLocal()
     dataset = db.get(Dataset, dataset_id)
     if dataset is None:
@@ -141,99 +149,124 @@ def process_dataset(dataset_id: int) -> None:
         dataset.column_count = len(df.columns)
 
         # --- Profiling (F2) ---
-        db.query(DatasetColumn).filter_by(dataset_id=dataset.id).delete()
-        profiles = profile_dataframe(df)
-        for prof in profiles:
-            db.add(DatasetColumn(dataset_id=dataset.id, **prof))
+        profiles = profile_dataframe(df) if (run_profiling or run_rules) else []
+        if run_profiling:
+            db.query(DatasetColumn).filter_by(dataset_id=dataset.id).delete()
+            for prof in profiles:
+                db.add(DatasetColumn(dataset_id=dataset.id, **prof))
 
         # --- Rule engine (F3): auto-attach rule bawaan saat run pertama ---
-        rules = db.query(ValidationRule).filter_by(dataset_id=dataset.id).all()
-        if not rules:
-            for suggestion in suggest_builtin_rules(df, profiles):
-                db.add(ValidationRule(dataset_id=dataset.id, source="builtin",
-                                      enabled=True, **suggestion))
-            db.commit()
-            rules = db.query(ValidationRule).filter_by(dataset_id=dataset.id).all()
-
-        db.query(RuleResult).filter_by(dataset_id=dataset.id).delete()
-        rule_results = []
+        rule_results: list = []
         validity_per_column: dict[str, list] = {}
-        for rule in rules:
-            if not rule.enabled:
-                continue
-            result = run_rule(df, rule.column_name, rule.rule_type, rule.params)
-            db.add(RuleResult(rule_id=rule.id, dataset_id=dataset.id,
-                              checked=result["checked"], violations=result["violations"],
-                              sample_violations=result["samples"]))
-            rule_results.append(result)
-            validity_per_column.setdefault(rule.column_name, []).append(result)
+        if run_rules:
+            rules = db.query(ValidationRule).filter_by(dataset_id=dataset.id).all()
+            if not rules:
+                for suggestion in suggest_builtin_rules(df, profiles):
+                    db.add(ValidationRule(dataset_id=dataset.id, source="builtin",
+                                          enabled=True, **suggestion))
+                db.commit()
+                rules = db.query(ValidationRule).filter_by(dataset_id=dataset.id).all()
+
+            db.query(RuleResult).filter_by(dataset_id=dataset.id).delete()
+            for rule in rules:
+                if not rule.enabled:
+                    continue
+                result = run_rule(df, rule.column_name, rule.rule_type, rule.params)
+                db.add(RuleResult(rule_id=rule.id, dataset_id=dataset.id,
+                                  checked=result["checked"], violations=result["violations"],
+                                  sample_violations=result["samples"]))
+                rule_results.append(result)
+                validity_per_column.setdefault(rule.column_name, []).append(result)
 
         # --- Entity resolution (F5) + cluster (F6 data) ---
-        db.query(RecordMatchScore).filter_by(dataset_id=dataset.id).delete()
-        old_clusters = db.query(EntityCluster).filter_by(dataset_id=dataset.id).all()
-        for cluster in old_clusters:
-            db.query(ClusterMember).filter_by(cluster_id=cluster.id).delete()
-            db.query(GoldenRecord).filter_by(cluster_id=cluster.id).delete()
-            db.delete(cluster)
-        db.commit()
+        new_cluster_count: int | None = None
+        if run_dedup:
+            db.query(RecordMatchScore).filter_by(dataset_id=dataset.id).delete()
+            old_clusters = db.query(EntityCluster).filter_by(dataset_id=dataset.id).all()
+            for cluster in old_clusters:
+                db.query(ClusterMember).filter_by(cluster_id=cluster.id).delete()
+                db.query(GoldenRecord).filter_by(cluster_id=cluster.id).delete()
+                db.delete(cluster)
+            db.commit()
 
-        er = resolve_entities(df, dedup_config=dataset.dedup_config)
-        duplicate_records = 0
-        for seq, cluster_data in enumerate(er["clusters"], start=1):
-            cluster = EntityCluster(
-                dataset_id=dataset.id,
-                cluster_key=f"ec_{seq:05d}",
-                cohesion=cluster_data["cohesion"],
-                status="pending",
-                record_count=len(cluster_data["members"]),
+            er = resolve_entities(df, dedup_config=dataset.dedup_config)
+            roles = er["roles"]
+            duplicate_records = 0
+            for seq, cluster_data in enumerate(er["clusters"], start=1):
+                cluster = EntityCluster(
+                    dataset_id=dataset.id,
+                    cluster_key=f"ec_{seq:05d}",
+                    cohesion=cluster_data["cohesion"],
+                    status="pending",
+                    record_count=len(cluster_data["members"]),
+                )
+                db.add(cluster)
+                db.flush()
+                for member_idx in cluster_data["members"]:
+                    db.add(ClusterMember(
+                        cluster_id=cluster.id,
+                        record_index=member_idx,
+                        record_data=json_safe_record(cluster_data["records"][member_idx]),
+                    ))
+                for pair in cluster_data["pairs"]:
+                    db.add(RecordMatchScore(
+                        dataset_id=dataset.id, cluster_id=cluster.id,
+                        record_a=pair["a"], record_b=pair["b"],
+                        score=pair["score"], features=pair["parts"],
+                    ))
+                duplicate_records += len(cluster_data["members"])
+            new_cluster_count = len(er["clusters"])
+        else:
+            roles = detect_roles([str(c) for c in df.columns])
+            duplicate_records = (
+                db.query(ClusterMember)
+                .join(EntityCluster, ClusterMember.cluster_id == EntityCluster.id)
+                .filter(EntityCluster.dataset_id == dataset.id,
+                        EntityCluster.status.in_(("pending", "confirmed")))
+                .count()
             )
-            db.add(cluster)
-            db.flush()
-            for member_idx in cluster_data["members"]:
-                db.add(ClusterMember(
-                    cluster_id=cluster.id,
-                    record_index=member_idx,
-                    record_data=json_safe_record(cluster_data["records"][member_idx]),
-                ))
-            for pair in cluster_data["pairs"]:
-                db.add(RecordMatchScore(
-                    dataset_id=dataset.id, cluster_id=cluster.id,
-                    record_a=pair["a"], record_b=pair["b"],
-                    score=pair["score"], features=pair["parts"],
-                ))
-            duplicate_records += len(cluster_data["members"])
 
-        # --- Anomaly detection (F8) ---
-        anomaly_count = _refresh_anomalies(db, dataset, df, profiles)
+        # --- Anomaly detection (F8) + PII detection (F11) + Scoring & scorecard ---
+        anomaly_count = None
+        pii_findings = None
+        score = None
+        if run_rules:
+            anomaly_count = _refresh_anomalies(db, dataset, df, profiles)
 
-        # --- PII detection (F11) ---
-        pii_findings = detect_pii(df, er["roles"])
-        dataset.pii_findings = pii_findings
+            pii_findings = detect_pii(df, roles)
+            dataset.pii_findings = pii_findings
 
-        # --- Scoring & scorecard ---
-        score = compute_dimensions(profiles, rule_results, duplicate_records, len(df))
-        _check_and_alert(db, dataset, score)
-        dataset.quality_score = score["overall"]
-        dataset.dimensions = score["dimensions"]
-        db.add(QualityScoreHistory(dataset_id=dataset.id, score=score["overall"] or 0,
-                                   dimensions=score["dimensions"]))
+            score = compute_dimensions(profiles, rule_results, duplicate_records, len(df))
+            _check_and_alert(db, dataset, score)
+            dataset.quality_score = score["overall"]
+            dataset.dimensions = score["dimensions"]
+            db.add(QualityScoreHistory(dataset_id=dataset.id, score=score["overall"] or 0,
+                                       dimensions=score["dimensions"]))
 
-        # update validity per kolom
-        columns = db.query(DatasetColumn).filter_by(dataset_id=dataset.id).all()
-        for column in columns:
-            results = validity_per_column.get(column.name)
-            if results:
-                checked = sum(r["checked"] for r in results)
-                violations = sum(r["violations"] for r in results)
-                column.validity = round(1 - violations / checked, 4) if checked else None
+            # update validity per kolom
+            columns = db.query(DatasetColumn).filter_by(dataset_id=dataset.id).all()
+            for column in columns:
+                results = validity_per_column.get(column.name)
+                if results:
+                    checked = sum(r["checked"] for r in results)
+                    violations = sum(r["violations"] for r in results)
+                    column.validity = round(1 - violations / checked, 4) if checked else None
 
         dataset.status = "ready"
         dataset.error_message = None
 
+        summary_parts = []
+        if run_profiling:
+            summary_parts.append(f"{len(profiles)} kolom di-profiling")
+        if run_dedup:
+            summary_parts.append(f"{new_cluster_count} cluster duplikat kandidat")
+        if run_rules:
+            summary_parts.append(f'skor {score["overall"]}, {anomaly_count} anomali, '
+                                 f"{len(pii_findings)} kolom PII terdeteksi")
+        if not summary_parts:
+            summary_parts.append("tidak ada tahap aktif")
         _log(db, dataset.org_id,
-             f'Dataset "{dataset.name}" selesai diproses — skor {score["overall"]}, '
-             f'{len(er["clusters"])} cluster duplikat kandidat, '
-             f'{anomaly_count} anomali, {len(pii_findings)} kolom PII terdeteksi')
+             f'Dataset "{dataset.name}" selesai diproses — ' + "; ".join(summary_parts))
         db.commit()
         org = db.get(Organization, dataset.org_id)
         if org is not None:
@@ -263,6 +296,36 @@ def process_dataset(dataset_id: int) -> None:
         traceback.print_exc()
     finally:
         db.close()
+
+
+def run_pipeline(pipeline_id: int) -> None:
+    """Entry point dipanggil manual ("Run Now") maupun terjadwal (rq-scheduler, lihat
+    schedule_pipeline) untuk satu Pipeline. Menerjemahkan enable_profiling/enable_deduplication
+    ke flag process_dataset lalu mencatat hasilnya balik ke baris Pipeline. run_rules cuma
+    aktif saat KEDUA opsi menyala ("Jalankan Keduanya") — mode tunggal (profiling saja /
+    dedup saja) sengaja jadi run ringan tanpa rule/anomaly/PII/scoring, sesuai nama opsinya."""
+    db = SessionLocal()
+    pipeline = db.get(Pipeline, pipeline_id)
+    if pipeline is None:
+        db.close()
+        return
+    dataset_id = pipeline.dataset_id
+    run_profiling = pipeline.enable_profiling
+    run_dedup = pipeline.enable_deduplication
+    db.close()
+
+    process_dataset(dataset_id, run_profiling=run_profiling,
+                    run_rules=run_profiling and run_dedup, run_dedup=run_dedup)
+
+    db = SessionLocal()
+    pipeline = db.get(Pipeline, pipeline_id)
+    dataset = db.get(Dataset, dataset_id)
+    if pipeline is not None:
+        pipeline.last_run_at = datetime.utcnow()
+        pipeline.last_run_status = "error" if (dataset and dataset.status == "error") else "success"
+        pipeline.last_run_message = dataset.error_message if dataset else None
+        db.commit()
+    db.close()
 
 
 def rerun_rules(dataset_id: int) -> None:

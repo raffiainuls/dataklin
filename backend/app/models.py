@@ -292,6 +292,31 @@ class CrossDatasetRule(Base):
     last_samples: Mapped[list | None] = mapped_column(JSON, nullable=True)
 
 
+class Pipeline(Base):
+    """Konfigurasi pemrosesan granular per dataset (halaman Pipelines): menentukan tahap
+    mana dari process_dataset yang benar-benar dijalankan (profiling saja / dedup saja /
+    keduanya) dan jadwal eksekusi otomatisnya lewat rq-scheduler (lihat worker/scheduler.py
+    schedule_pipeline). Berbeda dari Dataset.monitoring_* (F10) yang selalu menjalankan
+    re-validasi penuh — Pipeline sengaja mendukung run parsial."""
+    __tablename__ = "pipelines"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    org_id: Mapped[int] = mapped_column(ForeignKey("organizations.id"))
+    dataset_id: Mapped[int] = mapped_column(ForeignKey("datasets.id"))
+    name: Mapped[str] = mapped_column(String(200))
+    enable_profiling: Mapped[bool] = mapped_column(Boolean, default=True)
+    enable_deduplication: Mapped[bool] = mapped_column(Boolean, default=False)
+    # manual | hourly | daily | weekly
+    schedule: Mapped[str] = mapped_column(String(20), default="manual")
+    schedule_job_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    last_run_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    last_run_status: Mapped[str | None] = mapped_column(String(20), nullable=True)  # success|error
+    last_run_message: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_by: Mapped[str] = mapped_column(String(255))
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow, onupdate=utcnow)
+
+
 class ActivityLog(Base):
     __tablename__ = "activity_logs"
 

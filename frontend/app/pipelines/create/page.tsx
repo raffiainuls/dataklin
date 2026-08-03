@@ -11,13 +11,14 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-import { ArrowRight } from "lucide-react";
+import { AlertCircle, ArrowRight } from "lucide-react";
 
 export default function CreatePipelinePage() {
   const router = useRouter();
   const [datasets, setDatasets] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  
+  const [error, setError] = useState("");
+
   const [form, setForm] = useState({
     name: "",
     dataset_id: "",
@@ -33,19 +34,35 @@ export default function CreatePipelinePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
-    // Simulasikan create pipeline dan trigger run
-    // Pada versi saat ini, kita baru punya endpoint dataset yang berjalan otomatis
-    // Jadi kita hanya akan meredirect ke halaman rules untuk dataset yang dipilih
-    
-    setTimeout(() => {
-      router.push(`/rules?dataset_id=${form.dataset_id}`);
-    }, 1000);
+    setError("");
+
+    try {
+      await api("/pipelines", {
+        method: "POST",
+        body: JSON.stringify({
+          name: form.name,
+          dataset_id: Number(form.dataset_id),
+          enable_profiling: form.enable_profiling,
+          enable_deduplication: form.enable_deduplication,
+          schedule: form.schedule,
+        }),
+      });
+      router.push("/pipelines");
+    } catch (err: any) {
+      setError(err.message || "Gagal membuat pipeline");
+      setLoading(false);
+    }
   };
 
   return (
     <Shell title="Buat Pipeline Baru" subtitle="Konfigurasi aliran data dan validasi">
       <div className="space-y-6 max-w-3xl">
+        {error && (
+          <div className="bg-destructive/15 text-destructive p-4 rounded-md border border-destructive/20 flex items-center gap-2">
+            <AlertCircle className="h-5 w-5" />
+            <p>{error}</p>
+          </div>
+        )}
         <Card>
           <CardHeader>
             <CardTitle>Konfigurasi Pipeline</CardTitle>
@@ -142,8 +159,8 @@ export default function CreatePipelinePage() {
               <Button type="button" variant="outline" onClick={() => router.back()}>
                 Batal
               </Button>
-              <Button type="submit" disabled={loading || !form.dataset_id}>
-                {loading ? "Menyimpan..." : "Lanjut ke Konfigurasi Rule"}
+              <Button type="submit" disabled={loading || !form.name.trim() || !form.dataset_id}>
+                {loading ? "Menyimpan..." : "Buat Pipeline"}
                 {!loading && <ArrowRight className="h-4 w-4 ml-2" />}
               </Button>
             </CardFooter>

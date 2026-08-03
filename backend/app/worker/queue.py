@@ -16,3 +16,7 @@ def enqueue_refresh_dataset(dataset_id: int) -> None:
     """Dispatcher source-aware: upload -> rerun_rules, koneksi database -> tarik ulang
     data terbaru + proses penuh (backlog #2)."""
     get_queue().enqueue("app.worker.tasks.refresh_dataset", dataset_id, job_timeout=3600)
+
+
+def enqueue_run_pipeline(pipeline_id: int) -> None:
+    get_queue().enqueue("app.worker.tasks.run_pipeline", pipeline_id, job_timeout=3600)
