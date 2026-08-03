@@ -17,7 +17,7 @@ export default function RunsPage() {
   
   useEffect(() => {
     // For MVP, datasets act as "runs" since upload triggers processing
-    api("/datasets/")
+    api("/datasets")
       .then(ds => {
         setDatasets(ds);
         setLoading(false);

@@ -17,7 +17,7 @@ export default function SourcesPage() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    api("/datasets/").then(setDatasets).catch((e) => setError(e.message));
+    api("/datasets").then(setDatasets).catch((e) => setError(e.message));
   }, []);
 
   const filteredDatasets = datasets.filter((d) => 
