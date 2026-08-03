@@ -41,7 +41,7 @@ function RulesContent() {
   const [suggestBusy, setSuggestBusy] = useState(false);
 
   useEffect(() => {
-    api("/datasets/")
+    api("/datasets")
       .then((ds) => {
         setDatasets(ds);
         if (!datasetId && ds.length) setDatasetId(String(ds[0].id));
