@@ -17,7 +17,7 @@ export default function PipelinesPage() {
 
   useEffect(() => {
     // Di MVP, datasets juga bertindak sebagai representasi pipeline/job
-    api("/datasets/")
+    api("/datasets")
       .then((data) => {
         setDatasets(data);
         setLoading(false);

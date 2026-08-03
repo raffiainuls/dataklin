@@ -35,7 +35,7 @@ export default function EditPipelinePage() {
     // jadi kita ambil dataset sebagai pipeline
     Promise.all([
       api(`/datasets/${params.id}`),
-      api("/datasets/")
+      api("/datasets")
     ]).then(([ds, allDs]) => {
       setPipeline(ds);
       setDatasets(allDs);

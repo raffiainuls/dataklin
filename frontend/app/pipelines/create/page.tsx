@@ -27,7 +27,7 @@ export default function CreatePipelinePage() {
   });
 
   useEffect(() => {
-    api("/datasets/").then(setDatasets).catch(console.error);
+    api("/datasets").then(setDatasets).catch(console.error);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
