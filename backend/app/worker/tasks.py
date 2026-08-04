@@ -309,6 +309,10 @@ def run_pipeline(pipeline_id: int) -> None:
     if pipeline is None:
         db.close()
         return
+    pipeline.last_run_status = "running"
+    pipeline.last_run_at = datetime.utcnow()
+    pipeline.last_run_message = None
+    db.commit()
     dataset_id = pipeline.dataset_id
     run_profiling = pipeline.enable_profiling
     run_dedup = pipeline.enable_deduplication
@@ -322,13 +326,24 @@ def run_pipeline(pipeline_id: int) -> None:
     dataset = db.get(Dataset, dataset_id)
     if pipeline is not None:
         pipeline.last_run_at = datetime.utcnow()
-        pipeline.last_run_status = "error" if (dataset and dataset.status == "error") else "success"
+        pipeline.last_run_status = "failed" if (dataset and dataset.status == "error") else "success"
         pipeline.last_run_message = dataset.error_message if dataset else None
         db.commit()
     db.close()
 
 
-def rerun_rules(dataset_id: int) -> None:
+def _finish_pipeline_run(db, pipeline_id: int | None, status: str,
+                         message: str | None = None) -> None:
+    if pipeline_id is None:
+        return
+    pipeline = db.get(Pipeline, pipeline_id)
+    if pipeline is not None:
+        pipeline.last_run_status = status
+        pipeline.last_run_at = datetime.utcnow()
+        pipeline.last_run_message = message
+
+
+def rerun_rules(dataset_id: int, pipeline_id: int | None = None) -> None:
     """Jalankan ulang validasi rule + hitung ulang skor tanpa mengulang entity resolution."""
     db = SessionLocal()
     dataset = db.get(Dataset, dataset_id)
@@ -383,6 +398,7 @@ def rerun_rules(dataset_id: int) -> None:
 
         dataset.status = "ready"
         dataset.error_message = None
+        _finish_pipeline_run(db, pipeline_id, "success")
         _log(db, dataset.org_id,
              f'Validasi rule "{dataset.name}" dijalankan ulang — skor {score["overall"]}')
         db.commit()
@@ -392,13 +408,14 @@ def rerun_rules(dataset_id: int) -> None:
         if dataset:
             dataset.status = "error"
             dataset.error_message = f"Gagal re-validasi: {exc}"
+            _finish_pipeline_run(db, pipeline_id, "failed", dataset.error_message)
             db.commit()
         traceback.print_exc()
     finally:
         db.close()
 
 
-def refresh_dataset(dataset_id: int) -> None:
+def refresh_dataset(dataset_id: int, pipeline_id: int | None = None) -> None:
     """Dispatcher source-aware (backlog #2) dipanggil scheduler & tombol 'Jalankan Ulang
     Validasi': dataset upload biasa cukup re-validasi (rerun_rules); dataset dari koneksi
     database menarik ulang data terbaru dari sumbernya dulu baru diproses penuh — supaya
@@ -408,12 +425,12 @@ def refresh_dataset(dataset_id: int) -> None:
     source_type = dataset.source_type if dataset else "upload"
     db.close()
     if source_type == "database":
-        refresh_from_database(dataset_id)
+        refresh_from_database(dataset_id, pipeline_id)
     else:
-        rerun_rules(dataset_id)
+        rerun_rules(dataset_id, pipeline_id)
 
 
-def refresh_from_database(dataset_id: int) -> None:
+def refresh_from_database(dataset_id: int, pipeline_id: int | None = None) -> None:
     """Tarik ulang data terbaru dari koneksi database, timpa snapshot CSV di storage,
     lalu proses penuh lewat pipeline yang sama seperti dataset upload biasa."""
     db = SessionLocal()
@@ -448,6 +465,7 @@ def refresh_from_database(dataset_id: int) -> None:
         if dataset is not None:
             dataset.status = "error"
             dataset.error_message = f"Gagal menarik data dari koneksi: {exc}"
+            _finish_pipeline_run(db, pipeline_id, "failed", dataset.error_message)
             _log(db, dataset.org_id, f'Dataset "{dataset.name}" gagal menarik data: {exc}')
             db.commit()
         traceback.print_exc()
@@ -455,3 +473,11 @@ def refresh_from_database(dataset_id: int) -> None:
         return
     db.close()
     process_dataset(dataset_id)
+    db = SessionLocal()
+    dataset = db.get(Dataset, dataset_id)
+    if dataset is not None and dataset.status == "error":
+        _finish_pipeline_run(db, pipeline_id, "failed", dataset.error_message)
+    else:
+        _finish_pipeline_run(db, pipeline_id, "success")
+    db.commit()
+    db.close()

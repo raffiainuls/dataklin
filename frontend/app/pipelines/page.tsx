@@ -7,7 +7,7 @@ import { api } from "@/lib/api";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { GitBranch, Plus, FileText, Settings, Search, Play, Trash2 } from "lucide-react";
+import { GitBranch, Plus, FileText, Settings, Search, Play, Trash2, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 const SCHEDULE_LABELS: Record<string, string> = {
@@ -44,16 +44,16 @@ export default function PipelinesPage() {
 
   useEffect(() => {
     load();
+    const interval = setInterval(load, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   async function runNow(id: number) {
     setRunningId(id);
     try {
       await api(`/pipelines/${id}/run`, { method: "POST" });
-      setTimeout(() => {
-        load();
-        setRunningId(null);
-      }, 2500);
+      load();
+      setRunningId(null);
     } catch (err: any) {
       setError(err.message || "Gagal menjalankan pipeline");
       setRunningId(null);
@@ -131,6 +131,7 @@ export default function PipelinesPage() {
                       <TableHead>Sumber Data</TableHead>
                       <TableHead>Opsi Pemrosesan</TableHead>
                       <TableHead>Jadwal</TableHead>
+                      <TableHead>Status</TableHead>
                       <TableHead>Run Terakhir</TableHead>
                       <TableHead className="text-right">Aksi</TableHead>
                     </TableRow>
@@ -154,19 +155,42 @@ export default function PipelinesPage() {
                           </span>
                         </TableCell>
                         <TableCell>
+                          {p.last_run_status === "running" ? (
+                            <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-1 text-xs font-semibold text-blue-700">
+                              <Loader2 className="mr-1.5 h-3 w-3 animate-spin" /> Running
+                            </span>
+                          ) : p.last_run_status === "success" ? (
+                            <span className="inline-flex rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+                              Success
+                            </span>
+                          ) : p.last_run_status === "failed" ? (
+                            <span className="inline-flex rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-700" title={p.last_run_message || undefined}>
+                              Failed
+                            </span>
+                          ) : (
+                            <span className="inline-flex rounded-full bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground">
+                              Belum dijalankan
+                            </span>
+                          )}
+                        </TableCell>
+                        <TableCell>
                           {p.last_run_at ? (
-                            <span className={p.last_run_status === "error" ? "text-destructive text-xs" : "text-xs text-muted-foreground"}>
-                              {p.last_run_status === "error" ? "Gagal" : "Berhasil"} · {new Date(p.last_run_at).toLocaleString("id-ID")}
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(p.last_run_at).toLocaleString("id-ID")}
                             </span>
                           ) : (
                             <span className="text-xs text-muted-foreground">Belum pernah dijalankan</span>
                           )}
                         </TableCell>
                         <TableCell className="text-right space-x-1">
-                          <Button variant="outline" size="sm" className="h-8" disabled={runningId === p.id}
+                          <Button variant="outline" size="sm" className="h-8" disabled={runningId === p.id || p.last_run_status === "running"}
                                  onClick={() => runNow(p.id)}>
-                            <Play className="h-3.5 w-3.5 mr-2" />
-                            {runningId === p.id ? "Menjalankan..." : "Run Now"}
+                            {runningId === p.id || p.last_run_status === "running" ? (
+                              <Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" />
+                            ) : (
+                              <Play className="h-3.5 w-3.5 mr-2" />
+                            )}
+                            {runningId === p.id || p.last_run_status === "running" ? "Menjalankan..." : "Run Now"}
                           </Button>
                           <Button variant="outline" size="sm" className="h-8" render={<Link href={`/rules?dataset_id=${p.dataset_id}`} />} nativeButton={false}>
   <FileText className="h-3.5 w-3.5 mr-2" />

@@ -310,7 +310,8 @@ class Pipeline(Base):
     schedule: Mapped[str] = mapped_column(String(20), default="manual")
     schedule_job_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
     last_run_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
-    last_run_status: Mapped[str | None] = mapped_column(String(20), nullable=True)  # success|error
+    # running | success | failed ("error" tetap dibaca untuk kompatibilitas data lama)
+    last_run_status: Mapped[str | None] = mapped_column(String(20), nullable=True)
     last_run_message: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_by: Mapped[str] = mapped_column(String(255))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
