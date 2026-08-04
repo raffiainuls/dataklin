@@ -651,31 +651,66 @@ function RulesContent() {
 
 function DedupBuilder({ datasetId, columns }: { datasetId: string, columns: string[] }) {
   const [threshold, setThreshold] = useState<number>(0.8);
+  const [priorProbability, setPriorProbability] = useState<number>(0.05);
+  const [exactRowMatch, setExactRowMatch] = useState(true);
   const [dedupRules, setDedupRules] = useState<any[]>([]);
+  const [blockingRules, setBlockingRules] = useState<any[]>([]);
+  const [exactMatchRules, setExactMatchRules] = useState<any[]>([]);
+  const [clusterValidation, setClusterValidation] = useState<any>({
+    enabled: true,
+    method: "representative",
+    min_cohesion: 0.7,
+    min_representative_score: 0.75,
+  });
   const [saving, setSaving] = useState(false);
+  const [calibrating, setCalibrating] = useState(false);
+  const [calibration, setCalibration] = useState<any>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
     if (!datasetId) return;
     api(`/datasets/${datasetId}/dedup-config`).then(res => {
-      setThreshold(res.threshold || 0.8);
-      setDedupRules(res.rules || []);
+      setThreshold(res.threshold ?? 0.8);
+      setPriorProbability(res.prior_probability ?? 0.05);
+      setExactRowMatch(res.exact_row_match ?? true);
+      setDedupRules((res.rules || []).map((rule: any) => ({
+        weight: 2,
+        normalizers: [],
+        mismatch_penalty: 0,
+        mismatch_threshold: 0.2,
+        required: false,
+        required_threshold: 0.999,
+        ...rule,
+      })));
+      setBlockingRules(res.blocking_rules || []);
+      setExactMatchRules(res.exact_match_rules || []);
+      setClusterValidation(res.cluster_validation || {
+        enabled: true,
+        method: "representative",
+        min_cohesion: 0.7,
+        min_representative_score: 0.75,
+      });
     }).catch(e => console.error(e));
   }, [datasetId]);
 
   const saveConfig = async () => {
     setError("");
     setSuccess("");
-    if (dedupRules.length === 0) {
-      // Allow empty rules to fallback to auto
-    }
-    
     setSaving(true);
     try {
       await api(`/datasets/${datasetId}/dedup-config`, {
         method: "PUT",
-        body: JSON.stringify({ threshold, rules: dedupRules })
+        body: JSON.stringify({
+          version: 2,
+          threshold,
+          prior_probability: priorProbability,
+          exact_row_match: exactRowMatch,
+          rules: dedupRules,
+          blocking_rules: blockingRules,
+          exact_match_rules: exactMatchRules,
+          cluster_validation: clusterValidation,
+        })
       });
       setSuccess("Konfigurasi deduplikasi berhasil disimpan. Pipeline akan dijalankan ulang otomatis.");
     } catch (e: any) {
@@ -685,9 +720,31 @@ function DedupBuilder({ datasetId, columns }: { datasetId: string, columns: stri
     }
   };
 
+  const calibrate = async () => {
+    setError("");
+    setCalibrating(true);
+    try {
+      const result = await api(`/datasets/${datasetId}/dedup-config/calibration`);
+      setCalibration(result);
+      if (result.available) setThreshold(result.recommended_threshold);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setCalibrating(false);
+    }
+  };
+
   if (!datasetId) {
     return <div className="text-center p-8 text-muted-foreground border rounded-md">Pilih dataset terlebih dahulu</div>;
   }
+
+  const updateMatchingRule = (index: number, changes: any) => {
+    setDedupRules(dedupRules.map((rule, position) => position === index ? { ...rule, ...changes } : rule));
+  };
+  const updateBlockingRule = (index: number, changes: any) => {
+    setBlockingRules(blockingRules.map((rule, position) => position === index ? { ...rule, ...changes } : rule));
+  };
+  const selectedColumns = (rule: any) => rule.columns?.length ? rule.columns : (rule.column ? [rule.column] : []);
 
   return (
     <div className="space-y-6">
@@ -708,93 +765,200 @@ function DedupBuilder({ datasetId, columns }: { datasetId: string, columns: stri
         <CardHeader>
           <CardTitle>Aturan Pencocokan Data (Entity Resolution)</CardTitle>
           <CardDescription>
-            Pilih kolom yang akan digunakan untuk mencari data ganda dan metode algoritmanya. Sistem akan secara otomatis menghitung probabilitas tiap kolom (Term Frequency & Expectation-Maximization ala Splink) untuk menentukan bobot secara cerdas.
+            Candidate generation, pencocokan, bukti negatif, dan validasi cluster dapat diatur terpisah. Konfigurasi lama tetap didukung.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="flex items-center gap-4 border-b pb-6">
-            <div className="flex-1 space-y-1">
-              <Label>Minimum Threshold Skor</Label>
-              <p className="text-sm text-muted-foreground">Batas minimal total skor kemiripan (0.1 - 1.0) untuk dianggap sebagai duplikat.</p>
+          <div className="grid grid-cols-1 gap-4 border-b pb-6 md:grid-cols-3">
+            <div className="space-y-2">
+              <Label>Minimum Match Score</Label>
+              <Input type="number" min="0.1" max="1" step="0.05" value={threshold}
+                onChange={(event) => setThreshold(Number(event.target.value))} />
+              <p className="text-xs text-muted-foreground">Pasangan di atas batas ini membentuk koneksi cluster.</p>
+              <Button type="button" variant="outline" size="sm" className="w-full" onClick={calibrate} disabled={calibrating}>
+                {calibrating ? "Menghitung..." : "Kalibrasi dari Hasil Review"}
+              </Button>
+              {calibration && (
+                <p className={`rounded p-2 text-xs ${calibration.available ? "bg-emerald-500/10 text-emerald-700" : "bg-amber-500/10 text-amber-700"}`}>
+                  {calibration.available
+                    ? `Threshold ${calibration.recommended_threshold} · balanced accuracy ${(calibration.balanced_accuracy * 100).toFixed(1)}% dari ${calibration.positive_pairs + calibration.negative_pairs} pasangan.`
+                    : calibration.reason}
+                </p>
+              )}
             </div>
-            <div className="w-32">
-              <Input 
-                type="number" 
-                min="0.1" max="1.0" step="0.05" 
-                value={threshold} 
-                onChange={(e) => setThreshold(parseFloat(e.target.value))} 
-              />
+            <div className="space-y-2">
+              <Label>Prior Probability</Label>
+              <Input type="number" min="0.001" max="0.5" step="0.01" value={priorProbability}
+                onChange={(event) => setPriorProbability(Number(event.target.value))} />
+              <p className="text-xs text-muted-foreground">Peluang awal dua record merupakan entitas yang sama.</p>
             </div>
+            <label className="flex cursor-pointer items-start gap-3 rounded-md border p-3">
+              <input type="checkbox" className="mt-1" checked={exactRowMatch}
+                onChange={(event) => setExactRowMatch(event.target.checked)} />
+              <span><span className="block text-sm font-medium">Exact-row fast path</span>
+                <span className="text-xs text-muted-foreground">Gabungkan baris identik tanpa fuzzy scoring.</span></span>
+            </label>
           </div>
-          
+
+          <div className="space-y-4 border-b pb-6">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <h3 className="font-semibold">1. Candidate Generation (Blocking)</h3>
+                <p className="text-xs text-muted-foreground">Menentukan pasangan yang layak dibandingkan. Jika kosong, sistem menurunkannya dari matching rules.</p>
+              </div>
+              <Button variant="outline" size="sm" onClick={() => setBlockingRules([...blockingRules, {
+                column: columns[0] || "", method: "prefix", normalizers: [], length: 3,
+              }])}><Plus className="mr-2 h-4 w-4" />Tambah Blocking</Button>
+            </div>
+            {blockingRules.length === 0 ? (
+              <div className="rounded-md border border-dashed p-4 text-sm text-muted-foreground">Mode otomatis aktif: phone suffix, email local/ngram, phonetic, prefix, atau n-gram dipilih sesuai metode matching.</div>
+            ) : blockingRules.map((rule, index) => {
+              const composite = rule.method === "composite_exact";
+              return (
+                <div key={index} className="grid grid-cols-1 gap-3 rounded-md border bg-muted/10 p-4 md:grid-cols-[1fr_1fr_1fr_90px_auto] md:items-end">
+                  <div className="space-y-2">
+                    <Label>{composite ? "Kolom gabungan" : "Kolom"}</Label>
+                    {composite ? (
+                      <select multiple value={selectedColumns(rule)} onChange={(event) => updateBlockingRule(index, {
+                        column: null, columns: Array.from(event.target.selectedOptions, option => option.value),
+                      })} className="min-h-24 w-full rounded-md border bg-background p-2 text-sm">
+                        {columns.map(column => <option key={column} value={column}>{column}</option>)}
+                      </select>
+                    ) : (
+                      <Select value={rule.column || ""} onValueChange={(value) => updateBlockingRule(index, { column: value, columns: [] })}>
+                        <SelectTrigger><SelectValue placeholder="Pilih kolom" /></SelectTrigger>
+                        <SelectContent>{columns.map(column => <SelectItem key={column} value={column}>{column}</SelectItem>)}</SelectContent>
+                      </Select>
+                    )}
+                  </div>
+                  <div className="space-y-2"><Label>Metode blocking</Label>
+                    <Select value={rule.method} onValueChange={(value) => updateBlockingRule(index, { method: value })}>
+                      <SelectTrigger><SelectValue /></SelectTrigger><SelectContent>
+                        <SelectItem value="exact">Exact</SelectItem><SelectItem value="composite_exact">Composite Exact</SelectItem>
+                        <SelectItem value="prefix">Prefix</SelectItem><SelectItem value="token_prefix">Token Prefix</SelectItem>
+                        <SelectItem value="phonetic">Phonetic Indonesia</SelectItem><SelectItem value="ngram">Character N-gram</SelectItem>
+                        <SelectItem value="email_local">Email Local Prefix</SelectItem><SelectItem value="phone_suffix">Phone Suffix</SelectItem>
+                      </SelectContent></Select>
+                  </div>
+                  <div className="space-y-2"><Label>Normalizer</Label>
+                    <Select value={rule.normalizers?.[0] || "auto"} onValueChange={(value) => updateBlockingRule(index, { normalizers: value === "auto" ? [] : [value] })}>
+                      <SelectTrigger><SelectValue /></SelectTrigger><SelectContent>
+                        <SelectItem value="auto">Otomatis</SelectItem><SelectItem value="basic">Basic</SelectItem><SelectItem value="name">Nama</SelectItem>
+                        <SelectItem value="phone">Telepon</SelectItem><SelectItem value="email">Email</SelectItem><SelectItem value="address">Alamat</SelectItem>
+                        <SelectItem value="identifier">Identifier</SelectItem><SelectItem value="date">Tanggal</SelectItem>
+                      </SelectContent></Select>
+                  </div>
+                  <div className="space-y-2"><Label>Panjang</Label><Input type="number" min="1" max="20" value={rule.length || 3}
+                    onChange={(event) => updateBlockingRule(index, { length: Number(event.target.value) })} /></div>
+                  <Button variant="ghost" className="text-destructive" onClick={() => setBlockingRules(blockingRules.filter((_, position) => position !== index))}><Trash2 className="h-4 w-4" /></Button>
+                </div>
+              );
+            })}
+          </div>
+
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold">Kolom Pencocokan</h3>
-              <Button variant="outline" size="sm" onClick={() => setDedupRules([...dedupRules, { column: columns[0] || "", method: "exact" }])}>
-                <Plus className="h-4 w-4 mr-2" /> Tambah Kolom
+              <div><h3 className="font-semibold">2. Matching dan Evidence</h3>
+                <p className="text-xs text-muted-foreground">Similarity menjadi bukti probabilistik; required mismatch dapat memveto false positive.</p></div>
+              <Button variant="outline" size="sm" onClick={() => setDedupRules([...dedupRules, {
+                column: columns[0] || "", columns: [], method: "exact", weight: 2,
+                normalizers: [], mismatch_penalty: 0, mismatch_threshold: 0.2,
+                required: false, required_threshold: 0.999,
+              }])}>
+                <Plus className="h-4 w-4 mr-2" /> Tambah Matching
               </Button>
             </div>
             
             {dedupRules.length === 0 ? (
               <div className="text-center p-8 border border-dashed rounded-md text-muted-foreground">
-                Belum ada kolom yang dipilih. Sistem akan menggunakan tebakan otomatis (auto-detect) jika kosong.
+                Belum ada kolom yang dipilih. Sistem menggunakan deteksi nama/telepon/email/alamat otomatis.
               </div>
             ) : (
               <div className="space-y-4">
                 {dedupRules.map((rule, idx) => (
-                  <div key={idx} className="flex gap-4 items-end bg-muted/10 p-4 rounded-md border">
-                    <div className="flex-1 space-y-2">
-                      <Label>Kolom</Label>
-                      <Select value={rule.column} onValueChange={(v) => {
-                        const newR = [...dedupRules];
-                        newR[idx].column = v;
-                        setDedupRules(newR);
-                      }}>
-                        <SelectTrigger className="bg-background">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {columns.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                        </SelectContent>
-                      </Select>
+                  <div key={idx} className="space-y-4 rounded-md border bg-muted/10 p-4">
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-[1fr_1fr_1fr_100px_auto] md:items-end">
+                      <div className="space-y-2"><Label>{rule.method === "composite_exact" ? "Kolom gabungan" : "Kolom"}</Label>
+                        {rule.method === "composite_exact" ? (
+                          <select multiple value={selectedColumns(rule)} onChange={(event) => updateMatchingRule(idx, {
+                            column: null, columns: Array.from(event.target.selectedOptions, option => option.value),
+                          })} className="min-h-24 w-full rounded-md border bg-background p-2 text-sm">
+                            {columns.map(column => <option key={column} value={column}>{column}</option>)}
+                          </select>
+                        ) : (
+                          <Select value={rule.column || ""} onValueChange={(value) => updateMatchingRule(idx, { column: value, columns: [] })}>
+                            <SelectTrigger><SelectValue placeholder="Pilih kolom" /></SelectTrigger><SelectContent>
+                              {columns.map(column => <SelectItem key={column} value={column}>{column}</SelectItem>)}
+                            </SelectContent></Select>
+                        )}
+                      </div>
+                      <div className="space-y-2"><Label>Algoritma</Label>
+                        <Select value={rule.method} onValueChange={(value) => updateMatchingRule(idx, { method: value })}>
+                          <SelectTrigger><SelectValue /></SelectTrigger><SelectContent>
+                            <SelectItem value="exact">Exact Match</SelectItem><SelectItem value="composite_exact">Composite Exact</SelectItem>
+                            <SelectItem value="jaro_winkler">Jaro-Winkler</SelectItem><SelectItem value="phonetic">Phonetic Indonesia</SelectItem>
+                            <SelectItem value="fuzzy_ratio">Fuzzy Ratio</SelectItem><SelectItem value="token_sort">Token Sort</SelectItem>
+                            <SelectItem value="token_set">Token Set</SelectItem><SelectItem value="phone">Phone Match</SelectItem><SelectItem value="email">Email Match</SelectItem>
+                          </SelectContent></Select>
+                      </div>
+                      <div className="space-y-2"><Label>Normalizer</Label>
+                        <Select value={rule.normalizers?.[0] || "auto"} onValueChange={(value) => updateMatchingRule(idx, { normalizers: value === "auto" ? [] : [value] })}>
+                          <SelectTrigger><SelectValue /></SelectTrigger><SelectContent>
+                            <SelectItem value="auto">Otomatis</SelectItem><SelectItem value="basic">Basic</SelectItem><SelectItem value="name">Nama</SelectItem>
+                            <SelectItem value="phone">Telepon</SelectItem><SelectItem value="email">Email</SelectItem><SelectItem value="address">Alamat</SelectItem>
+                            <SelectItem value="identifier">Identifier</SelectItem><SelectItem value="date">Tanggal</SelectItem>
+                          </SelectContent></Select>
+                      </div>
+                      <div className="space-y-2"><Label>Bobot</Label><Input type="number" min="0" max="5" step="0.1" value={rule.weight ?? 2}
+                        onChange={(event) => updateMatchingRule(idx, { weight: Number(event.target.value) })} /></div>
+                      <Button variant="ghost" className="text-destructive" onClick={() => setDedupRules(dedupRules.filter((_, position) => position !== idx))}><Trash2 className="h-4 w-4" /></Button>
                     </div>
-                    
-                    <div className="flex-1 space-y-2">
-                      <Label>Metode (Algoritma)</Label>
-                      <Select value={rule.method} onValueChange={(v) => {
-                        const newR = [...dedupRules];
-                        newR[idx].method = v;
-                        setDedupRules(newR);
-                      }}>
-                        <SelectTrigger className="bg-background">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="exact">Exact Match (Sama Persis)</SelectItem>
-                          <SelectItem value="fuzzy_ratio">Fuzzy Ratio (Levenshtein)</SelectItem>
-                          <SelectItem value="token_sort">Token Sort (Acak Kata, e.g. Nama)</SelectItem>
-                          <SelectItem value="token_set">Token Set (Subset Kata, e.g. Alamat)</SelectItem>
-                          <SelectItem value="phone">Phone Match (No. HP)</SelectItem>
-                          <SelectItem value="email">Email Match</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    <div className="grid grid-cols-1 gap-3 border-t pt-3 md:grid-cols-3">
+                      <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={Boolean(rule.required)}
+                        onChange={(event) => updateMatchingRule(idx, { required: event.target.checked })} />Wajib cocok (mismatch = veto)</label>
+                      <div className="space-y-1"><Label>Mismatch penalty</Label><Input type="number" min="0" max="1" step="0.1" value={rule.mismatch_penalty ?? 0}
+                        onChange={(event) => updateMatchingRule(idx, { mismatch_penalty: Number(event.target.value) })} /></div>
+                      <div className="space-y-1"><Label>Mismatch threshold</Label><Input type="number" min="0" max="1" step="0.05" value={rule.mismatch_threshold ?? 0.2}
+                        onChange={(event) => updateMatchingRule(idx, { mismatch_threshold: Number(event.target.value) })} /></div>
                     </div>
-                    
-
-                    
-                    <Button variant="ghost" className="text-destructive mb-0.5" onClick={() => {
-                      const newR = [...dedupRules];
-                      newR.splice(idx, 1);
-                      setDedupRules(newR);
-                    }}>
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
                   </div>
                 ))}
-                
-
               </div>
             )}
+          </div>
+
+          <div className="space-y-4 border-t pt-6">
+            <div className="flex items-center justify-between gap-3">
+              <div><h3 className="font-semibold">3. Deterministic Identity Keys</h3><p className="text-xs text-muted-foreground">Kecocokan lengkap pada kombinasi ini langsung dianggap duplikat.</p></div>
+              <Button variant="outline" size="sm" onClick={() => setExactMatchRules([...exactMatchRules, { columns: columns.slice(0, 1), normalizers: ["basic"] }])}><Plus className="mr-2 h-4 w-4" />Tambah Identity Key</Button>
+            </div>
+            {exactMatchRules.map((rule, index) => (
+              <div key={index} className="flex items-start gap-3 rounded-md border p-4">
+                <div className="flex-1 space-y-2"><Label>Pilih satu atau beberapa kolom</Label>
+                  <select multiple value={rule.columns || []} onChange={(event) => setExactMatchRules(exactMatchRules.map((item, position) => position === index ? {
+                    ...item, columns: Array.from(event.target.selectedOptions, option => option.value),
+                  } : item))} className="min-h-24 w-full rounded-md border bg-background p-2 text-sm">
+                    {columns.map(column => <option key={column} value={column}>{column}</option>)}
+                  </select>
+                </div>
+                <Button variant="ghost" className="text-destructive" onClick={() => setExactMatchRules(exactMatchRules.filter((_, position) => position !== index))}><Trash2 className="h-4 w-4" /></Button>
+              </div>
+            ))}
+          </div>
+
+          <div className="space-y-4 border-t pt-6">
+            <div><h3 className="font-semibold">4. Cluster Validation</h3><p className="text-xs text-muted-foreground">Memastikan setiap anggota cukup mirip dengan representative dan cluster tidak terbentuk hanya karena chaining.</p></div>
+            <div className="grid grid-cols-1 gap-4 rounded-md border p-4 md:grid-cols-4 md:items-end">
+              <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={clusterValidation.enabled}
+                onChange={(event) => setClusterValidation({ ...clusterValidation, enabled: event.target.checked })} />Aktifkan validasi</label>
+              <div className="space-y-2"><Label>Metode</Label><Select value={clusterValidation.method} onValueChange={(value) => setClusterValidation({ ...clusterValidation, method: value })}>
+                <SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="representative">Representative/Medoid</SelectItem><SelectItem value="connected">Connected (legacy)</SelectItem></SelectContent>
+              </Select></div>
+              <div className="space-y-2"><Label>Min. cohesion</Label><Input type="number" min="0" max="1" step="0.05" value={clusterValidation.min_cohesion}
+                onChange={(event) => setClusterValidation({ ...clusterValidation, min_cohesion: Number(event.target.value) })} /></div>
+              <div className="space-y-2"><Label>Min. representative score</Label><Input type="number" min="0" max="1" step="0.05" value={clusterValidation.min_representative_score}
+                onChange={(event) => setClusterValidation({ ...clusterValidation, min_representative_score: Number(event.target.value) })} /></div>
+            </div>
           </div>
         </CardContent>
         <CardFooter className="bg-muted/10 border-t justify-between">
