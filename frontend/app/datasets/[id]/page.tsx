@@ -245,7 +245,7 @@ export default function DatasetDetail() {
                         <TableHead>Kolom</TableHead>
                         <TableHead>Aturan (Rule)</TableHead>
                         <TableHead>Status</TableHead>
-                        <TableHead>Semua Data Gagal</TableHead>
+                        <TableHead>Data Gagal</TableHead>
                         <TableHead className="text-right">Baris Gagal</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -264,21 +264,16 @@ export default function DatasetDetail() {
                               )}
                             </TableCell>
                             <TableCell>
-                              {r.last_result?.samples?.length ? (
-                                <div className="flex max-h-48 max-w-md flex-wrap gap-1.5 overflow-y-auto pr-1">
-                                  {r.last_result.samples.map((sample: any, index: number) => (
-                                    <span
-                                      key={`${sample.row}-${index}`}
-                                      className="inline-flex rounded border border-destructive/20 bg-destructive/5 px-2 py-1 text-xs"
-                                      title={`Baris ${sample.row}`}
-                                    >
-                                      <span className="mr-1 text-muted-foreground">Baris {sample.row}:</span>
-                                      <span className="max-w-48 truncate font-mono">
-                                        {sample.value === null ? "(kosong)" : String(sample.value)}
-                                      </span>
-                                    </span>
-                                  ))}
-                                </div>
+                              {hasViolations ? (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  render={<Link href={`/datasets/${data.id}/rules/${r.id}/violations`} />}
+                                  nativeButton={false}
+                                >
+                                  <Search className="mr-2 h-3.5 w-3.5" />
+                                  Lihat Data ({r.last_result.violations.toLocaleString("id-ID")})
+                                </Button>
                               ) : (
                                 <span className="text-xs text-muted-foreground">—</span>
                               )}

@@ -612,18 +612,19 @@ function RulesContent() {
                           </div>
                         </div>
                         
-                        {r.last_result?.samples?.length > 0 && r.enabled && (
-                          <div className="mt-3 bg-destructive/5 p-3 rounded-md border border-destructive/10 text-xs">
-                            <div className="font-semibold text-destructive mb-1">Semua Pelanggaran:</div>
-                            <ul className="max-h-64 space-y-1 overflow-y-auto pr-1">
-                              {r.last_result.samples.map((s: any, idx: number) => (
-                                <li key={idx} className="text-muted-foreground">
-                                  Baris {s.row}: <span className="font-mono text-foreground font-medium bg-background px-1 rounded">
-                                    {s.value === null ? "(kosong)" : `"${s.value}"`}
-                                  </span>
-                                </li>
-                              ))}
-                            </ul>
+                        {r.last_result?.violations > 0 && r.enabled && (
+                          <div className="mt-3 flex items-center justify-between rounded-md border border-destructive/10 bg-destructive/5 p-3 text-xs">
+                            <span className="font-semibold text-destructive">
+                              {r.last_result.violations.toLocaleString("id-ID")} baris melanggar
+                            </span>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              render={<Link href={`/datasets/${datasetId}/rules/${r.id}/violations`} />}
+                              nativeButton={false}
+                            >
+                              Lihat Semua Data
+                            </Button>
                           </div>
                         )}
                       </div>
