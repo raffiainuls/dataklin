@@ -73,6 +73,60 @@ menambahkan `relationship_profile` pada respons:
 }
 ```
 
+### Entity Resolution Configuration v2
+
+`GET /datasets/{dataset_id}/dedup-config` membaca konfigurasi dan
+`PUT /datasets/{dataset_id}/dedup-config` menyimpan konfigurasi berikut. Payload v1
+yang hanya memiliki `threshold` dan `rules[{column,method}]` tetap diterima.
+
+```json
+{
+  "version": 2,
+  "threshold": 0.8,
+  "prior_probability": 0.05,
+  "exact_row_match": true,
+  "blocking_rules": [
+    {"column": "nama", "method": "phonetic", "normalizers": ["name"], "length": 3}
+  ],
+  "rules": [
+    {
+      "column": "nama",
+      "method": "jaro_winkler",
+      "normalizers": ["name"],
+      "weight": 2,
+      "mismatch_penalty": 0,
+      "mismatch_threshold": 0.2,
+      "required": false,
+      "required_threshold": 0.999
+    }
+  ],
+  "exact_match_rules": [
+    {"columns": ["nik"], "normalizers": ["identifier"]}
+  ],
+  "cluster_validation": {
+    "enabled": true,
+    "method": "representative",
+    "min_cohesion": 0.7,
+    "min_representative_score": 0.75
+  }
+}
+```
+
+Matching methods: `exact`, `composite_exact`, `fuzzy_ratio`, `token_sort`,
+`token_set`, `jaro_winkler`, `phonetic`, `phone`, dan `email`.
+
+Blocking methods: `exact`, `composite_exact`, `prefix`, `token_prefix`, `phonetic`,
+`ngram`, `email_local`, dan `phone_suffix`. Normalizer: `basic`, `name`, `phone`,
+`email`, `address`, `identifier`, dan `date`.
+
+Semua kolom, nilai rentang, metode, dan normalizer divalidasi server. Konfigurasi
+berhasil disimpan akan menjadwalkan ulang kalkulasi cluster.
+
+`GET /datasets/{dataset_id}/dedup-config/calibration` menggunakan pasangan dari cluster
+yang sudah direview `confirmed` dan `split`, lalu menyarankan threshold dengan balanced
+accuracy terbaik. Jika salah satu kelas belum tersedia, respons `available` bernilai
+`false` dan threshold tidak diubah.
+
 ## Error Codes Global
 | Code | HTTP Status | Arti |
 |---|---|---|

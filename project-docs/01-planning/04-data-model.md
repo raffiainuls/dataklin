@@ -31,6 +31,21 @@
 |---|---|---|---|
 | users | many-to-one | roles | satu role banyak user |
 
+## Konfigurasi Entity Resolution
+
+`datasets.dedup_config` adalah JSON versioned. Versi 2 menyimpan:
+
+- `blocking_rules`: candidate generation yang terpisah dari matching.
+- `rules`: metode similarity, normalizer, bobot probabilistik, dan negative evidence.
+- `exact_match_rules` serta `exact_row_match`: deterministic duplicate fast path.
+- `cluster_validation`: strategi representative/connected beserta batas cohesion.
+
+Tidak ada perubahan kolom database untuk VD-314; JSON lama tetap dapat dibaca.
+
+Hasil pair disimpan pada `record_match_scores` (`score` dan evidence per kolom di
+`features`) dan hasil pengelompokan disimpan pada `entity_clusters` serta
+`cluster_members`. Status `confirmed` dan `split` menjadi label untuk kalibrasi threshold.
+
 ## 4. Indexing & Performance
 - Kolom yang perlu index:
 - Kolom yang sering dipakai untuk filter/search:

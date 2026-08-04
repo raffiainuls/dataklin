@@ -1,15 +1,24 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, model_validator
 from datetime import datetime
 
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from ..db import get_db
-from ..models import Dataset, DatasetColumn, Pipeline, RuleResult, User, ValidationRule
+from ..models import (
+    Dataset,
+    DatasetColumn,
+    EntityCluster,
+    Pipeline,
+    RecordMatchScore,
+    RuleResult,
+    User,
+    ValidationRule,
+)
 from ..security import get_current_user, require_writer
 from ..services import storage
-from ..services.entity_resolution import json_safe_record
+from ..services.entity_resolution import calibrate_threshold, json_safe_record
 from ..services.llm import LLMNotConfigured, generate_rule, llm_available, suggest_rules
 from ..services.loader import load_dataframe
 from ..services.rule_engine import (
@@ -356,28 +365,147 @@ def rerun(dataset_id: int, db: Session = Depends(get_db),
         raise HTTPException(503, "Gagal menjadwalkan validasi") from exc
     return {"queued": True, "pipeline_id": pipeline.id}
 
+MATCH_METHODS = {
+    "exact", "fuzzy_ratio", "token_sort", "token_set", "jaro_winkler",
+    "phonetic", "phone", "email", "composite_exact",
+}
+BLOCK_METHODS = {
+    "exact", "composite_exact", "prefix", "token_prefix", "phonetic",
+    "ngram", "email_local", "phone_suffix",
+}
+NORMALIZER_TYPES = {"basic", "name", "phone", "email", "address", "identifier", "date"}
+
+
 class DedupRule(BaseModel):
-    column: str
-    method: str
+    column: str | None = None
+    columns: list[str] = Field(default_factory=list)
+    method: str = "exact"
+    weight: float = Field(default=2.0, ge=0, le=5)
+    normalizers: list[str] = Field(default_factory=list)
+    mismatch_penalty: float = Field(default=0.0, ge=0, le=1)
+    mismatch_threshold: float = Field(default=0.2, ge=0, le=1)
+    required: bool = False
+    required_threshold: float = Field(default=0.999, ge=0, le=1)
+    m_probability: float = Field(default=0.95, gt=0.5, lt=1)
+
+    @model_validator(mode="after")
+    def validate_rule(self):
+        if self.method not in MATCH_METHODS:
+            raise ValueError(f"Metode matching tidak didukung: {self.method}")
+        selected = self.columns or ([self.column] if self.column else [])
+        if not selected:
+            raise ValueError("Rule matching membutuhkan column atau columns")
+        if self.method == "composite_exact" and len(selected) < 2:
+            raise ValueError("composite_exact membutuhkan minimal dua kolom")
+        invalid = set(self.normalizers) - NORMALIZER_TYPES
+        if invalid:
+            raise ValueError(f"Normalizer tidak didukung: {', '.join(sorted(invalid))}")
+        return self
+
+
+class DedupBlockingRule(BaseModel):
+    column: str | None = None
+    columns: list[str] = Field(default_factory=list)
+    method: str = "exact"
+    normalizers: list[str] = Field(default_factory=list)
+    length: int = Field(default=3, ge=1, le=20)
+
+    @model_validator(mode="after")
+    def validate_rule(self):
+        if self.method not in BLOCK_METHODS:
+            raise ValueError(f"Metode blocking tidak didukung: {self.method}")
+        selected = self.columns or ([self.column] if self.column else [])
+        if not selected:
+            raise ValueError("Blocking rule membutuhkan column atau columns")
+        if self.method == "composite_exact" and len(selected) < 2:
+            raise ValueError("composite_exact membutuhkan minimal dua kolom")
+        invalid = set(self.normalizers) - NORMALIZER_TYPES
+        if invalid:
+            raise ValueError(f"Normalizer tidak didukung: {', '.join(sorted(invalid))}")
+        return self
+
+
+class ExactMatchRule(BaseModel):
+    columns: list[str] = Field(min_length=1)
+    normalizers: list[str] = Field(default_factory=lambda: ["basic"])
+
+    @model_validator(mode="after")
+    def validate_normalizers(self):
+        invalid = set(self.normalizers) - NORMALIZER_TYPES
+        if invalid:
+            raise ValueError(f"Normalizer tidak didukung: {', '.join(sorted(invalid))}")
+        return self
+
+
+class ClusterValidationConfig(BaseModel):
+    enabled: bool = True
+    method: str = "representative"
+    min_cohesion: float = Field(default=0.7, ge=0, le=1)
+    min_representative_score: float = Field(default=0.75, ge=0, le=1)
+
+    @model_validator(mode="after")
+    def validate_method(self):
+        if self.method not in {"connected", "representative"}:
+            raise ValueError("cluster_validation.method harus connected atau representative")
+        return self
+
 
 class DedupConfigUpdate(BaseModel):
-    threshold: float
-    rules: list[DedupRule]
+    version: int = 2
+    threshold: float = Field(default=0.8, ge=0.1, le=1)
+    prior_probability: float = Field(default=0.05, gt=0, le=0.5)
+    exact_row_match: bool = True
+    rules: list[DedupRule] = Field(default_factory=list)
+    blocking_rules: list[DedupBlockingRule] = Field(default_factory=list)
+    exact_match_rules: list[ExactMatchRule] = Field(default_factory=list)
+    cluster_validation: ClusterValidationConfig = Field(default_factory=ClusterValidationConfig)
 
 @router.get("/datasets/{dataset_id}/dedup-config")
 def get_dedup_config(dataset_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     dataset = _get_dataset(dataset_id, db, user)
     return dataset.dedup_config or {}
 
+
+@router.get("/datasets/{dataset_id}/dedup-config/calibration")
+def dedup_threshold_calibration(dataset_id: int, db: Session = Depends(get_db),
+                                user: User = Depends(get_current_user)):
+    dataset = _get_dataset(dataset_id, db, user)
+    rows = (
+        db.query(RecordMatchScore.score, EntityCluster.status)
+        .join(EntityCluster, RecordMatchScore.cluster_id == EntityCluster.id)
+        .filter(
+            EntityCluster.dataset_id == dataset.id,
+            EntityCluster.status.in_(("confirmed", "split")),
+        )
+        .all()
+    )
+    labeled_scores = [(float(score), status == "confirmed") for score, status in rows]
+    return calibrate_threshold(labeled_scores)
+
 @router.put("/datasets/{dataset_id}/dedup-config")
 def update_dedup_config(dataset_id: int, body: DedupConfigUpdate, db: Session = Depends(get_db), user: User = Depends(require_writer)):
     dataset = _get_dataset(dataset_id, db, user)
-    
+    available_columns = {column.name for column in _column_info(db, dataset.id)}
+    referenced_columns = set()
+    for rule in [*body.rules, *body.blocking_rules]:
+        referenced_columns.update(rule.columns or ([rule.column] if rule.column else []))
+    for rule in body.exact_match_rules:
+        referenced_columns.update(rule.columns)
+    unknown_columns = referenced_columns - available_columns
+    if unknown_columns:
+        raise HTTPException(
+            400, f"Kolom konfigurasi dedup tidak ditemukan: {', '.join(sorted(unknown_columns))}")
 
-        
+    previous_config = dataset.dedup_config
     dataset.dedup_config = body.model_dump()
     db.commit()
-    
+
     # Trigger ulang kalkulasi cluster karena rule deduplikasi berubah
-    enqueue_refresh_dataset(dataset.id)
+    try:
+        enqueue_refresh_dataset(dataset.id)
+    except Exception as exc:
+        dataset.dedup_config = previous_config
+        db.commit()
+        raise HTTPException(
+            503, "Konfigurasi tidak disimpan karena kalkulasi ulang gagal dijadwalkan") from exc
     return dataset.dedup_config
