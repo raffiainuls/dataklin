@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
+from datetime import datetime
+
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from ..db import get_db
-from ..models import Dataset, DatasetColumn, RuleResult, User, ValidationRule
+from ..models import Dataset, DatasetColumn, Pipeline, RuleResult, User, ValidationRule
 from ..security import get_current_user, require_writer
 from ..services.llm import LLMNotConfigured, generate_rule, llm_available, suggest_rules
 from ..services.rule_engine import RULE_TYPES
@@ -222,8 +224,43 @@ def rerun(dataset_id: int, db: Session = Depends(get_db),
     dataset = _get_dataset(dataset_id, db, user)
     if dataset.status not in ("ready", "error"):
         raise HTTPException(409, "Dataset masih diproses")
-    enqueue_refresh_dataset(dataset_id)
-    return {"queued": True}
+
+    pipeline = (db.query(Pipeline)
+                .filter_by(org_id=user.org_id, dataset_id=dataset.id)
+                .order_by(desc(Pipeline.created_at)).first())
+    if pipeline is None:
+        pipeline = Pipeline(
+            org_id=user.org_id,
+            dataset_id=dataset.id,
+            name=f"Validasi {dataset.name}",
+            enable_profiling=True,
+            enable_deduplication=True,
+            schedule="manual",
+            created_by=user.email,
+        )
+        db.add(pipeline)
+        db.flush()
+
+    previous_status = dataset.status
+    previous_pipeline_status = pipeline.last_run_status
+    previous_pipeline_run_at = pipeline.last_run_at
+    dataset.status = "queued"
+    dataset.error_message = None
+    pipeline.last_run_status = "running"
+    pipeline.last_run_at = datetime.utcnow()
+    pipeline.last_run_message = None
+    db.commit()
+    try:
+        enqueue_refresh_dataset(dataset_id, pipeline.id)
+    except Exception as exc:
+        dataset.status = previous_status
+        dataset.error_message = "Gagal menjadwalkan validasi"
+        pipeline.last_run_status = previous_pipeline_status
+        pipeline.last_run_at = previous_pipeline_run_at
+        pipeline.last_run_message = "Gagal menjadwalkan validasi"
+        db.commit()
+        raise HTTPException(503, "Gagal menjadwalkan validasi") from exc
+    return {"queued": True, "pipeline_id": pipeline.id}
 
 class DedupRule(BaseModel):
     column: str
@@ -248,6 +285,5 @@ def update_dedup_config(dataset_id: int, body: DedupConfigUpdate, db: Session = 
     db.commit()
     
     # Trigger ulang kalkulasi cluster karena rule deduplikasi berubah
-    enqueue_refresh_dataset(dataset.id, db)
+    enqueue_refresh_dataset(dataset.id)
     return dataset.dedup_config
-

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy import desc
@@ -16,6 +18,7 @@ SCHEDULE_INTERVAL_MINUTES = {"hourly": 60, "daily": 1440, "weekly": 10080}
 
 
 def _pipeline_dict(pipeline: Pipeline, dataset_name: str | None) -> dict:
+    run_status = "failed" if pipeline.last_run_status == "error" else pipeline.last_run_status
     return {
         "id": pipeline.id,
         "name": pipeline.name,
@@ -25,7 +28,7 @@ def _pipeline_dict(pipeline: Pipeline, dataset_name: str | None) -> dict:
         "enable_deduplication": pipeline.enable_deduplication,
         "schedule": pipeline.schedule,
         "last_run_at": pipeline.last_run_at.isoformat() if pipeline.last_run_at else None,
-        "last_run_status": pipeline.last_run_status,
+        "last_run_status": run_status,
         "last_run_message": pipeline.last_run_message,
         "created_by": pipeline.created_by,
         "created_at": pipeline.created_at.isoformat(),
@@ -140,7 +143,21 @@ def run_pipeline_now(pipeline_id: int, db: Session = Depends(get_db),
     dataset = db.get(Dataset, pipeline.dataset_id)
     if dataset is None:
         raise HTTPException(404, "Dataset sumber pipeline ini sudah dihapus")
+    previous_dataset_status = dataset.status
+    previous_status = pipeline.last_run_status
+    previous_run_at = pipeline.last_run_at
     dataset.status = "queued"
+    pipeline.last_run_status = "running"
+    pipeline.last_run_at = datetime.utcnow()
+    pipeline.last_run_message = None
     db.commit()
-    enqueue_run_pipeline(pipeline.id)
+    try:
+        enqueue_run_pipeline(pipeline.id)
+    except Exception as exc:
+        dataset.status = previous_dataset_status
+        pipeline.last_run_status = previous_status
+        pipeline.last_run_at = previous_run_at
+        pipeline.last_run_message = "Gagal menjadwalkan pipeline"
+        db.commit()
+        raise HTTPException(503, "Gagal menjadwalkan pipeline") from exc
     return {"queued": True}

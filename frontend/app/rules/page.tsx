@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import Shell from "@/components/Shell";
@@ -26,6 +27,7 @@ function RulesContent() {
   const [datasetError, setDatasetError] = useState<string>("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [validationPipelineId, setValidationPipelineId] = useState<number | null>(null);
 
   const [newColumn, setNewColumn] = useState("");
   const [newType, setNewType] = useState("not_null");
@@ -39,6 +41,7 @@ function RulesContent() {
 
   const [suggestions, setSuggestions] = useState<any[] | null>(null);
   const [suggestBusy, setSuggestBusy] = useState(false);
+  const validationRunning = datasetStatus === "processing" || datasetStatus === "queued";
 
   useEffect(() => {
     api("/datasets")
@@ -74,9 +77,14 @@ function RulesContent() {
       api(`/datasets/${datasetId}`).then((d) => {
         setDatasetStatus(d.status || "ready");
         setDatasetError(d.error_message || "");
-        if (d.status === "ready" || d.status === "error") {
-           // Reload rules kalau udah siap buat nampilin status terbarunya (RuleResult)
-           loadRules();
+        if (d.status === "ready") {
+          // Reload rules kalau sudah siap untuk menampilkan RuleResult terbaru.
+          loadRules();
+          setNotice("Validasi selesai. Hasil terbaru sudah ditampilkan di setiap rule.");
+          setTimeout(() => setNotice(""), 7000);
+        } else if (d.status === "error") {
+          setError(d.error_message || "Validasi gagal diproses.");
+          setNotice("");
         }
       }).catch(() => {});
     }, 3000);
@@ -141,10 +149,10 @@ function RulesContent() {
   async function rerun() {
     setError("");
     try {
-      await api(`/datasets/${datasetId}/rules/rerun`, { method: "POST" });
-      setDatasetStatus("queued"); // Trigger polling
-      setNotice("Validasi dijadwalkan ulang di background.");
-      setTimeout(() => setNotice(""), 5000);
+      const result = await api(`/datasets/${datasetId}/rules/rerun`, { method: "POST" });
+      setValidationPipelineId(result.pipeline_id || null);
+      setDatasetStatus("queued");
+      setNotice("Validasi sedang diproses. Hasil akan diperbarui otomatis setelah selesai.");
     } catch (e: any) {
       setError(e.message);
     }
@@ -242,6 +250,11 @@ function RulesContent() {
           <div className="bg-emerald-500/15 text-emerald-700 p-4 rounded-md border border-emerald-500/20 flex items-center gap-2">
             <AlertCircle className="h-5 w-5 shrink-0" />
             <p>{notice}</p>
+            {validationPipelineId && (
+              <Link href={`/pipelines/${validationPipelineId}`} className="ml-auto whitespace-nowrap font-medium underline">
+                Lihat pipeline
+              </Link>
+            )}
           </div>
         )}
 
@@ -516,10 +529,10 @@ function RulesContent() {
                   <CardDescription>Daftar validasi untuk dataset ini</CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
-                  {(datasetStatus === "processing" || datasetStatus === "queued") && (
+                  {validationRunning && (
                     <Badge variant="outline" className="animate-pulse bg-blue-50 text-blue-700">
                       <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-                      Validating...
+                      Sedang diproses
                     </Badge>
                   )}
                   {datasetStatus === "error" && (
@@ -527,9 +540,13 @@ function RulesContent() {
                       Failed
                     </Badge>
                   )}
-                  <Button variant="secondary" size="sm" onClick={rerun} disabled={!datasetId || datasetStatus === "processing" || datasetStatus === "queued"}>
-                    <Play className="h-4 w-4 mr-2" />
-                    Jalankan Validasi
+                  <Button variant="secondary" size="sm" onClick={rerun} disabled={!datasetId || validationRunning}>
+                    {validationRunning ? (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <Play className="h-4 w-4 mr-2" />
+                    )}
+                    {validationRunning ? "Memvalidasi..." : "Jalankan Validasi"}
                   </Button>
                 </div>
               </CardHeader>
