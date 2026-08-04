@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -8,7 +8,10 @@ from sqlalchemy.orm import Session
 from ..db import get_db
 from ..models import Dataset, DatasetColumn, Pipeline, RuleResult, User, ValidationRule
 from ..security import get_current_user, require_writer
+from ..services import storage
+from ..services.entity_resolution import json_safe_record
 from ..services.llm import LLMNotConfigured, generate_rule, llm_available, suggest_rules
+from ..services.loader import load_dataframe
 from ..services.rule_engine import (
     RULE_TYPES,
     validate_rule_config,
@@ -119,6 +122,69 @@ def list_rules(dataset_id: int, db: Session = Depends(get_db),
             "run_at": latest_results[r.id].run_at.isoformat(),
         } if r.id in latest_results else None),
     } for r in rules]
+
+
+@router.get("/datasets/{dataset_id}/rules/{rule_id}/violations")
+def list_rule_violations(dataset_id: int, rule_id: int,
+                         page: int = Query(1, ge=1),
+                         page_size: int = Query(50, ge=1, le=200),
+                         db: Session = Depends(get_db),
+                         user: User = Depends(get_current_user)):
+    dataset = _get_dataset(dataset_id, db, user)
+    rule = db.get(ValidationRule, rule_id)
+    if rule is None or rule.dataset_id != dataset.id:
+        raise HTTPException(404, "Rule tidak ditemukan")
+
+    result = (db.query(RuleResult)
+              .filter_by(dataset_id=dataset.id, rule_id=rule.id)
+              .order_by(desc(RuleResult.run_at)).first())
+    if result is None:
+        return {
+            "dataset": {"id": dataset.id, "name": dataset.name},
+            "rule": {"id": rule.id, "column_name": rule.column_name,
+                     "description": rule.description or RULE_TYPES.get(rule.rule_type)},
+            "columns": [],
+            "total": 0,
+            "stored_total": 0,
+            "page": page,
+            "page_size": page_size,
+            "total_pages": 1,
+            "run_at": None,
+            "rows": [],
+        }
+
+    content = storage.get_object(dataset.storage_key)
+    dataframe = load_dataframe(content, dataset.filename)
+    violations = result.sample_violations or []
+    offset = (page - 1) * page_size
+    rows = []
+    for violation in violations[offset:offset + page_size]:
+        row_index = violation.get("row")
+        if not isinstance(row_index, int) or row_index not in dataframe.index:
+            continue
+        rows.append({
+            "row": row_index,
+            "failed_value": violation.get("value"),
+            "data": json_safe_record(dataframe.loc[row_index].to_dict()),
+        })
+
+    return {
+        "dataset": {"id": dataset.id, "name": dataset.name},
+        "rule": {
+            "id": rule.id,
+            "column_name": rule.column_name,
+            "rule_type": rule.rule_type,
+            "description": rule.description or RULE_TYPES.get(rule.rule_type),
+        },
+        "columns": [str(column) for column in dataframe.columns],
+        "total": result.violations,
+        "stored_total": len(violations),
+        "page": page,
+        "page_size": page_size,
+        "total_pages": max(1, (len(violations) + page_size - 1) // page_size),
+        "run_at": result.run_at.isoformat(),
+        "rows": rows,
+    }
 
 
 @router.post("/datasets/{dataset_id}/rules")
