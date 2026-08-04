@@ -24,35 +24,38 @@ function displayPercentage(value: number) {
   return `${percentage.toLocaleString("id-ID", { maximumFractionDigits: 1 })}%`;
 }
 
-function FrequencyProfile({ column }: { column: any }) {
+function FrequencyProfile({ column, totalRows }: { column: any; totalRows: number }) {
   const hasValues = column.top_values?.length > 0;
   const hasPatterns = column.stats?.patterns?.length > 0;
-  const [view, setView] = useState<"values" | "patterns">(hasValues ? "values" : "patterns");
+  const [view, setView] = useState<"values" | "patterns">("values");
 
   if (!hasValues && !hasPatterns) return null;
+
+  const valuePercentage = (item: any) => {
+    if (typeof item.percentage === "number") return item.percentage;
+    return totalRows > 0 ? item.count / totalRows : 0;
+  };
 
   return (
     <div className="space-y-3 border-t pt-4">
       <div className="flex items-center justify-between gap-2">
         <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Frekuensi teratas</div>
-        {hasValues && hasPatterns && (
-          <div className="inline-flex rounded-md border bg-muted/30 p-0.5 text-[11px]">
+        <div className="inline-flex rounded-md border bg-muted/30 p-0.5 text-[11px]" aria-label="Pilih jenis frekuensi">
             <button
               type="button"
               onClick={() => setView("values")}
               className={`rounded px-2 py-1 transition-colors ${view === "values" ? "bg-background font-semibold shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
-              Nilai
+              Nilai Teratas
             </button>
             <button
               type="button"
               onClick={() => setView("patterns")}
               className={`rounded px-2 py-1 transition-colors ${view === "patterns" ? "bg-background font-semibold shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
-              Pola Regex
+              Pola Regex Teratas
             </button>
           </div>
-        )}
       </div>
 
       {view === "values" && hasValues ? (
@@ -60,14 +63,14 @@ function FrequencyProfile({ column }: { column: any }) {
           <div key={`${item.value}-${index}`} className="space-y-1 text-xs">
             <div className="flex justify-between gap-3">
               <span className="truncate font-mono" title={String(item.value)}>{String(item.value)}</span>
-              <span className="shrink-0 text-muted-foreground">{item.count} ({displayPercentage(item.percentage || 0)})</span>
+              <span className="shrink-0 text-muted-foreground">{item.count} ({displayPercentage(valuePercentage(item))})</span>
             </div>
             <div className="h-1 overflow-hidden rounded-full bg-secondary">
-              <div className="h-full bg-violet-500" style={{ width: `${Math.max((item.percentage || 0) * 100, item.percentage ? 0.5 : 0)}%` }} />
+              <div className="h-full bg-violet-500" style={{ width: `${Math.max(valuePercentage(item) * 100, valuePercentage(item) ? 0.5 : 0)}%` }} />
             </div>
           </div>
         ))
-      ) : hasPatterns ? (
+      ) : view === "patterns" && hasPatterns ? (
         column.stats.patterns.slice(0, 5).map((pattern: any, index: number) => (
           <div key={`${pattern.regex}-${index}`} className="space-y-1.5 rounded-md border bg-muted/20 p-2 text-xs">
             <div className="flex justify-between gap-2">
@@ -80,7 +83,13 @@ function FrequencyProfile({ column }: { column: any }) {
             </div>
           </div>
         ))
-      ) : null}
+      ) : view === "patterns" ? (
+        <div className="rounded-md border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900 dark:bg-amber-950/20 dark:text-amber-200">
+          Pola regex belum tersedia pada hasil profil ini. Jalankan ulang profiling dataset untuk menghitung distribusi pola.
+        </div>
+      ) : (
+        <div className="text-xs text-muted-foreground">Tidak ada frekuensi nilai yang tersedia.</div>
+      )}
     </div>
   );
 }
@@ -322,7 +331,7 @@ export default function DatasetDetail() {
                       </div>
                     )}
 
-                    <FrequencyProfile column={c} />
+                    <FrequencyProfile column={c} totalRows={data.total_rows || 0} />
 
                     <div className="flex flex-wrap gap-2 border-t pt-4 text-xs">
                       <Badge variant="outline">{displayMetric(c.unique_count)} nilai unik</Badge>
