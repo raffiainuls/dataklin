@@ -15,6 +15,7 @@ RULE_TYPES = {
     "not_null": "Tidak boleh kosong",
     "numeric_range": "Angka dalam rentang",
     "date_range": "Tanggal dalam rentang wajar",
+    "starts_with": "Teks harus diawali nilai tertentu",
     "regex": "Pola regex kustom",
     "cross_column": "Perbandingan antar kolom (mis. checkout > checkin)",
 }
@@ -27,6 +28,62 @@ CROSS_OPS = {
     "==": lambda a, b: a == b,
     "!=": lambda a, b: a != b,
 }
+
+
+def validate_rule_config(rule_type: str, params: dict | None) -> dict:
+    """Validasi kontrak executable rule; kembalikan params yang sudah dinormalisasi.
+
+    Konfigurasi invalid harus menggagalkan proposal/run, bukan menghasilkan nol
+    pelanggaran palsu.
+    """
+    if rule_type not in RULE_TYPES:
+        raise ValueError(f"Tipe rule tidak dikenal: {rule_type}")
+    if params is not None and not isinstance(params, dict):
+        raise ValueError("params rule harus berupa object JSON")
+    normalized = dict(params or {})
+
+    if rule_type == "starts_with":
+        prefix = str(normalized.get("prefix", "")).strip()
+        if not prefix:
+            raise ValueError("starts_with membutuhkan params.prefix")
+        normalized["prefix"] = prefix
+        normalized["case_sensitive"] = bool(normalized.get("case_sensitive", False))
+    elif rule_type == "regex":
+        pattern = normalized.get("pattern")
+        if not isinstance(pattern, str) or not pattern:
+            raise ValueError("regex membutuhkan params.pattern")
+        try:
+            re.compile(pattern)
+        except re.error as exc:
+            raise ValueError(f"Pattern regex tidak valid: {exc}") from exc
+    elif rule_type == "numeric_range":
+        lo, hi = normalized.get("min"), normalized.get("max")
+        if lo is None and hi is None:
+            raise ValueError("numeric_range membutuhkan params.min atau params.max")
+        try:
+            lo_num = float(lo) if lo is not None else None
+            hi_num = float(hi) if hi is not None else None
+        except (TypeError, ValueError) as exc:
+            raise ValueError("Batas numeric_range harus berupa angka") from exc
+        if lo_num is not None and hi_num is not None and lo_num > hi_num:
+            raise ValueError("params.min tidak boleh lebih besar dari params.max")
+    elif rule_type == "date_range":
+        lo, hi = normalized.get("min"), normalized.get("max")
+        if lo is None and hi is None:
+            raise ValueError("date_range membutuhkan params.min atau params.max")
+        lo_date = pd.to_datetime(lo, errors="coerce") if lo is not None else None
+        hi_date = pd.to_datetime(hi, errors="coerce") if hi is not None else None
+        if (lo is not None and pd.isna(lo_date)) or (hi is not None and pd.isna(hi_date)):
+            raise ValueError("Batas date_range harus berupa tanggal valid")
+        if lo_date is not None and hi_date is not None and lo_date > hi_date:
+            raise ValueError("params.min tidak boleh lebih besar dari params.max")
+    elif rule_type == "cross_column":
+        if not normalized.get("left") or not normalized.get("right"):
+            raise ValueError("cross_column membutuhkan params.left dan params.right")
+        if normalized.get("op") not in CROSS_OPS:
+            raise ValueError("Operator cross_column tidak valid")
+
+    return normalized
 
 
 def _comparable(value):
@@ -94,14 +151,14 @@ def normalize_phone(value) -> str:
 def _check_value(rule_type: str, params: dict, value) -> bool:
     """True = valid."""
     if value is None or (isinstance(value, float) and pd.isna(value)):
-        # nilai kosong hanya dilanggar oleh rule not_null
-        return rule_type != "not_null"
+        # Prefix wajib tidak mungkin dipenuhi oleh nilai kosong.
+        return rule_type not in ("not_null", "starts_with")
     if isinstance(value, float) and value.is_integer():
         # kolom ID numerik (NIK, no HP) sering terbaca float oleh pandas
         value = int(value)
     text = str(value).strip()
     if text == "":
-        return rule_type != "not_null"
+        return rule_type not in ("not_null", "starts_with")
 
     if rule_type == "not_null":
         return True
@@ -111,11 +168,22 @@ def _check_value(rule_type: str, params: dict, value) -> bool:
         return bool(PHONE_ID_RE.match(normalize_phone(text)))
     if rule_type == "nik":
         return bool(NIK_RE.match(re.sub(r"\D", "", text)))
+    if rule_type == "starts_with":
+        prefix = str(params.get("prefix", "")).strip()
+        if not prefix:
+            return False
+        if params.get("case_sensitive", False):
+            return text.startswith(prefix)
+        return text.casefold().startswith(prefix.casefold())
     if rule_type == "regex":
+        pattern = params.get("pattern")
+        if not pattern:
+            # Konfigurasi regex kosong tidak boleh diam-diam meloloskan semua data.
+            return False
         try:
-            return bool(re.match(params.get("pattern", ".*"), text))
+            return bool(re.match(pattern, text))
         except re.error:
-            return True
+            return False
     if rule_type == "numeric_range":
         try:
             num = float(text.replace(",", "."))
@@ -141,11 +209,11 @@ def _check_value(rule_type: str, params: dict, value) -> bool:
 
 
 def run_rule(df: pd.DataFrame, column: str, rule_type: str, params: dict | None) -> dict:
-    params = params or {}
+    params = validate_rule_config(rule_type, params)
     if rule_type == "cross_column":
         return run_cross_column_rule(df, params)
     if column not in df.columns:
-        return {"checked": 0, "violations": 0, "samples": []}
+        raise ValueError(f'Kolom rule "{column}" tidak ditemukan di dataset')
     series = df[column]
     checked = len(series)
     samples: list[dict] = []

@@ -245,6 +245,7 @@ export default function DatasetDetail() {
                         <TableHead>Kolom</TableHead>
                         <TableHead>Aturan (Rule)</TableHead>
                         <TableHead>Status</TableHead>
+                        <TableHead>Contoh Data Gagal</TableHead>
                         <TableHead className="text-right">Baris Gagal</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -260,6 +261,26 @@ export default function DatasetDetail() {
                                 <Badge variant="outline" className="text-emerald-600 border-emerald-600/30">Aktif</Badge>
                               ) : (
                                 <Badge variant="outline" className="text-muted-foreground">Nonaktif</Badge>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {r.last_result?.samples?.length ? (
+                                <div className="flex max-w-md flex-wrap gap-1.5">
+                                  {r.last_result.samples.slice(0, 5).map((sample: any, index: number) => (
+                                    <span
+                                      key={`${sample.row}-${index}`}
+                                      className="inline-flex rounded border border-destructive/20 bg-destructive/5 px-2 py-1 text-xs"
+                                      title={`Baris ${sample.row}`}
+                                    >
+                                      <span className="mr-1 text-muted-foreground">Baris {sample.row}:</span>
+                                      <span className="max-w-48 truncate font-mono">
+                                        {sample.value === null ? "(kosong)" : String(sample.value)}
+                                      </span>
+                                    </span>
+                                  ))}
+                                </div>
+                              ) : (
+                                <span className="text-xs text-muted-foreground">—</span>
                               )}
                             </TableCell>
                             <TableCell className={`text-right font-medium ${hasViolations ? 'text-destructive' : 'text-muted-foreground'}`}>

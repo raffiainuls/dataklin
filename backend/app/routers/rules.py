@@ -9,7 +9,10 @@ from ..db import get_db
 from ..models import Dataset, DatasetColumn, Pipeline, RuleResult, User, ValidationRule
 from ..security import get_current_user, require_writer
 from ..services.llm import LLMNotConfigured, generate_rule, llm_available, suggest_rules
-from ..services.rule_engine import RULE_TYPES
+from ..services.rule_engine import (
+    RULE_TYPES,
+    validate_rule_config,
+)
 from ..worker.queue import enqueue_refresh_dataset
 
 router = APIRouter(tags=["rules"])
@@ -49,10 +52,16 @@ def _column_info(db: Session, dataset_id: int) -> list[DatasetColumn]:
 def _validate_proposal(proposal: dict, valid_columns: set[str]) -> dict:
     """Validasi proposal rule dari LLM: rule_type dikenal & kolom benar-benar ada di
     dataset. Sama dipakai untuk NL generation (satu proposal) & auto-suggest (banyak)."""
+    if not isinstance(proposal, dict):
+        raise HTTPException(502, "LLM harus mengembalikan satu object JSON rule")
     rule_type = proposal.get("rule_type")
     if rule_type not in RULE_TYPES:
         raise HTTPException(502, f"LLM mengembalikan rule_type tidak dikenal: {rule_type}")
-    params = proposal.get("params") or {}
+    raw_params = proposal.get("params")
+    if raw_params is not None and not isinstance(raw_params, dict):
+        raise HTTPException(502, "LLM mengembalikan params yang bukan object JSON")
+    params = raw_params or {}
+    _validate_rule_params(rule_type, params, 502)
     if rule_type == "cross_column":
         if params.get("left") not in valid_columns or params.get("right") not in valid_columns:
             raise HTTPException(502, "LLM merujuk kolom yang tidak ada di dataset")
@@ -68,6 +77,13 @@ def _validate_proposal(proposal: dict, valid_columns: set[str]) -> dict:
         "description": proposal.get("description", ""),
         "rule_label": RULE_TYPES[rule_type],
     }
+
+
+def _validate_rule_params(rule_type: str, params: dict, status_code: int = 400) -> None:
+    try:
+        validate_rule_config(rule_type, params)
+    except ValueError as exc:
+        raise HTTPException(status_code, str(exc)) from exc
 
 
 @router.get("/rule-types")
@@ -109,14 +125,26 @@ def list_rules(dataset_id: int, db: Session = Depends(get_db),
 def create_rule(dataset_id: int, body: RuleCreate, db: Session = Depends(get_db),
                 user: User = Depends(require_writer)):
     _get_dataset(dataset_id, db, user)
+    valid_columns = {column.name for column in _column_info(db, dataset_id)}
     if body.rule_type not in RULE_TYPES:
         raise HTTPException(400, f"rule_type harus salah satu dari: {', '.join(RULE_TYPES)}")
+    rule_type = body.rule_type
+    params = body.params or {}
+    _validate_rule_params(rule_type, params)
+    if rule_type == "cross_column":
+        if params.get("left") not in valid_columns or params.get("right") not in valid_columns:
+            raise HTTPException(400, "Rule merujuk kolom yang tidak ada di dataset")
+        column_name = params["left"]
+    else:
+        if body.column_name not in valid_columns:
+            raise HTTPException(400, f"Kolom tidak ditemukan: {body.column_name}")
+        column_name = body.column_name
     rule = ValidationRule(
         dataset_id=dataset_id,
-        column_name=body.column_name,
-        rule_type=body.rule_type,
-        params=body.params or {},
-        description=body.description or RULE_TYPES[body.rule_type],
+        column_name=column_name,
+        rule_type=rule_type,
+        params=params,
+        description=body.description or RULE_TYPES[rule_type],
         source="ai" if body.source == "ai" else "manual",
         enabled=True,
     )

@@ -5,6 +5,9 @@ lihat docs/ENHANCEMENTS.md). Tanpa konfigurasi LLM_BASE_URL/LLM_API_KEY, fitur A
 dinonaktifkan secara graceful.
 """
 from __future__ import annotations
+
+from datetime import date
+
 import httpx
 
 from ..config import settings
@@ -38,27 +41,55 @@ def chat(messages: list[dict], temperature: float = 0.2, max_tokens: int = 1024)
     return resp.json()["choices"][0]["message"]["content"]
 
 
-RULE_GEN_SYSTEM = """Kamu adalah asisten data quality. Tugasmu mengubah instruksi validasi \
-berbahasa natural (Indonesia/Inggris) menjadi rule terstruktur JSON.
+RULE_GEN_SYSTEM = """Kamu adalah compiler rule data-quality. Ubah SATU instruksi pengguna
+berbahasa Indonesia atau Inggris menjadi SATU proposal rule JSON yang dapat dieksekusi. Pengguna
+akan meninjau proposal sebelum mengaktifkannya. Jika input kurang jelas, buat interpretasi terbaik
+dengan memakai nama kolom, tipe data, contoh nilai, dan konteks instruksi; jangan menolak input.
 
-Jenis rule yang tersedia:
-- email_format: format email valid. params: {}
-- phone_id: nomor HP Indonesia 10-13 digit awalan 08/+62. params: {}
-- nik: NIK 16 digit numerik. params: {}
-- not_null: kolom tidak boleh kosong. params: {}
-- numeric_range: angka dalam rentang. params: {"min": <angka|null>, "max": <angka|null>}
-- date_range: tanggal dalam rentang. params: {"min": "YYYY-MM-DD"|null, "max": "YYYY-MM-DD"|null}
-- regex: pola regex kustom (Python re, full match dari awal string). params: {"pattern": "..."}
-- cross_column: perbandingan antar kolom. params: {"left": "<kolom>", "op": ">|>=|<|<=|==|!=", "right": "<kolom>"}
+RULE TYPE DAN SCHEMA PARAMETER YANG DIIZINKAN:
+- email_format: format email valid. params HARUS {}
+- phone_id: nomor HP Indonesia 10-13 digit, awalan 08/+62. params HARUS {}
+- nik: NIK 16 digit numerik. params HARUS {}
+- not_null: nilai tidak boleh null/kosong. params HARUS {}
+- numeric_range: rentang angka. params: {"min": number|null, "max": number|null}; minimal satu batas
+- date_range: rentang tanggal. params: {"min": "YYYY-MM-DD"|null, "max": "YYYY-MM-DD"|null}; minimal satu batas
+- starts_with: teks harus diawali literal. params: {"prefix": string, "case_sensitive": boolean}
+- regex: pola Python regex untuk constraint teks yang tidak dapat direpresentasikan tipe lain.
+  params: {"pattern": string}. Evaluator menggunakan re.match pada nilai non-kosong.
+- cross_column: perbandingan dua kolom. params:
+  {"left": "nama_kolom", "op": ">|>=|<|<=|==|!=", "right": "nama_kolom"}
 
-Jawab HANYA dengan JSON valid tanpa teks lain, format:
-{"column_name": "<nama kolom target, atau kolom kiri untuk cross_column>",
- "rule_type": "<salah satu di atas>",
- "params": {...},
- "description": "<deskripsi singkat bahasa Indonesia>"}
+KONTRAK WAJIB:
+1. Pilih nama kolom PERSIS dari daftar kolom. Jangan membuat atau memperbaiki nama kolom.
+2. Pilih tipe berdasarkan intent, bukan berdasarkan kata kunci tunggal.
+3. Seluruh logika eksekusi WAJIB ada dalam rule_type dan params. Description hanya label UI dan
+   TIDAK pernah digunakan evaluator.
+4. Isi params hanya dengan key pada schema tipe terpilih dan gunakan tipe JSON yang benar.
+5. Pertahankan literal pengguna persis, termasuk titik, tanda hubung, kapitalisasi, dan batas.
+6. Gunakan tipe khusus bila tersedia; regex hanya pilihan terakhir.
+7. Jika ada beberapa constraint, pilih constraint utama yang paling eksplisit dan paling relevan
+   dengan kolom. Jelaskan interpretasi yang dipilih dalam description agar pengguna dapat meninjau.
+8. Nilai kosong hanya diperiksa oleh not_null, kecuali starts_with yang juga menolak nilai kosong.
+9. Jika kolom tidak disebut jelas, pilih kolom yang paling cocok berdasarkan nama, tipe, dan contoh
+   nilai. Jika constraint tidak memiliki tipe khusus, representasikan dengan regex yang valid.
+10. Jangan pernah mengembalikan error hanya karena bahasa pengguna singkat, informal, typo ringan,
+    ambigu, atau tidak menyebut tipe rule. Selalu hasilkan proposal terbaik yang masih executable.
 
-Pilih kolom dari daftar kolom yang diberikan (perhatikan ejaan persis). Jika instruksi paling
-cocok dengan rule bawaan (email/phone/nik), gunakan itu alih-alih regex."""
+PEMETAAN CONTOH:
+- "alamat harus diawali Jl." -> starts_with, {"prefix":"Jl.","case_sensitive":false}
+- "kode harus diawali huruf kapital ABC" -> starts_with,
+  {"prefix":"ABC","case_sensitive":true}
+- "umur minimal 18 maksimal 60" -> numeric_range, {"min":18,"max":60}
+- "tanggal lahir setelah 1900-01-01" -> date_range, {"min":"1900-01-01","max":null}
+- "tanggal selesai harus lebih besar dari tanggal mulai" -> cross_column
+- "status hanya aktif atau nonaktif" -> regex, {"pattern":"^(aktif|nonaktif)$"}
+- "email harus valid" -> email_format
+- "email wajib diisi" -> not_null
+
+OUTPUT — jawab HANYA satu object JSON valid:
+{"column_name":"<nama persis>","rule_type":"<tipe>","params":{},
+ "description":"<ringkasan bahasa Indonesia yang menyatakan interpretasi rule_type+params>"}
+"""
 
 
 def _parse_json_response(content: str):
@@ -82,11 +113,18 @@ def generate_rule(instruction: str, columns: list[dict]) -> dict:
         [
             {"role": "system", "content": RULE_GEN_SYSTEM},
             {"role": "user",
-             "content": f"Kolom dataset:\n{schema_desc}\n\nInstruksi: {instruction}"},
+             "content": (
+                 f"Tanggal hari ini: {date.today().isoformat()}\n"
+                 f"Kolom dataset:\n{schema_desc}\n\n"
+                 f"Instruksi pengguna:\n{instruction.strip()}"
+             )},
         ],
         temperature=0.0,
     )
-    return _parse_json_response(content)
+    proposal = _parse_json_response(content)
+    if not isinstance(proposal, dict):
+        raise ValueError("LLM harus mengembalikan satu object rule")
+    return proposal
 
 
 RULE_SUGGEST_SYSTEM = """Kamu adalah asisten data quality. Tugasmu MENYARANKAN rule validasi
