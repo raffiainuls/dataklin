@@ -235,7 +235,7 @@ function RulesContent() {
     setSuggestions((prev) => (prev ? prev.filter((_, i) => i !== index) : prev));
   }
 
-  const needsParams = ["numeric_range", "date_range", "regex", "cross_column"].includes(newType);
+  const needsParams = ["numeric_range", "date_range", "starts_with", "regex", "cross_column"].includes(newType);
 
   return (
     <Shell title="Rule Builder" subtitle="Aturan validasi per kolom — bawaan, manual, atau AI">
@@ -486,7 +486,9 @@ function RulesContent() {
                       <div className="flex justify-between items-baseline">
                         <Label>Params (JSON)</Label>
                         <span className="text-xs text-muted-foreground">
-                          {newType === "regex"
+                          {newType === "starts_with"
+                            ? 'contoh: {"prefix": "Jl.", "case_sensitive": false}'
+                            : newType === "regex"
                             ? 'contoh: {"pattern": "^08[0-9]+$"}'
                             : newType === "cross_column"
                               ? 'contoh: {"left": "tanggal_checkout", "op": ">", "right": "tanggal_checkin"}'
@@ -614,9 +616,11 @@ function RulesContent() {
                           <div className="mt-3 bg-destructive/5 p-3 rounded-md border border-destructive/10 text-xs">
                             <div className="font-semibold text-destructive mb-1">Contoh Pelanggaran:</div>
                             <ul className="space-y-1">
-                              {r.last_result.samples.slice(0, 2).map((s: any, idx: number) => (
+                              {r.last_result.samples.slice(0, 10).map((s: any, idx: number) => (
                                 <li key={idx} className="text-muted-foreground">
-                                  Baris {s.row}: <span className="font-mono text-foreground font-medium bg-background px-1 rounded">"{s.value}"</span>
+                                  Baris {s.row}: <span className="font-mono text-foreground font-medium bg-background px-1 rounded">
+                                    {s.value === null ? "(kosong)" : `"${s.value}"`}
+                                  </span>
                                 </li>
                               ))}
                             </ul>
