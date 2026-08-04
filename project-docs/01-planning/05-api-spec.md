@@ -41,6 +41,38 @@ Response 401:
 |---|---|---|---|
 | | | | |
 
+### Data Profiling
+
+`GET /datasets/{dataset_id}` mengembalikan `columns[]` dengan field kompatibel lama
+(`inferred_type`, `completeness`, `uniqueness`, `consistency`, `null_count`,
+`unique_count`, `top_values`, `stats`) dan detail profiling berikut:
+
+- `top_values[]`: `value`, `count`, dan `percentage` dari nilai non-missing.
+- `stats.physical_type`, `stats.length.{min,max,mean,median}` untuk structure discovery.
+- `stats.null_count`, `stats.blank_count`, `stats.non_missing_count`,
+  `stats.duplicate_count`, dan `stats.is_candidate_key`.
+- Numerik: `stats.{min,max,mean,median,std,q1,q3}`; tanggal: `stats.{min,max}`.
+- Teks: `stats.patterns[]` berisi `regex`, `signature`, `count`, `percentage`, dan `example`.
+
+NULL dan string kosong/whitespace sama-sama dianggap missing untuk `completeness` dan
+`null_count` tingkat atas; rinciannya tetap dipisahkan di dalam `stats`.
+
+### Relationship Discovery
+
+`POST /cross-dataset-rules/{rule_id}/run` untuk rule `referential_integrity`
+menambahkan `relationship_profile` pada respons:
+
+```json
+{
+  "relationship_profile": {
+    "matched": 95,
+    "key_overlap": 0.95,
+    "orphan_count": 5,
+    "orphan_rate": 0.05
+  }
+}
+```
+
 ## Error Codes Global
 | Code | HTTP Status | Arti |
 |---|---|---|

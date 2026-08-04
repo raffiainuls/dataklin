@@ -339,12 +339,16 @@ let tickets = [
     log:[{ts:"2026-07-25 10:30", note:"Ticket dibuat berdasarkan feedback UX"}]
   },
   {
-    id:"VD-310", title:"[Feature] Perluasan Statistik Profiling (Min/Max & Format Regex)",
-    description:"Informasi profil kolom saat ini hanya menampilkan Completeness dan Uniqueness. Diperlukan penambahan metrik statistik lanjutan seperti Nilai Minimum, Nilai Maksimum (untuk angka/tanggal), dan deteksi/distribusi variasi pola string (Regex format) untuk melihat ragam format data dalam satu kolom.",
-    acceptance:["UI Detail Dataset menampilkan metrik Min dan Max untuk kolom numerik/tanggal","UI menampilkan daftar ragam pattern regex (contoh: format tanggal yang tercampur) beserta distribusinya","Worker backend menghitung metrik ini saat proses profiling"],
+    id:"VD-310", title:"[Feature] Profiling Komprehensif: Structure, Content & Relationship",
+    description:"Perluasan profiling berdasarkan tiga pilar discovery. Structure discovery mencakup tipe fisik/inferred, panjang, serta pola regex. Content discovery mencakup NULL/blank, uniqueness/duplikat, min/max/mean/median/kuartil, dan frequencies. Relationship discovery mencakup kandidat key, key overlap, dan orphan records lintas dataset.",
+    acceptance:["UI Detail Dataset menampilkan tipe data, statistik panjang, completeness NULL/blank, uniqueness/duplikat, serta kandidat key","UI menampilkan Min/Max untuk angka/tanggal dan Mean/Median/Q1/Q3 untuk angka","UI menampilkan frequencies dan ragam pattern regex beserta count, persentase, dan contoh","Worker backend menghitung seluruh metrik saat profiling dan tetap kompatibel dengan field profil lama","Relationship discovery menyediakan key overlap dan orphan rate serta dapat diakses dari Detail Dataset","Unit test profiling structure/content/relationship tersedia dan lolos"],
     priority:"Medium", estimate:"M", assignee:"Unassigned", dependencies:"-",
-    status:"backlog", blocker:"",
-    log:[{ts:"2026-07-25 17:35", note:"Ticket dibuat berdasarkan request user untuk profiling lanjutan"}]
+    status:"in_review", blocker:"",
+    log:[
+      {ts:"2026-07-25 17:35", note:"Ticket dibuat berdasarkan request user untuk profiling lanjutan"},
+      {ts:"2026-08-04 17:22", note:"Mulai memperluas profiling sesuai tiga pilar: structure, content, dan relationship discovery."},
+      {ts:"2026-08-04 17:31", note:"Moved to In Review. Seluruh AC implementasi terpenuhi; unit test logic dan build frontend lulus. Menunggu review/staging sesuai DoD."}
+    ]
   },
 
   {

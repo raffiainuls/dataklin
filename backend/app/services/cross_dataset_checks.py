@@ -22,6 +22,11 @@ def _stringify(series: pd.Series) -> pd.Series:
     return series.astype(str)
 
 
+def _non_blank_strings(series: pd.Series) -> pd.Series:
+    values = _stringify(series.dropna()).str.strip()
+    return values[values.ne("")]
+
+
 def check_referential_integrity(primary_df: pd.DataFrame, primary_column: str,
                                 reference_df: pd.DataFrame, reference_column: str) -> dict:
     """Kembalikan {checked, violations, samples} — checked = jumlah nilai non-kosong di
@@ -31,14 +36,22 @@ def check_referential_integrity(primary_df: pd.DataFrame, primary_column: str,
     if reference_column not in reference_df.columns:
         raise ValueError(f'Kolom "{reference_column}" tidak ditemukan di dataset referensi')
 
-    primary_values = _stringify(primary_df[primary_column].dropna())
-    reference_set = set(_stringify(reference_df[reference_column].dropna()))
+    primary_values = _non_blank_strings(primary_df[primary_column])
+    reference_set = set(_non_blank_strings(reference_df[reference_column]))
 
     checked = len(primary_values)
     missing_mask = ~primary_values.isin(reference_set)
     violations = int(missing_mask.sum())
     samples = primary_values[missing_mask].drop_duplicates().head(MAX_SAMPLES).tolist()
-    return {"checked": checked, "violations": violations, "samples": samples}
+    matched = checked - violations
+    return {
+        "checked": checked,
+        "matched": matched,
+        "key_overlap": round(matched / checked, 4) if checked else None,
+        "violations": violations,
+        "orphan_rate": round(violations / checked, 4) if checked else None,
+        "samples": samples,
+    }
 
 
 def _norm_value(value: str) -> str | None:

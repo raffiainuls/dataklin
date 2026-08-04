@@ -8,10 +8,15 @@ import { ScoreBadge, StatusPill, ProgressBar } from "@/components/widgets";
 import { api } from "@/lib/api";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Settings, Search, Download, AlertCircle, FileText, BarChart3, Database, ChevronDown, ChevronRight } from "lucide-react";
+import { ArrowLeft, Settings, Search, Download, AlertCircle, FileText, BarChart3, Database, ChevronDown, ChevronRight, Network } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+
+function displayMetric(value: unknown) {
+  if (value === null || value === undefined || value === "") return "—";
+  return typeof value === "number" ? value.toLocaleString("id-ID") : String(value);
+}
 
 export default function DatasetDetail() {
   const params = useParams<{ id: string }>();
@@ -157,8 +162,9 @@ export default function DatasetDetail() {
       </div>
 
       <Tabs defaultValue="profiling" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 lg:w-[600px]">
+        <TabsList className="grid w-full grid-cols-4 lg:w-[760px]">
           <TabsTrigger value="profiling">Profil Kolom</TabsTrigger>
+          <TabsTrigger value="relationships">Relasi Data</TabsTrigger>
           <TabsTrigger value="rules">Hasil Validasi Aturan</TabsTrigger>
           <TabsTrigger value="clusters">Hasil Temuan Cluster</TabsTrigger>
         </TabsList>
@@ -211,6 +217,92 @@ export default function DatasetDetail() {
                         />
                       </div>
                     </div>
+
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="rounded-md border bg-muted/20 p-2">
+                        <div className="text-muted-foreground">Tipe fisik</div>
+                        <div className="mt-1 font-mono font-medium break-all">{c.stats?.physical_type || "—"}</div>
+                      </div>
+                      <div className="rounded-md border bg-muted/20 p-2">
+                        <div className="text-muted-foreground">NULL / blank</div>
+                        <div className="mt-1 font-medium">
+                          {displayMetric(c.stats?.null_count)} / {displayMetric(c.stats?.blank_count || 0)}
+                        </div>
+                      </div>
+                      <div className="rounded-md border bg-muted/20 p-2">
+                        <div className="text-muted-foreground">Panjang min–max</div>
+                        <div className="mt-1 font-medium">
+                          {displayMetric(c.stats?.length?.min)}–{displayMetric(c.stats?.length?.max)}
+                        </div>
+                      </div>
+                      <div className="rounded-md border bg-muted/20 p-2">
+                        <div className="text-muted-foreground">Duplikat</div>
+                        <div className="mt-1 font-medium">{displayMetric(c.stats?.duplicate_count)}</div>
+                      </div>
+                    </div>
+
+                    {(c.stats?.min !== undefined || c.stats?.median !== undefined) && (
+                      <div className="space-y-2 border-t pt-4">
+                        <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Distribusi nilai</div>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+                          <div className="flex justify-between gap-2"><span>Minimum</span><strong>{displayMetric(c.stats?.min)}</strong></div>
+                          <div className="flex justify-between gap-2"><span>Maksimum</span><strong>{displayMetric(c.stats?.max)}</strong></div>
+                          {c.stats?.mean !== undefined && <div className="flex justify-between gap-2"><span>Mean</span><strong>{displayMetric(c.stats.mean)}</strong></div>}
+                          {c.stats?.median !== undefined && <div className="flex justify-between gap-2"><span>Median</span><strong>{displayMetric(c.stats.median)}</strong></div>}
+                          {c.stats?.q1 !== undefined && <div className="flex justify-between gap-2"><span>Q1</span><strong>{displayMetric(c.stats.q1)}</strong></div>}
+                          {c.stats?.q3 !== undefined && <div className="flex justify-between gap-2"><span>Q3</span><strong>{displayMetric(c.stats.q3)}</strong></div>}
+                        </div>
+                      </div>
+                    )}
+
+                    {c.top_values?.length > 0 && (
+                      <div className="space-y-2 border-t pt-4">
+                        <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Frekuensi teratas</div>
+                        {c.top_values.slice(0, 5).map((item: any, index: number) => (
+                          <div key={`${item.value}-${index}`} className="space-y-1 text-xs">
+                            <div className="flex justify-between gap-3">
+                              <span className="truncate font-mono" title={String(item.value)}>{String(item.value)}</span>
+                              <span className="shrink-0 text-muted-foreground">{item.count} ({((item.percentage || 0) * 100).toFixed(1)}%)</span>
+                            </div>
+                            <div className="h-1 overflow-hidden rounded-full bg-secondary">
+                              <div className="h-full bg-violet-500" style={{ width: `${(item.percentage || 0) * 100}%` }} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {c.stats?.patterns?.length > 0 && (
+                      <details className="border-t pt-4">
+                        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                          Pola regex ({c.stats.patterns.length})
+                        </summary>
+                        <div className="mt-3 space-y-3">
+                          {c.stats.patterns.map((pattern: any, index: number) => (
+                            <div key={`${pattern.regex}-${index}`} className="rounded-md border bg-muted/20 p-2 text-xs">
+                              <div className="flex justify-between gap-2">
+                                <code className="break-all text-[11px]">{pattern.regex}</code>
+                                <strong className="shrink-0">{(pattern.percentage * 100).toFixed(1)}%</strong>
+                              </div>
+                              <div className="mt-1 truncate text-muted-foreground" title={pattern.example}>
+                                Contoh: {pattern.example} · {pattern.count} nilai
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </details>
+                    )}
+
+                    <div className="flex flex-wrap gap-2 border-t pt-4 text-xs">
+                      <Badge variant="outline">{displayMetric(c.unique_count)} nilai unik</Badge>
+                      {c.stats?.is_candidate_key && <Badge className="bg-emerald-600">Kandidat key</Badge>}
+                    </div>
+
+                    {c.notes && (
+                      <div className="rounded-md border border-amber-300 bg-amber-50 p-2 text-xs text-amber-900 dark:bg-amber-950/20 dark:text-amber-200">
+                        {c.notes}
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               ))
@@ -221,6 +313,35 @@ export default function DatasetDetail() {
               </div>
             )}
           </div>
+        </TabsContent>
+
+        <TabsContent value="relationships" className="mt-4">
+          <Card>
+            <CardHeader>
+              <div className="flex items-start gap-3">
+                <div className="rounded-lg bg-primary/10 p-2 text-primary"><Network className="h-5 w-5" /></div>
+                <div>
+                  <CardTitle>Relationship Discovery</CardTitle>
+                  <CardDescription className="mt-1">
+                    Uji key overlap dan temukan orphan record antara foreign key dataset ini dan primary key dataset referensi.
+                  </CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-wrap gap-2">
+                {cols.filter((column: any) => column.stats?.is_candidate_key).map((column: any) => (
+                  <Badge key={column.name} variant="outline">Kandidat key: {column.name}</Badge>
+                ))}
+                {!cols.some((column: any) => column.stats?.is_candidate_key) && (
+                  <span className="text-sm text-muted-foreground">Tidak ada kandidat key tunggal yang lengkap dan unik.</span>
+                )}
+              </div>
+              <Button render={<Link href="/integrity" />} nativeButton={false}>
+                <Network className="mr-2 h-4 w-4" /> Konfigurasi Cek Lintas Dataset
+              </Button>
+            </CardContent>
+          </Card>
         </TabsContent>
         
         <TabsContent value="rules" className="mt-4">
