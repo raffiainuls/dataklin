@@ -18,6 +18,73 @@ function displayMetric(value: unknown) {
   return typeof value === "number" ? value.toLocaleString("id-ID") : String(value);
 }
 
+function displayPercentage(value: number) {
+  const percentage = value * 100;
+  if (percentage > 0 && percentage < 0.1) return "<0,1%";
+  return `${percentage.toLocaleString("id-ID", { maximumFractionDigits: 1 })}%`;
+}
+
+function FrequencyProfile({ column }: { column: any }) {
+  const hasValues = column.top_values?.length > 0;
+  const hasPatterns = column.stats?.patterns?.length > 0;
+  const [view, setView] = useState<"values" | "patterns">(hasValues ? "values" : "patterns");
+
+  if (!hasValues && !hasPatterns) return null;
+
+  return (
+    <div className="space-y-3 border-t pt-4">
+      <div className="flex items-center justify-between gap-2">
+        <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Frekuensi teratas</div>
+        {hasValues && hasPatterns && (
+          <div className="inline-flex rounded-md border bg-muted/30 p-0.5 text-[11px]">
+            <button
+              type="button"
+              onClick={() => setView("values")}
+              className={`rounded px-2 py-1 transition-colors ${view === "values" ? "bg-background font-semibold shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              Nilai
+            </button>
+            <button
+              type="button"
+              onClick={() => setView("patterns")}
+              className={`rounded px-2 py-1 transition-colors ${view === "patterns" ? "bg-background font-semibold shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              Pola Regex
+            </button>
+          </div>
+        )}
+      </div>
+
+      {view === "values" && hasValues ? (
+        column.top_values.slice(0, 5).map((item: any, index: number) => (
+          <div key={`${item.value}-${index}`} className="space-y-1 text-xs">
+            <div className="flex justify-between gap-3">
+              <span className="truncate font-mono" title={String(item.value)}>{String(item.value)}</span>
+              <span className="shrink-0 text-muted-foreground">{item.count} ({displayPercentage(item.percentage || 0)})</span>
+            </div>
+            <div className="h-1 overflow-hidden rounded-full bg-secondary">
+              <div className="h-full bg-violet-500" style={{ width: `${Math.max((item.percentage || 0) * 100, item.percentage ? 0.5 : 0)}%` }} />
+            </div>
+          </div>
+        ))
+      ) : hasPatterns ? (
+        column.stats.patterns.slice(0, 5).map((pattern: any, index: number) => (
+          <div key={`${pattern.regex}-${index}`} className="space-y-1.5 rounded-md border bg-muted/20 p-2 text-xs">
+            <div className="flex justify-between gap-2">
+              <code className="break-all text-[11px]">{pattern.regex}</code>
+              <strong className="shrink-0">{pattern.count} ({displayPercentage(pattern.percentage)})</strong>
+            </div>
+            <div className="truncate text-muted-foreground" title={pattern.example}>Contoh: {pattern.example}</div>
+            <div className="h-1 overflow-hidden rounded-full bg-secondary">
+              <div className="h-full bg-cyan-500" style={{ width: `${Math.max(pattern.percentage * 100, 0.5)}%` }} />
+            </div>
+          </div>
+        ))
+      ) : null}
+    </div>
+  );
+}
+
 export default function DatasetDetail() {
   const params = useParams<{ id: string }>();
   const [data, setData] = useState<any>(null);
@@ -255,43 +322,7 @@ export default function DatasetDetail() {
                       </div>
                     )}
 
-                    {c.top_values?.length > 0 && (
-                      <div className="space-y-2 border-t pt-4">
-                        <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Frekuensi teratas</div>
-                        {c.top_values.slice(0, 5).map((item: any, index: number) => (
-                          <div key={`${item.value}-${index}`} className="space-y-1 text-xs">
-                            <div className="flex justify-between gap-3">
-                              <span className="truncate font-mono" title={String(item.value)}>{String(item.value)}</span>
-                              <span className="shrink-0 text-muted-foreground">{item.count} ({((item.percentage || 0) * 100).toFixed(1)}%)</span>
-                            </div>
-                            <div className="h-1 overflow-hidden rounded-full bg-secondary">
-                              <div className="h-full bg-violet-500" style={{ width: `${(item.percentage || 0) * 100}%` }} />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {c.stats?.patterns?.length > 0 && (
-                      <details className="border-t pt-4">
-                        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                          Pola regex ({c.stats.patterns.length})
-                        </summary>
-                        <div className="mt-3 space-y-3">
-                          {c.stats.patterns.map((pattern: any, index: number) => (
-                            <div key={`${pattern.regex}-${index}`} className="rounded-md border bg-muted/20 p-2 text-xs">
-                              <div className="flex justify-between gap-2">
-                                <code className="break-all text-[11px]">{pattern.regex}</code>
-                                <strong className="shrink-0">{(pattern.percentage * 100).toFixed(1)}%</strong>
-                              </div>
-                              <div className="mt-1 truncate text-muted-foreground" title={pattern.example}>
-                                Contoh: {pattern.example} · {pattern.count} nilai
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </details>
-                    )}
+                    <FrequencyProfile column={c} />
 
                     <div className="flex flex-wrap gap-2 border-t pt-4 text-xs">
                       <Badge variant="outline">{displayMetric(c.unique_count)} nilai unik</Badge>
