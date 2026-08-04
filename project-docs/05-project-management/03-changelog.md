@@ -6,7 +6,9 @@
 ### Added
 - 
 ### Changed
-- 
+- VD-310: memperluas profil dataset menjadi structure, content, dan relationship
+  discovery, termasuk tipe data, panjang, NULL/blank, statistik distribusi,
+  frequencies, regex distribution, kandidat key, key overlap, dan orphan rate.
 ### Fixed
 - 
 

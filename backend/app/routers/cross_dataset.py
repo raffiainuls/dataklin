@@ -194,4 +194,12 @@ def run_cross_dataset_rule(rule_id: int, db: Session = Depends(get_db),
                 traceback.print_exc()
 
     db.commit()
-    return _dict(rule, {primary.id: primary.name, reference.id: reference.name})
+    response = _dict(rule, {primary.id: primary.name, reference.id: reference.name})
+    if rule.check_type == "referential_integrity":
+        response["relationship_profile"] = {
+            "matched": result["matched"],
+            "key_overlap": result["key_overlap"],
+            "orphan_count": result["violations"],
+            "orphan_rate": result["orphan_rate"],
+        }
+    return response
