@@ -614,9 +614,9 @@ function RulesContent() {
                         
                         {r.last_result?.samples?.length > 0 && r.enabled && (
                           <div className="mt-3 bg-destructive/5 p-3 rounded-md border border-destructive/10 text-xs">
-                            <div className="font-semibold text-destructive mb-1">Contoh Pelanggaran:</div>
-                            <ul className="space-y-1">
-                              {r.last_result.samples.slice(0, 10).map((s: any, idx: number) => (
+                            <div className="font-semibold text-destructive mb-1">Semua Pelanggaran:</div>
+                            <ul className="max-h-64 space-y-1 overflow-y-auto pr-1">
+                              {r.last_result.samples.map((s: any, idx: number) => (
                                 <li key={idx} className="text-muted-foreground">
                                   Baris {s.row}: <span className="font-mono text-foreground font-medium bg-background px-1 rounded">
                                     {s.value === null ? "(kosong)" : `"${s.value}"`}

@@ -245,7 +245,7 @@ export default function DatasetDetail() {
                         <TableHead>Kolom</TableHead>
                         <TableHead>Aturan (Rule)</TableHead>
                         <TableHead>Status</TableHead>
-                        <TableHead>Contoh Data Gagal</TableHead>
+                        <TableHead>Semua Data Gagal</TableHead>
                         <TableHead className="text-right">Baris Gagal</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -265,8 +265,8 @@ export default function DatasetDetail() {
                             </TableCell>
                             <TableCell>
                               {r.last_result?.samples?.length ? (
-                                <div className="flex max-w-md flex-wrap gap-1.5">
-                                  {r.last_result.samples.slice(0, 5).map((sample: any, index: number) => (
+                                <div className="flex max-h-48 max-w-md flex-wrap gap-1.5 overflow-y-auto pr-1">
+                                  {r.last_result.samples.map((sample: any, index: number) => (
                                     <span
                                       key={`${sample.row}-${index}`}
                                       className="inline-flex rounded border border-destructive/20 bg-destructive/5 px-2 py-1 text-xs"
