@@ -145,11 +145,34 @@ def get_dataset(dataset_id: int, db: Session = Depends(get_db),
         db.query(func.count(RuleResult.id), func.coalesce(func.sum(RuleResult.violations), 0))
         .filter(RuleResult.dataset_id == dataset.id).first()
     )
+    rules = (
+        db.query(ValidationRule).filter_by(dataset_id=dataset.id)
+        .order_by(ValidationRule.id).all()
+    )
+    latest_results: dict[int, RuleResult] = {}
+    for result in (db.query(RuleResult).filter_by(dataset_id=dataset.id)
+                   .order_by(desc(RuleResult.run_at)).all()):
+        latest_results.setdefault(result.rule_id, result)
 
     out = _dataset_dict(dataset, pending_clusters)
     out["total_clusters"] = total_clusters
     out["rule_runs"] = rule_summary[0]
     out["rule_violations"] = int(rule_summary[1])
+    out["rules"] = [{
+        "id": rule.id,
+        "column_name": rule.column_name,
+        "rule_type": rule.rule_type,
+        "rule_label": RULE_TYPES.get(rule.rule_type, rule.rule_type),
+        "description": rule.description,
+        "source": rule.source,
+        "enabled": rule.enabled,
+        "last_result": ({
+            "checked": latest_results[rule.id].checked,
+            "violations": latest_results[rule.id].violations,
+            "samples": latest_results[rule.id].sample_violations,
+            "run_at": latest_results[rule.id].run_at.isoformat(),
+        } if rule.id in latest_results else None),
+    } for rule in rules]
     out["columns"] = [{
         "id": c.id,
         "name": c.name,
