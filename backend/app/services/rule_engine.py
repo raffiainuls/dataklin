@@ -127,10 +127,9 @@ def run_cross_column_rule(df: pd.DataFrame, params: dict) -> dict:
             continue
         if not ok:
             violations += 1
-            if len(samples) < 10:
-                samples.append({"row": int(idx),
-                                "value": f"{left_col}={df.at[idx, left_col]} vs "
-                                         f"{right_col}={df.at[idx, right_col]}"})
+            samples.append({"row": int(idx),
+                            "value": f"{left_col}={df.at[idx, left_col]} vs "
+                                     f"{right_col}={df.at[idx, right_col]}"})
     return {"checked": checked, "violations": violations, "samples": samples}
 
 
@@ -221,11 +220,10 @@ def run_rule(df: pd.DataFrame, column: str, rule_type: str, params: dict | None)
     for idx, value in series.items():
         if not _check_value(rule_type, params, value):
             violations += 1
-            if len(samples) < 10:
-                display = value
-                if isinstance(display, float) and not pd.isna(display) and display.is_integer():
-                    display = int(display)
-                samples.append({"row": int(idx), "value": None if pd.isna(value) else str(display)})
+            display = value
+            if isinstance(display, float) and not pd.isna(display) and display.is_integer():
+                display = int(display)
+            samples.append({"row": int(idx), "value": None if pd.isna(value) else str(display)})
     return {"checked": checked, "violations": violations, "samples": samples}
 
 
