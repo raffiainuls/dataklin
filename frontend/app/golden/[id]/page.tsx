@@ -97,7 +97,7 @@ export default function GoldenRecordPage() {
                         <TableCell>
                           <Badge 
                             variant="secondary" 
-                            className={row.status === "Merged" ? "bg-blue-100 text-blue-700 hover:bg-blue-100" : "bg-emerald-100 text-emerald-700 hover:bg-emerald-100"}
+                            className={row.status === "Merged" ? "bg-info-muted text-info hover:bg-info-muted" : "bg-success-muted text-success hover:bg-success-muted"}
                           >
                             {row.status}
                           </Badge>

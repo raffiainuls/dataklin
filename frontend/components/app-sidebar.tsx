@@ -60,10 +60,9 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {NAV.map((item) => {
-                const isActive = item.url === "/" 
-                  ? pathname === "/" 
-                  : pathname.startsWith(item.url.split("/")[1] ? `/${item.url.split("/")[1]}` : item.url);
-                  
+                const isActive =
+                  item.url === "/" ? pathname === "/" : pathname.startsWith(item.url);
+
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton render={<Link href={item.url} />} isActive={isActive}>
@@ -104,15 +103,18 @@ export function AppSidebar() {
             <span className="text-sm font-medium truncate">{user?.name || "User"}</span>
             <span className="text-xs text-muted-foreground truncate">{user?.email || "user@example.com"}</span>
           </div>
-          <button 
+          <button
+            type="button"
             onClick={() => {
               logout();
               router.push("/login");
             }}
-            className="text-muted-foreground hover:text-foreground p-2 rounded-md hover:bg-accent transition-colors"
+            /* aria-label wajib untuk tombol ikon-saja; area sentuh 44x44px */
+            aria-label="Keluar dari akun"
             title="Keluar"
+            className="inline-flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors duration-200 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
           >
-            <LogOut className="h-4 w-4" />
+            <LogOut className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
       </SidebarFooter>

@@ -137,7 +137,7 @@ export default function IntegrityPage() {
           </div>
         )}
         {notice && (
-          <div className="bg-emerald-500/15 text-emerald-700 p-4 rounded-md border border-emerald-500/20 flex items-center gap-2">
+          <div className="bg-success/15 text-success p-4 rounded-md border border-success/20 flex items-center gap-2">
             <AlertCircle className="h-5 w-5 shrink-0" />
             <p>{notice}</p>
           </div>
@@ -299,7 +299,7 @@ export default function IntegrityPage() {
                   Simpan Aturan Lintas Dataset
                 </Button>
                 {datasets.length < 1 && (
-                  <p className="text-sm text-amber-600 mt-2">
+                  <p className="text-sm text-warning mt-2">
                     Butuh minimal 1 dataset berstatus "Aktif" untuk membuat cek.
                   </p>
                 )}
@@ -355,7 +355,7 @@ export default function IntegrityPage() {
                         <TableCell className="text-xs">
                           {r.last_checked_at ? (
                             <div className="space-y-1">
-                              <Badge variant={r.last_violations > 0 ? "destructive" : "default"} className={r.last_violations === 0 ? "bg-emerald-500 hover:bg-emerald-600" : ""}>
+                              <Badge variant={r.last_violations > 0 ? "destructive" : "default"} className={r.last_violations === 0 ? "bg-success hover:bg-success" : ""}>
                                 {r.last_violations} / {r.last_checked_count} tidak cocok
                               </Badge>
                               {r.last_samples?.length > 0 && (

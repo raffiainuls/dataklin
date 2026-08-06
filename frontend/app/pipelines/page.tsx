@@ -156,15 +156,15 @@ export default function PipelinesPage() {
                         </TableCell>
                         <TableCell>
                           {p.last_run_status === "running" ? (
-                            <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-1 text-xs font-semibold text-blue-700">
+                            <span className="inline-flex items-center rounded-full bg-info-muted px-2.5 py-1 text-xs font-semibold text-info">
                               <Loader2 className="mr-1.5 h-3 w-3 animate-spin" /> Running
                             </span>
                           ) : p.last_run_status === "success" ? (
-                            <span className="inline-flex rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+                            <span className="inline-flex rounded-full bg-success-muted px-2.5 py-1 text-xs font-semibold text-success">
                               Success
                             </span>
                           ) : p.last_run_status === "failed" ? (
-                            <span className="inline-flex rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-700" title={p.last_run_message || undefined}>
+                            <span className="inline-flex rounded-full bg-destructive-muted px-2.5 py-1 text-xs font-semibold text-destructive" title={p.last_run_message || undefined}>
                               Failed
                             </span>
                           ) : (

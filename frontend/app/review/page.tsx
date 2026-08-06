@@ -83,7 +83,7 @@ export default function ReviewQueuePage() {
               <div className="flex flex-col items-center justify-center p-8 text-center border rounded-md border-dashed h-[300px] bg-muted/5">
                 {loaded ? (
                   <>
-                    <CheckCircle2 className="h-10 w-10 text-emerald-500 mb-3" />
+                    <CheckCircle2 className="h-10 w-10 text-success mb-3" />
                     <p className="text-muted-foreground">Tidak ada cluster yang menunggu review 🎉</p>
                   </>
                 ) : (

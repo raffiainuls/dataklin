@@ -78,7 +78,7 @@ export default function RuleViolationsPage() {
       </div>
 
       {result.stored_total < result.total && (
-        <div className="mb-4 rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
+        <div className="mb-4 rounded-md border border-warning/30 bg-warning-muted p-3 text-sm text-warning">
           Hasil ini dibuat sebelum penyimpanan seluruh pelanggaran diaktifkan. Jalankan validasi
           ulang untuk menampilkan semua {result.total.toLocaleString("id-ID")} baris.
         </div>
