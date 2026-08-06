@@ -24,7 +24,7 @@ export function LandingNav() {
         aria-label="Navigasi utama"
         className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6"
       >
-        <Link href="/landing" className="flex items-center gap-2 no-underline">
+        <Link href="/" className="flex items-center gap-2 no-underline">
           <span
             className="flex h-8 w-8 items-center justify-center rounded bg-primary font-bold text-primary-foreground"
             aria-hidden="true"

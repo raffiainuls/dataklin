@@ -20,7 +20,7 @@ import { Avatar, AvatarFallback } from "./ui/avatar";
 import Link from "next/link";
 
 const NAV = [
-  { title: "Dashboard", url: "/", icon: Home },
+  { title: "Dashboard", url: "/dashboard", icon: Home },
   { title: "Data Sources", url: "/sources", icon: Database },
   { title: "Pipelines", url: "/pipelines", icon: GitBranch },
   { title: "Runs & Results", url: "/runs", icon: PlaySquare },
@@ -60,8 +60,10 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {NAV.map((item) => {
+                /* Cocokkan path persis atau segmen anaknya, supaya "/review"
+                   tidak ikut aktif saat berada di "/reviewer". */
                 const isActive =
-                  item.url === "/" ? pathname === "/" : pathname.startsWith(item.url);
+                  pathname === item.url || pathname.startsWith(`${item.url}/`);
 
                 return (
                   <SidebarMenuItem key={item.title}>
