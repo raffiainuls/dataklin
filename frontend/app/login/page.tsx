@@ -26,7 +26,7 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
       setSession(data.token, data.user);
-      router.replace("/");
+      router.replace("/dashboard");
     } catch (err: any) {
       setError(err.message);
     } finally {

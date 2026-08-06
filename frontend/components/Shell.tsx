@@ -53,7 +53,7 @@ export default function Shell({
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/">Dataklin</BreadcrumbLink>
+                <BreadcrumbLink href="/dashboard">Dataklin</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>

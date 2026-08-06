@@ -1,6 +1,7 @@
 # Page Override — `landing`
 
-> Aturan di file ini **menimpa** `../MASTER.md` khusus untuk halaman landing (`/landing`).
+> Aturan di file ini **menimpa** `../MASTER.md` khusus untuk halaman landing — rute `/`
+> (root), diimplementasikan di `frontend/app/page.tsx`. Dashboard aplikasi ada di `/dashboard`.
 > Semua yang tidak disebut di sini tetap mengikuti MASTER.
 
 **Dibuat manual.** `--persist --page landing` menolak menulis karena MASTER.md sudah ada
