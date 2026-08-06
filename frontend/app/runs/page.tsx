@@ -86,7 +86,7 @@ export default function RunsPage() {
                               {d.total_anomalies} Issues
                             </div>
                           ) : (
-                            <span className="text-emerald-600 font-medium text-sm flex items-center">
+                            <span className="text-success font-medium text-sm flex items-center">
                               <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                               Bersih
                             </span>
@@ -97,7 +97,7 @@ export default function RunsPage() {
                             <Button 
                               variant="outline" 
                               size="sm" 
-                              className="h-8 border-amber-500/30 text-amber-600 hover:bg-amber-50 hover:text-amber-700 bg-amber-500/5"
+                              className="h-8 border-warning/30 text-warning hover:bg-warning-muted hover:text-warning bg-warning/5"
                               render={<Link href={`/review`} />}
                               nativeButton={false}
                             >

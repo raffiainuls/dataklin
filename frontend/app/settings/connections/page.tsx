@@ -89,14 +89,14 @@ export default function ConnectionsPage() {
         )}
         
         {notice && (
-          <div className="bg-emerald-500/15 text-emerald-700 p-4 rounded-md border border-emerald-500/20 flex items-center gap-2">
+          <div className="bg-success/15 text-success p-4 rounded-md border border-success/20 flex items-center gap-2">
             <CheckCircle2 className="h-5 w-5" />
             <p>{notice}</p>
           </div>
         )}
         
         {available === false && (
-          <div className="bg-amber-500/15 text-amber-700 p-4 rounded-md border border-amber-500/20 flex items-center gap-2">
+          <div className="bg-warning/15 text-warning p-4 rounded-md border border-warning/20 flex items-center gap-2">
             <AlertCircle className="h-5 w-5 shrink-0" />
             <p>
               Fitur koneksi database belum dikonfigurasi sepenuhnya. Anda harus mengatur <code>ENCRYPTION_KEY</code> di

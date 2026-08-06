@@ -4,23 +4,19 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme {
-  --color-vsbg: #1e1e1e;
-  --color-vssid: #252526;
-  --color-vshl: #37373d;
-  --color-vsblue: #007acc;
-  --color-vstext: #cccccc;
-  --color-vsgreen: #4ec9b0;
-  --color-vsorange: #ce9178;
-}
+/* =============================================================================
+   Design tokens — design-system/dataklin/MASTER.md
+   Palette: "Trust teal + professional blue" (colors.csv)
+   Style: Data-Dense Dashboard | Density 8/10 | Motion 3/10 (Subtle)
+   Setiap nilai warna teks di bawah sudah diukur >= 4.5:1 (WCAG AA).
+   ============================================================================= */
 
 @layer base {
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     margin: 0;
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
 
   a {
@@ -31,43 +27,140 @@
     text-decoration: underline;
   }
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   html {
     @apply font-sans;
   }
+
+  /* Checklist: "Focus states visible for keyboard navigation".
+     :focus-visible saja — supaya klik mouse tidak memunculkan ring. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Angka & data pakai Fira Code: tabular supaya kolom tidak "goyang" saat polling 10s. */
+  .tabular,
+  th[data-numeric],
+  td[data-numeric] {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
 }
 
-/* Animations & Scrollbar */
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* --- Motion: Subtle (MASTER 3/10) --------------------------------------------
+   Konten terlihat by default; animasi hanya progressive enhancement.
+   ---------------------------------------------------------------------------- */
+@keyframes dk-reveal {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
 }
 
-@keyframes pulse {
-  0% { transform: scale(0.95); opacity: 0.5; }
-  50% { transform: scale(1.1); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.5; }
+.dk-reveal {
+  opacity: 1; /* fallback: tetap terbaca tanpa JS / tanpa scroll-timeline */
+  animation: dk-reveal 350ms ease-out both;
 }
 
+@supports (animation-timeline: view()) {
+  .dk-reveal {
+    animation-timeline: view();
+    animation-range: entry 0% entry 60%;
+  }
+}
+
+/* Checklist: "prefers-reduced-motion respected" */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .dk-reveal {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+
+/* Target sentuh 44x44px (ux-guidelines "Touch & Interaction", CRITICAL) tanpa
+   mengorbankan density 8/10 yang dipilih MASTER untuk dashboard: kontrol dipadatkan
+   di perangkat berpenunjuk presisi (mouse), dan dilonggarkan hanya di perangkat sentuh. */
+@media (pointer: coarse) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  select,
+  textarea,
+  button,
+  [role="button"] {
+    min-height: 44px;
+  }
+  /* Jarak antar target sentuh minimal 8px */
+  [data-slot="button-group"] > * + * {
+    margin-inline-start: 0.5rem;
+  }
+}
+
+/* Skip link — "Keyboard Navigation: all functionality accessible via keyboard" */
+.dk-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+}
+.dk-skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: var(--radius-sm);
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--background); 
+  background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--muted-foreground); 
+  background: var(--muted-foreground);
   border-radius: 5px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary); 
+  background: var(--primary);
 }
 
 @theme inline {
+  /* MASTER menyebut heading = Fira Code. Dipetakan ke Fira Sans dengan sengaja:
+     --font-heading dipakai CardTitle/DialogTitle/SheetTitle, sementara h1/h2 memakai
+     font-sans dari body — memetakannya ke mono membuat hierarki heading tidak konsisten
+     (judul card monospace, judul section sans). Fira Code tetap dipakai untuk yang jadi
+     kekuatannya: angka & label data, lewat kelas .tabular dan teks chart. */
   --font-heading: var(--font-sans);
   --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  /* Spacing — MASTER density 8/10 (Dense / Dashboard) */
+  --spacing-space-xs: 0.125rem;
+  --spacing-space-sm: 0.25rem;
+  --spacing-space-md: 0.5rem;
+  --spacing-space-lg: 0.75rem;
+  --spacing-space-xl: 1rem;
+  --spacing-space-2xl: 1.5rem;
+  --spacing-space-3xl: 2rem;
+
+  /* Shadow depths — MASTER */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -85,6 +178,7 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -99,6 +193,21 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+
+  /* Token status semantik — menggantikan emerald/amber/rose hardcoded,
+     supaya nilainya ikut berubah di dark mode. */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-muted: var(--success-muted);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-muted: var(--warning-muted);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-muted: var(--info-muted);
+  --color-danger: var(--destructive);
+  --color-danger-muted: var(--destructive-muted);
+
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -109,39 +218,111 @@
 }
 
 :root {
-  --background: oklch(0.985 0.015 175); /* Soft Mint Background */
-  --foreground: oklch(0.25 0.02 240); /* Dark Slate Text */
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.25 0.02 240);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.25 0.02 240);
-  /* Tema DataNova: Teal/Cyan */
-  --primary: oklch(0.6 0.15 190); /* Teal Utama */
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.94 0.04 190); /* Teal sangat muda */
-  --secondary-foreground: oklch(0.4 0.1 190); /* Teal gelap */
-  --muted: oklch(0.96 0.01 240);
-  --muted-foreground: oklch(0.55 0.02 240);
-  --accent: oklch(0.94 0.04 190);
-  --accent-foreground: oklch(0.4 0.1 190);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.01 240);
-  --input: oklch(0.92 0.01 240);
-  --ring: oklch(0.6 0.15 190); 
-  --chart-1: oklch(0.6 0.15 190);
-  --chart-2: oklch(0.55 0.02 240);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  --background: #f0fdfa;        /* Trust teal background */
+  --foreground: #134e4a;        /* 9.09:1 di atas background — AA */
+  --card: #ffffff;
+  --card-foreground: #134e4a;   /* 9.48:1 di atas putih — AA */
+  --popover: #ffffff;
+  --popover-foreground: #134e4a;
+
+  --primary: #0f766e;           /* 5.47:1 dengan teks putih — AA */
+  --primary-foreground: #ffffff;
+  --secondary: #ccfbf1;
+  --secondary-foreground: #115e59;
+  --muted: #e8f0f3;
+  /* #64748b dari palette gagal tipis (4.40-4.47:1) saat dipakai di atas section
+     bernada seperti bg-secondary/30 dan bg-muted/30 — bukan di atas putih saja.
+     #5b6b7f lolos di keempat permukaan yang benar-benar dipakai halaman ini
+     (putih 5.45, bg 5.22, secondary/30 5.12, muted/30 5.04). */
+  --muted-foreground: #5b6b7f;
+  --accent: #0369a1;            /* professional blue, 5.93:1 dengan putih — AA */
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;       /* 4.83:1 dengan putih — AA */
+  --destructive-foreground: #ffffff;
+  --destructive-muted: #fef2f2;
+  --border: #99f6e4;
+  --input: #828e9e;             /* 3.33:1 di atas putih — WCAG 1.4.11 batas field >= 3:1 */
+  --ring: #0f766e;
+
+  /* Status semantik (light) */
+  --success: #047857;           /* 4.83:1 dengan putih */
+  --success-foreground: #ffffff;
+  --success-muted: #ecfdf5;
+  --warning: #a16207;           /* amber gelap agar teks di atas putih tetap AA */
+  --warning-foreground: #ffffff;
+  --warning-muted: #fffbeb;
+  --info: #0369a1;
+  --info-foreground: #ffffff;
+  --info-muted: #eff6ff;
+
+  /* Chart: hue berbeda + terang berbeda, jadi tetap terbaca saat grayscale */
+  --chart-1: #0f766e;
+  --chart-2: #0369a1;
+  --chart-3: #a16207;
+  --chart-4: #7c3aed;
+  --chart-5: #be123c;
+
   --radius: 0.625rem;
-  
-  /* Sidebar */
-  --sidebar: oklch(1 0 0); /* Sidebar Putih */
-  --sidebar-foreground: oklch(0.35 0.02 240); /* Slate Abu */
-  --sidebar-primary: oklch(0.6 0.15 190); /* Teal Aktif */
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.96 0.02 190); /* Background Hover / Aktif */
-  --sidebar-accent-foreground: oklch(0.3 0.1 190); /* Teks Aktif Teal Gelap */
-  --sidebar-border: oklch(0.92 0.01 240);
-  --sidebar-ring: oklch(0.6 0.15 190);
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #134e4a;
+  --sidebar-primary: #0f766e;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ccfbf1;
+  --sidebar-accent-foreground: #115e59;
+  --sidebar-border: #99f6e4;
+  --sidebar-ring: #0f766e;
+}
+
+/* Dark mode — guideline shadcn "Theming / Support dark mode" (severity High).
+   Sebelumnya @custom-variant dark dideklarasikan tanpa blok .dark, jadi dark mode
+   tidak pernah benar-benar berfungsi. */
+.dark {
+  --background: #0b1220;
+  --foreground: #e2f5f1;        /* 16.55:1 — AAA */
+  --card: #111c2b;
+  --card-foreground: #e2f5f1;
+  --popover: #111c2b;
+  --popover-foreground: #e2f5f1;
+
+  --primary: #2dd4bf;           /* 10.06:1 di atas background */
+  --primary-foreground: #04231f;
+  --secondary: #1c3a37;
+  --secondary-foreground: #99f6e4;
+  --muted: #17222f;
+  --muted-foreground: #94a3b8;  /* 7.30:1 — AA */
+  --accent: #38bdf8;
+  --accent-foreground: #04231f;
+  --destructive: #fb7185;       /* 6.96:1 — AA (rose terang, bukan #dc2626) */
+  --destructive-foreground: #1f0a0d;
+  --destructive-muted: #2a1116;
+  --border: #274a47;
+  --input: #437d76;             /* 3.95:1 di atas background — WCAG 1.4.11 */
+  --ring: #2dd4bf;              /* 10.06:1 — indikator fokus jelas */
+
+  /* Status semantik (dark) — versi 400-level, semua sudah diukur */
+  --success: #34d399;           /* 9.74:1 */
+  --success-foreground: #04231f;
+  --success-muted: #10231d;
+  --warning: #fbbf24;           /* 11.22:1 */
+  --warning-foreground: #231703;
+  --warning-muted: #241b06;
+  --info: #38bdf8;
+  --info-foreground: #04231f;
+  --info-muted: #0c1f2e;
+
+  --chart-1: #2dd4bf;
+  --chart-2: #38bdf8;
+  --chart-3: #fbbf24;
+  --chart-4: #a78bfa;
+  --chart-5: #fb7185;
+
+  --sidebar: #0e1725;
+  --sidebar-foreground: #e2f5f1;
+  --sidebar-primary: #2dd4bf;
+  --sidebar-primary-foreground: #04231f;
+  --sidebar-accent: #1c3a37;
+  --sidebar-accent-foreground: #99f6e4;
+  --sidebar-border: #274a47;
+  --sidebar-ring: #2dd4bf;
 }

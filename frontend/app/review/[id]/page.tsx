@@ -119,9 +119,9 @@ export default function ClusterReviewPage() {
                       {columns.map(col => {
                         const isDiff = cluster.diff_columns?.includes(col);
                         return (
-                          <TableHead key={col} className={`whitespace-nowrap ${isDiff ? 'bg-amber-500/10 text-amber-700' : 'bg-muted/10'}`}>
+                          <TableHead key={col} className={`whitespace-nowrap ${isDiff ? 'bg-warning/10 text-warning' : 'bg-muted/10'}`}>
                             {col}
-                            {isDiff && <span className="ml-2 text-[10px] uppercase tracking-wider text-amber-600 font-bold">(Berbeda)</span>}
+                            {isDiff && <span className="ml-2 text-[10px] uppercase tracking-wider text-warning font-bold">(Berbeda)</span>}
                           </TableHead>
                         );
                       })}
@@ -144,7 +144,7 @@ export default function ClusterReviewPage() {
                           const value = m.record_data[col];
                           const isEmpty = value === null || value === "";
                           return (
-                            <TableCell key={col} className={isDiff ? "bg-amber-500/5 text-amber-700 font-medium align-top" : "align-top"}>
+                            <TableCell key={col} className={isDiff ? "bg-warning/5 text-warning font-medium align-top" : "align-top"}>
                               <div className={`break-words ${isEmpty ? 'text-muted-foreground/50 italic' : ''}`}>
                                 {isEmpty ? "(kosong)" : String(value)}
                               </div>
@@ -187,8 +187,8 @@ export default function ClusterReviewPage() {
                     <div className="w-full h-2.5 bg-secondary rounded-full overflow-hidden">
                       <div 
                         className={`h-full transition-all duration-500 ${
-                          cluster.cohesion > 0.8 ? "bg-emerald-500" : 
-                          cluster.cohesion > 0.5 ? "bg-amber-500" : "bg-destructive"
+                          cluster.cohesion > 0.8 ? "bg-success" : 
+                          cluster.cohesion > 0.5 ? "bg-warning" : "bg-destructive"
                         }`}
                         style={{ width: `${Math.round(cluster.cohesion * 100)}%` }} 
                       />

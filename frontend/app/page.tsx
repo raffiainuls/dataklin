@@ -25,13 +25,18 @@ export default function DashboardPage() {
   return (
     <Shell title="Dashboard" subtitle="Ringkasan kualitas data organisasi Anda">
       {error && (
-        <div className="bg-destructive/15 text-destructive p-4 rounded-md border border-destructive/20 mb-6 flex items-center gap-2">
-          <AlertCircle className="h-5 w-5" />
+        /* role=alert: kegagalan polling diumumkan ke pembaca layar tanpa perlu fokus */
+        <div
+          role="alert"
+          className="mb-4 flex items-center gap-2 rounded-md border border-destructive/20 bg-destructive-muted p-3 text-destructive"
+        >
+          <AlertCircle className="h-5 w-5 shrink-0" aria-hidden="true" />
           <p>{error}</p>
         </div>
       )}
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      {/* Density 8/10: gap 12px antar KPI card */}
+      <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Total Dataset</CardTitle>
@@ -73,7 +78,7 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
             <div className="flex items-center justify-between">
@@ -101,7 +106,7 @@ export default function DashboardPage() {
                   </TableHeader>
                   <TableBody>
                     {summary.recent_datasets.map((d: any) => (
-                      <TableRow key={d.id}>
+                      <TableRow key={d.id} className="transition-colors duration-200 hover:bg-muted/50">
                         <TableCell className="font-medium">{d.name}</TableCell>
                         <TableCell className="text-muted-foreground text-sm">
                           {new Date(d.updated_at + "Z").toLocaleDateString("id-ID", { day: 'numeric', month: 'short' })}
@@ -111,7 +116,7 @@ export default function DashboardPage() {
                         </TableCell>
                         <TableCell>
                           {d.pending_clusters > 0 ? (
-                            <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold text-amber-500 border-amber-500/30">Butuh Review</span>
+                            <span className="inline-flex items-center rounded-full border border-warning/30 px-2.5 py-0.5 text-xs font-semibold text-warning">Butuh Review</span>
                           ) : (
                             <StatusPill status={d.status} />
                           )}

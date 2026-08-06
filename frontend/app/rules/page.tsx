@@ -247,7 +247,7 @@ function RulesContent() {
           </div>
         )}
         {notice && (
-          <div className="bg-emerald-500/15 text-emerald-700 p-4 rounded-md border border-emerald-500/20 flex items-center gap-2">
+          <div className="bg-success/15 text-success p-4 rounded-md border border-success/20 flex items-center gap-2">
             <AlertCircle className="h-5 w-5 shrink-0" />
             <p>{notice}</p>
             {validationPipelineId && (
@@ -337,7 +337,7 @@ function RulesContent() {
                 </Button>
                 
                 {llmAvailable === false && (
-                  <p className="text-xs text-amber-600 bg-amber-50 p-2 rounded">
+                  <p className="text-xs text-warning bg-warning-muted p-2 rounded">
                     LLM gateway belum dikonfigurasi — isi LLM_BASE_URL / LLM_API_KEY / LLM_MODEL di .env lalu restart backend.
                   </p>
                 )}
@@ -390,7 +390,7 @@ function RulesContent() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Wand2 className="h-5 w-5 text-amber-500" />
+                  <Wand2 className="h-5 w-5 text-warning" />
                   Sarankan Rule Otomatis
                 </CardTitle>
                 <CardDescription>LLM menyarankan rule dari skema & sample data</CardDescription>
@@ -532,7 +532,7 @@ function RulesContent() {
                 </div>
                 <div className="flex items-center gap-2">
                   {validationRunning && (
-                    <Badge variant="outline" className="animate-pulse bg-blue-50 text-blue-700">
+                    <Badge variant="outline" className="animate-pulse bg-info-muted text-info">
                       <Loader2 className="h-3 w-3 mr-1 animate-spin" />
                       Sedang diproses
                     </Badge>
@@ -567,7 +567,7 @@ function RulesContent() {
                           <Badge 
                             variant="secondary" 
                             className={`text-[10px] uppercase tracking-wider ${
-                              r.source === "builtin" ? "bg-muted" : r.source === "ai" ? "bg-blue-100 text-blue-700" : "bg-slate-100"
+                              r.source === "builtin" ? "bg-muted" : r.source === "ai" ? "bg-info-muted text-info" : "bg-muted"
                             }`}
                           >
                             {r.source === "builtin" ? "Bawaan" : r.source === "ai" ? "AI" : "Manual"}
@@ -582,7 +582,7 @@ function RulesContent() {
                           <div className="text-sm">
                             <span className="text-muted-foreground mr-1">Pelanggaran:</span>
                             {r.last_result ? (
-                              <span className={`font-semibold ${r.last_result.violations > 0 ? "text-destructive" : "text-emerald-600"}`}>
+                              <span className={`font-semibold ${r.last_result.violations > 0 ? "text-destructive" : "text-success"}`}>
                                 {r.last_result.violations.toLocaleString("id-ID")} / {r.last_result.checked.toLocaleString("id-ID")}
                               </span>
                             ) : (
@@ -594,7 +594,7 @@ function RulesContent() {
                             <Button 
                               variant="ghost" 
                               size="icon"
-                              className={`h-8 w-8 ${r.enabled ? 'text-amber-600 hover:text-amber-700 hover:bg-amber-100' : 'text-emerald-600 hover:text-emerald-700 hover:bg-emerald-100'}`} 
+                              className={`h-8 w-8 ${r.enabled ? 'text-warning hover:text-warning hover:bg-warning-muted' : 'text-success hover:text-success hover:bg-success-muted'}`} 
                               onClick={() => toggle(r)}
                               title={r.enabled ? "Nonaktifkan" : "Aktifkan"}
                             >
@@ -755,7 +755,7 @@ function DedupBuilder({ datasetId, columns }: { datasetId: string, columns: stri
         </div>
       )}
       {success && (
-        <div className="bg-emerald-500/15 text-emerald-700 p-4 rounded-md border border-emerald-500/20 flex items-center gap-2">
+        <div className="bg-success/15 text-success p-4 rounded-md border border-success/20 flex items-center gap-2">
           <AlertCircle className="h-5 w-5 shrink-0" />
           <p>{success}</p>
         </div>
@@ -779,7 +779,7 @@ function DedupBuilder({ datasetId, columns }: { datasetId: string, columns: stri
                 {calibrating ? "Menghitung..." : "Kalibrasi dari Hasil Review"}
               </Button>
               {calibration && (
-                <p className={`rounded p-2 text-xs ${calibration.available ? "bg-emerald-500/10 text-emerald-700" : "bg-amber-500/10 text-amber-700"}`}>
+                <p className={`rounded p-2 text-xs ${calibration.available ? "bg-success/10 text-success" : "bg-warning/10 text-warning"}`}>
                   {calibration.available
                     ? `Threshold ${calibration.recommended_threshold} · balanced accuracy ${(calibration.balanced_accuracy * 100).toFixed(1)}% dari ${calibration.positive_pairs + calibration.negative_pairs} pasangan.`
                     : calibration.reason}

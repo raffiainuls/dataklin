@@ -84,7 +84,7 @@ function FrequencyProfile({ column, totalRows }: { column: any; totalRows: numbe
           </div>
         ))
       ) : view === "patterns" ? (
-        <div className="rounded-md border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900 dark:bg-amber-950/20 dark:text-amber-200">
+        <div className="rounded-md border border-warning/30 bg-warning-muted p-3 text-xs text-warning">
           Pola regex belum tersedia pada hasil profil ini. Jalankan ulang profiling dataset untuk menghitung distribusi pola.
         </div>
       ) : (
@@ -164,7 +164,7 @@ export default function DatasetDetail() {
 </Button>
         
         {data.pending_clusters > 0 && (
-          <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white" render={<Link href={`/review`} />} nativeButton={false}>
+          <Button size="sm" className="bg-warning hover:bg-warning text-white" render={<Link href={`/review`} />} nativeButton={false}>
   <Search className="h-4 w-4 mr-2" />
               Review {data.pending_clusters} Cluster
 </Button>
@@ -265,14 +265,14 @@ export default function DatasetDetail() {
                     <div className="space-y-2">
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-muted-foreground font-medium flex items-center gap-1.5">
-                          <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                          <div className="w-2 h-2 rounded-full bg-success"></div>
                           Kelengkapan (Terisi)
                         </span>
                         <span className="font-semibold">{c.completeness ? (c.completeness * 100).toFixed(1) : "0"}%</span>
                       </div>
                       <div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-emerald-500 transition-all duration-500"
+                          className="h-full bg-success transition-all duration-500"
                           style={{ width: `${c.completeness ? c.completeness * 100 : 0}%` }}
                         />
                       </div>
@@ -281,14 +281,14 @@ export default function DatasetDetail() {
                     <div className="space-y-2">
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-muted-foreground font-medium flex items-center gap-1.5">
-                          <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                          <div className="w-2 h-2 rounded-full bg-info"></div>
                           Keunikan (Unique)
                         </span>
                         <span className="font-semibold">{c.uniqueness ? (c.uniqueness * 100).toFixed(1) : "0"}%</span>
                       </div>
                       <div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-blue-500 transition-all duration-500"
+                          className="h-full bg-info transition-all duration-500"
                           style={{ width: `${c.uniqueness ? c.uniqueness * 100 : 0}%` }}
                         />
                       </div>
@@ -335,11 +335,11 @@ export default function DatasetDetail() {
 
                     <div className="flex flex-wrap gap-2 border-t pt-4 text-xs">
                       <Badge variant="outline">{displayMetric(c.unique_count)} nilai unik</Badge>
-                      {c.stats?.is_candidate_key && <Badge className="bg-emerald-600">Kandidat key</Badge>}
+                      {c.stats?.is_candidate_key && <Badge className="bg-success">Kandidat key</Badge>}
                     </div>
 
                     {c.notes && (
-                      <div className="rounded-md border border-amber-300 bg-amber-50 p-2 text-xs text-amber-900 dark:bg-amber-950/20 dark:text-amber-200">
+                      <div className="rounded-md border border-warning/30 bg-warning-muted p-2 text-xs text-warning">
                         {c.notes}
                       </div>
                     )}
@@ -419,7 +419,7 @@ export default function DatasetDetail() {
                             <TableCell>{r.description || r.rule_label}</TableCell>
                             <TableCell>
                               {r.enabled ? (
-                                <Badge variant="outline" className="text-emerald-600 border-emerald-600/30">Aktif</Badge>
+                                <Badge variant="outline" className="text-success border-success/30">Aktif</Badge>
                               ) : (
                                 <Badge variant="outline" className="text-muted-foreground">Nonaktif</Badge>
                               )}
@@ -537,7 +537,7 @@ export default function DatasetDetail() {
                                             {columns.map(col => {
                                               const isDiff = c.diff_columns?.includes(col);
                                               return (
-                                                <TableCell key={col} className={isDiff ? "bg-amber-500/5 text-amber-700 font-medium" : ""}>
+                                                <TableCell key={col} className={isDiff ? "bg-warning/5 text-warning font-medium" : ""}>
                                                   {m.record_data[col] === null || m.record_data[col] === "" ? (
                                                     <span className="text-muted-foreground/50 italic">(kosong)</span>
                                                   ) : (

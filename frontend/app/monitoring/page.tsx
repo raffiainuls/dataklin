@@ -174,7 +174,7 @@ export default function MonitoringPage() {
           </div>
         )}
         {notice && (
-          <div className="bg-emerald-500/15 text-emerald-700 p-4 rounded-md border border-emerald-500/20 flex items-center gap-2">
+          <div className="bg-success/15 text-success p-4 rounded-md border border-success/20 flex items-center gap-2">
             <CheckCircle2 className="h-5 w-5 shrink-0" />
             <p>{notice}</p>
           </div>
@@ -353,7 +353,7 @@ export default function MonitoringPage() {
                     {Object.entries(testResults).map(([channel, status]) => (
                       <li key={channel} className="flex gap-2">
                         <span className="font-medium capitalize w-20">{channel}:</span> 
-                        <span className={status.includes("berhasil") ? "text-emerald-600" : "text-muted-foreground"}>{status}</span>
+                        <span className={status.includes("berhasil") ? "text-success" : "text-muted-foreground"}>{status}</span>
                       </li>
                     ))}
                   </ul>
@@ -404,7 +404,7 @@ export default function MonitoringPage() {
                         <TableCell>
                           <Badge 
                             variant={a.severity === "tinggi" ? "destructive" : a.severity === "sedang" ? "default" : "secondary"}
-                            className={a.severity === "sedang" ? "bg-amber-500 hover:bg-amber-600" : ""}
+                            className={a.severity === "sedang" ? "bg-warning hover:bg-warning" : ""}
                           >
                             {a.severity}
                           </Badge>
@@ -416,11 +416,11 @@ export default function MonitoringPage() {
                               size="sm"
                               onClick={() => resolveAlert(a.id)}
                             >
-                              <CheckCircle2 className="h-4 w-4 mr-2 text-emerald-500" />
+                              <CheckCircle2 className="h-4 w-4 mr-2 text-success" />
                               Tandai Selesai
                             </Button>
                           ) : (
-                            <div className="flex items-center justify-end text-emerald-600 text-sm font-medium">
+                            <div className="flex items-center justify-end text-success text-sm font-medium">
                               <CheckCircle2 className="h-4 w-4 mr-1" />
                               Selesai
                             </div>

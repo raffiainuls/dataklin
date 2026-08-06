@@ -94,7 +94,7 @@ export default function ApiKeysPage() {
                   className="shrink-0 h-[46px]" 
                   onClick={copyToClipboard}
                 >
-                  {copied ? <CheckCircle2 className="h-4 w-4 mr-2 text-emerald-500" /> : <Copy className="h-4 w-4 mr-2" />}
+                  {copied ? <CheckCircle2 className="h-4 w-4 mr-2 text-success" /> : <Copy className="h-4 w-4 mr-2" />}
                   {copied ? "Disalin!" : "Salin Key"}
                 </Button>
               </div>
@@ -172,7 +172,7 @@ export default function ApiKeysPage() {
                           {k.revoked ? (
                             <Badge variant="outline" className="text-muted-foreground">Dicabut</Badge>
                           ) : (
-                            <Badge variant="outline" className="text-emerald-600 border-emerald-600/30">Aktif</Badge>
+                            <Badge variant="outline" className="text-success border-success/30">Aktif</Badge>
                           )}
                         </TableCell>
                         <TableCell className="text-right">

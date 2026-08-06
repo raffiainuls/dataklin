@@ -52,7 +52,7 @@ export default function LoginPage() {
         <form onSubmit={submit}>
           <CardContent className="space-y-4">
             {error && (
-              <div className="bg-destructive/15 text-destructive p-3 rounded-md border border-destructive/20 text-sm flex items-center gap-2">
+              <div role="alert" className="bg-destructive-muted text-destructive p-3 rounded-md border border-destructive/20 text-sm flex items-center gap-2">
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 <p>{error}</p>
               </div>
@@ -62,6 +62,7 @@ export default function LoginPage() {
               <Input
                 id="email"
                 type="email"
+                className="h-11"
                 placeholder="admin@dataklin.local"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -76,6 +77,7 @@ export default function LoginPage() {
               <Input
                 id="password"
                 type="password"
+                className="h-11"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -84,7 +86,7 @@ export default function LoginPage() {
             </div>
           </CardContent>
           <CardFooter className="pt-2 pb-6">
-            <Button className="w-full" type="submit" disabled={loading}>
+            <Button size="lg" className="w-full" type="submit" disabled={loading}>
               {loading ? "Memproses..." : "Masuk"}
             </Button>
           </CardFooter>
